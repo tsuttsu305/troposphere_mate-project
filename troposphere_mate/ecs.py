@@ -11,7 +11,9 @@ if sys.version_info.major >= 3 and sys.version_info.minor >= 5:  # pragma: no co
 import troposphere.ecs
 
 from troposphere.ecs import (
+    AutoScalingGroupProvider as _AutoScalingGroupProvider,
     AwsvpcConfiguration as _AwsvpcConfiguration,
+    CapacityProviderStrategyItem as _CapacityProviderStrategyItem,
     ClusterSetting as _ClusterSetting,
     ContainerDefinition as _ContainerDefinition,
     ContainerDependency as _ContainerDependency,
@@ -29,6 +31,7 @@ from troposphere.ecs import (
     LinuxParameters as _LinuxParameters,
     LoadBalancer as _LoadBalancer,
     LogConfiguration as _LogConfiguration,
+    ManagedScaling as _ManagedScaling,
     MountPoint as _MountPoint,
     NetworkConfiguration as _NetworkConfiguration,
     PlacementConstraint as _PlacementConstraint,
@@ -55,6 +58,80 @@ from troposphere_mate.core.sentiel import REQUIRED, NOTHING
 
 
 
+class ManagedScaling(troposphere.ecs.ManagedScaling, Mixin):
+    def __init__(self,
+                 title=None,
+                 MaximumScalingStepSize=NOTHING, # type: Any
+                 MinimumScalingStepSize=NOTHING, # type: Any
+                 Status=NOTHING, # type: Union[str, AWSHelperFn]
+                 TargetCapacity=NOTHING, # type: Any
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            MaximumScalingStepSize=MaximumScalingStepSize,
+            MinimumScalingStepSize=MinimumScalingStepSize,
+            Status=Status,
+            TargetCapacity=TargetCapacity,
+            **kwargs
+        )
+        super(ManagedScaling, self).__init__(**processed_kwargs)
+
+
+class AutoScalingGroupProvider(troposphere.ecs.AutoScalingGroupProvider, Mixin):
+    def __init__(self,
+                 title=None,
+                 AutoScalingGroupArn=REQUIRED, # type: Union[str, AWSHelperFn]
+                 ManagedScaling=NOTHING, # type: _ManagedScaling
+                 ManagedTerminationProtection=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            AutoScalingGroupArn=AutoScalingGroupArn,
+            ManagedScaling=ManagedScaling,
+            ManagedTerminationProtection=ManagedTerminationProtection,
+            **kwargs
+        )
+        super(AutoScalingGroupProvider, self).__init__(**processed_kwargs)
+
+
+class CapacityProvider(troposphere.ecs.CapacityProvider, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 AutoScalingGroupProvider=REQUIRED, # type: _AutoScalingGroupProvider
+                 Name=NOTHING, # type: Union[str, AWSHelperFn]
+                 Tags=NOTHING, # type: _Tags
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            AutoScalingGroupProvider=AutoScalingGroupProvider,
+            Name=Name,
+            Tags=Tags,
+            **kwargs
+        )
+        super(CapacityProvider, self).__init__(**processed_kwargs)
+
+
+class CapacityProviderStrategyItem(troposphere.ecs.CapacityProviderStrategyItem, Mixin):
+    def __init__(self,
+                 title=None,
+                 Base=NOTHING, # type: int
+                 CapacityProvider=NOTHING, # type: Union[str, AWSHelperFn]
+                 Weight=NOTHING, # type: int
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Base=Base,
+            CapacityProvider=CapacityProvider,
+            Weight=Weight,
+            **kwargs
+        )
+        super(CapacityProviderStrategyItem, self).__init__(**processed_kwargs)
+
+
 class ClusterSetting(troposphere.ecs.ClusterSetting, Mixin):
     def __init__(self,
                  title=None,
@@ -75,16 +152,20 @@ class Cluster(troposphere.ecs.Cluster, Mixin):
                  title, # type: str
                  template=None, # type: Template
                  validation=True, # type: bool
+                 CapacityProviders=NOTHING, # type: List[Union[str, AWSHelperFn]]
                  ClusterName=NOTHING, # type: Union[str, AWSHelperFn]
                  ClusterSettings=NOTHING, # type: List[_ClusterSetting]
+                 DefaultCapacityProviderStrategy=NOTHING, # type: List[_CapacityProviderStrategyItem]
                  Tags=NOTHING, # type: _Tags
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             template=template,
             validation=validation,
+            CapacityProviders=CapacityProviders,
             ClusterName=ClusterName,
             ClusterSettings=ClusterSettings,
+            DefaultCapacityProviderStrategy=DefaultCapacityProviderStrategy,
             Tags=Tags,
             **kwargs
         )

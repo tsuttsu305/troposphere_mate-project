@@ -11,6 +11,7 @@ if sys.version_info.major >= 3 and sys.version_info.minor >= 5:  # pragma: no co
 import troposphere.elasticache
 
 from troposphere.elasticache import (
+    NodeGroupConfiguration as _NodeGroupConfiguration,
     Tags as _Tags,
 )
 
@@ -158,6 +159,27 @@ class SubnetGroup(troposphere.elasticache.SubnetGroup, Mixin):
         super(SubnetGroup, self).__init__(**processed_kwargs)
 
 
+class NodeGroupConfiguration(troposphere.elasticache.NodeGroupConfiguration, Mixin):
+    def __init__(self,
+                 title=None,
+                 NodeGroupId=NOTHING, # type: Any
+                 PrimaryAvailabilityZone=NOTHING, # type: Union[str, AWSHelperFn]
+                 ReplicaAvailabilityZones=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 ReplicaCount=NOTHING, # type: int
+                 Slots=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            NodeGroupId=NodeGroupId,
+            PrimaryAvailabilityZone=PrimaryAvailabilityZone,
+            ReplicaAvailabilityZones=ReplicaAvailabilityZones,
+            ReplicaCount=ReplicaCount,
+            Slots=Slots,
+            **kwargs
+        )
+        super(NodeGroupConfiguration, self).__init__(**processed_kwargs)
+
+
 class ReplicationGroup(troposphere.elasticache.ReplicationGroup, Mixin):
     def __init__(self,
                  title, # type: str
@@ -175,7 +197,8 @@ class ReplicationGroup(troposphere.elasticache.ReplicationGroup, Mixin):
                  Engine=NOTHING, # type: Union[str, AWSHelperFn]
                  EngineVersion=NOTHING, # type: Union[str, AWSHelperFn]
                  KmsKeyId=NOTHING, # type: Union[str, AWSHelperFn]
-                 NodeGroupConfiguration=NOTHING, # type: list
+                 MultiAZEnabled=NOTHING, # type: bool
+                 NodeGroupConfiguration=NOTHING, # type: List[_NodeGroupConfiguration]
                  NotificationTopicArn=NOTHING, # type: Union[str, AWSHelperFn]
                  NumCacheClusters=NOTHING, # type: int
                  NumNodeGroups=NOTHING, # type: int
@@ -189,8 +212,8 @@ class ReplicationGroup(troposphere.elasticache.ReplicationGroup, Mixin):
                  SnapshotArns=NOTHING, # type: List[Union[str, AWSHelperFn]]
                  SnapshotName=NOTHING, # type: Union[str, AWSHelperFn]
                  SnapshotRetentionLimit=NOTHING, # type: int
-                 SnapshottingClusterId=NOTHING, # type: Union[str, AWSHelperFn]
                  SnapshotWindow=NOTHING, # type: Union[str, AWSHelperFn]
+                 SnapshottingClusterId=NOTHING, # type: Union[str, AWSHelperFn]
                  Tags=NOTHING, # type: _Tags
                  TransitEncryptionEnabled=NOTHING, # type: bool
                  **kwargs):
@@ -210,6 +233,7 @@ class ReplicationGroup(troposphere.elasticache.ReplicationGroup, Mixin):
             Engine=Engine,
             EngineVersion=EngineVersion,
             KmsKeyId=KmsKeyId,
+            MultiAZEnabled=MultiAZEnabled,
             NodeGroupConfiguration=NodeGroupConfiguration,
             NotificationTopicArn=NotificationTopicArn,
             NumCacheClusters=NumCacheClusters,
@@ -224,8 +248,8 @@ class ReplicationGroup(troposphere.elasticache.ReplicationGroup, Mixin):
             SnapshotArns=SnapshotArns,
             SnapshotName=SnapshotName,
             SnapshotRetentionLimit=SnapshotRetentionLimit,
-            SnapshottingClusterId=SnapshottingClusterId,
             SnapshotWindow=SnapshotWindow,
+            SnapshottingClusterId=SnapshottingClusterId,
             Tags=Tags,
             TransitEncryptionEnabled=TransitEncryptionEnabled,
             **kwargs

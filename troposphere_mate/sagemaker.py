@@ -136,6 +136,7 @@ class ContainerDefinition(troposphere.sagemaker.ContainerDefinition, Mixin):
                  Image=REQUIRED, # type: Union[str, AWSHelperFn]
                  ContainerHostname=NOTHING, # type: Union[str, AWSHelperFn]
                  Environment=NOTHING, # type: dict
+                 Mode=NOTHING, # type: Union[str, AWSHelperFn]
                  ModelDataUrl=NOTHING, # type: Union[str, AWSHelperFn]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
@@ -143,6 +144,7 @@ class ContainerDefinition(troposphere.sagemaker.ContainerDefinition, Mixin):
             Image=Image,
             ContainerHostname=ContainerHostname,
             Environment=Environment,
+            Mode=Mode,
             ModelDataUrl=ModelDataUrl,
             **kwargs
         )
@@ -170,22 +172,22 @@ class Model(troposphere.sagemaker.Model, Mixin):
                  template=None, # type: Template
                  validation=True, # type: bool
                  ExecutionRoleArn=REQUIRED, # type: Union[str, AWSHelperFn]
-                 PrimaryContainer=REQUIRED, # type: _ContainerDefinition
                  Containers=NOTHING, # type: List[_ContainerDefinition]
                  ModelName=NOTHING, # type: Union[str, AWSHelperFn]
-                 VpcConfig=NOTHING, # type: _VpcConfig
+                 PrimaryContainer=NOTHING, # type: _ContainerDefinition
                  Tags=NOTHING, # type: _Tags
+                 VpcConfig=NOTHING, # type: _VpcConfig
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             template=template,
             validation=validation,
             ExecutionRoleArn=ExecutionRoleArn,
-            PrimaryContainer=PrimaryContainer,
             Containers=Containers,
             ModelName=ModelName,
-            VpcConfig=VpcConfig,
+            PrimaryContainer=PrimaryContainer,
             Tags=Tags,
+            VpcConfig=VpcConfig,
             **kwargs
         )
         super(Model, self).__init__(**processed_kwargs)

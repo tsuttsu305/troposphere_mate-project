@@ -12,10 +12,13 @@ import troposphere.lakeformation
 
 from troposphere.lakeformation import (
     Admins as _Admins,
+    ColumnWildcard as _ColumnWildcard,
     DataLakePrincipal as _DataLakePrincipal,
+    DataLocationResource as _DataLocationResource,
     DatabaseResource as _DatabaseResource,
     Resource as _Resource,
     TableResource as _TableResource,
+    TableWithColumnsResource as _TableWithColumnsResource,
 )
 
 
@@ -94,16 +97,65 @@ class TableResource(troposphere.lakeformation.TableResource, Mixin):
         super(TableResource, self).__init__(**processed_kwargs)
 
 
+class DataLocationResource(troposphere.lakeformation.DataLocationResource, Mixin):
+    def __init__(self,
+                 title=None,
+                 S3Resource=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            S3Resource=S3Resource,
+            **kwargs
+        )
+        super(DataLocationResource, self).__init__(**processed_kwargs)
+
+
+class ColumnWildcard(troposphere.lakeformation.ColumnWildcard, Mixin):
+    def __init__(self,
+                 title=None,
+                 ExcludedColumnNames=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            ExcludedColumnNames=ExcludedColumnNames,
+            **kwargs
+        )
+        super(ColumnWildcard, self).__init__(**processed_kwargs)
+
+
+class TableWithColumnsResource(troposphere.lakeformation.TableWithColumnsResource, Mixin):
+    def __init__(self,
+                 title=None,
+                 ColumnNames=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 ColumnWildcard=NOTHING, # type: _ColumnWildcard
+                 DatabaseName=NOTHING, # type: Union[str, AWSHelperFn]
+                 Name=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            ColumnNames=ColumnNames,
+            ColumnWildcard=ColumnWildcard,
+            DatabaseName=DatabaseName,
+            Name=Name,
+            **kwargs
+        )
+        super(TableWithColumnsResource, self).__init__(**processed_kwargs)
+
+
 class Resource(troposphere.lakeformation.Resource, Mixin):
     def __init__(self,
                  title=None,
                  DatabaseResource=NOTHING, # type: _DatabaseResource
+                 DataLocationResource=NOTHING, # type: _DataLocationResource
                  TableResource=NOTHING, # type: _TableResource
+                 TableWithColumnsResource=NOTHING, # type: _TableWithColumnsResource
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             DatabaseResource=DatabaseResource,
+            DataLocationResource=DataLocationResource,
             TableResource=TableResource,
+            TableWithColumnsResource=TableWithColumnsResource,
             **kwargs
         )
         super(Resource, self).__init__(**processed_kwargs)

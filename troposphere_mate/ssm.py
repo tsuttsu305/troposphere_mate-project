@@ -11,6 +11,7 @@ if sys.version_info.major >= 3 and sys.version_info.minor >= 5:  # pragma: no co
 import troposphere.ssm
 
 from troposphere.ssm import (
+    AwsOrganizationsSource as _AwsOrganizationsSource,
     InstanceAssociationOutputLocation as _InstanceAssociationOutputLocation,
     LoggingInfo as _LoggingInfo,
     MaintenanceWindowAutomationParameters as _MaintenanceWindowAutomationParameters,
@@ -24,6 +25,7 @@ from troposphere.ssm import (
     Rule as _Rule,
     RuleGroup as _RuleGroup,
     S3OutputLocation as _S3OutputLocation,
+    SyncSource as _SyncSource,
     Tags as _Tags,
     Targets as _Targets,
     TaskInvocationParameters as _TaskInvocationParameters,
@@ -281,6 +283,7 @@ class Association(troposphere.ssm.Association, Mixin):
                  Parameters=NOTHING, # type: dict
                  ScheduleExpression=NOTHING, # type: Union[str, AWSHelperFn]
                  Targets=NOTHING, # type: List[_Targets]
+                 WaitForSuccessTimeoutSeconds=NOTHING, # type: int
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
@@ -294,6 +297,7 @@ class Association(troposphere.ssm.Association, Mixin):
             Parameters=Parameters,
             ScheduleExpression=ScheduleExpression,
             Targets=Targets,
+            WaitForSuccessTimeoutSeconds=WaitForSuccessTimeoutSeconds,
             **kwargs
         )
         super(Association, self).__init__(**processed_kwargs)
@@ -306,6 +310,7 @@ class Document(troposphere.ssm.Document, Mixin):
                  validation=True, # type: bool
                  Content=REQUIRED, # type: dict
                  DocumentType=NOTHING, # type: Union[str, AWSHelperFn]
+                 Name=NOTHING, # type: Union[str, AWSHelperFn]
                  Tags=NOTHING, # type: _Tags
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
@@ -314,6 +319,7 @@ class Document(troposphere.ssm.Document, Mixin):
             validation=validation,
             Content=Content,
             DocumentType=DocumentType,
+            Name=Name,
             Tags=Tags,
             **kwargs
         )
@@ -431,6 +437,7 @@ class Parameter(troposphere.ssm.Parameter, Mixin):
                  Type=REQUIRED, # type: Union[str, AWSHelperFn]
                  Value=REQUIRED, # type: Union[str, AWSHelperFn]
                  AllowedPattern=NOTHING, # type: Union[str, AWSHelperFn]
+                 DataType=NOTHING, # type: Union[str, AWSHelperFn]
                  Description=NOTHING, # type: Union[str, AWSHelperFn]
                  Name=NOTHING, # type: Union[str, AWSHelperFn]
                  Policies=NOTHING, # type: Union[str, AWSHelperFn]
@@ -444,6 +451,7 @@ class Parameter(troposphere.ssm.Parameter, Mixin):
             Type=Type,
             Value=Value,
             AllowedPattern=AllowedPattern,
+            DataType=DataType,
             Description=Description,
             Name=Name,
             Policies=Policies,
@@ -512,6 +520,40 @@ class PatchBaseline(troposphere.ssm.PatchBaseline, Mixin):
         super(PatchBaseline, self).__init__(**processed_kwargs)
 
 
+class AwsOrganizationsSource(troposphere.ssm.AwsOrganizationsSource, Mixin):
+    def __init__(self,
+                 title=None,
+                 OrganizationSourceType=REQUIRED, # type: Union[str, AWSHelperFn]
+                 OrganizationalUnits=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            OrganizationSourceType=OrganizationSourceType,
+            OrganizationalUnits=OrganizationalUnits,
+            **kwargs
+        )
+        super(AwsOrganizationsSource, self).__init__(**processed_kwargs)
+
+
+class SyncSource(troposphere.ssm.SyncSource, Mixin):
+    def __init__(self,
+                 title=None,
+                 SourceRegions=REQUIRED, # type: List[Union[str, AWSHelperFn]]
+                 SourceType=REQUIRED, # type: Union[str, AWSHelperFn]
+                 AwsOrganizationsSource=NOTHING, # type: _AwsOrganizationsSource
+                 IncludeFutureRegions=NOTHING, # type: bool
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            SourceRegions=SourceRegions,
+            SourceType=SourceType,
+            AwsOrganizationsSource=AwsOrganizationsSource,
+            IncludeFutureRegions=IncludeFutureRegions,
+            **kwargs
+        )
+        super(SyncSource, self).__init__(**processed_kwargs)
+
+
 class ResourceDataSync(troposphere.ssm.ResourceDataSync, Mixin):
     def __init__(self,
                  title, # type: str
@@ -523,6 +565,8 @@ class ResourceDataSync(troposphere.ssm.ResourceDataSync, Mixin):
                  SyncName=REQUIRED, # type: Union[str, AWSHelperFn]
                  BucketPrefix=NOTHING, # type: Union[str, AWSHelperFn]
                  KMSKeyArn=NOTHING, # type: Union[str, AWSHelperFn]
+                 SyncSource=NOTHING, # type: _SyncSource
+                 SyncType=NOTHING, # type: Union[str, AWSHelperFn]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
@@ -534,6 +578,8 @@ class ResourceDataSync(troposphere.ssm.ResourceDataSync, Mixin):
             SyncName=SyncName,
             BucketPrefix=BucketPrefix,
             KMSKeyArn=KMSKeyArn,
+            SyncSource=SyncSource,
+            SyncType=SyncType,
             **kwargs
         )
         super(ResourceDataSync, self).__init__(**processed_kwargs)

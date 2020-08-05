@@ -810,25 +810,6 @@ class ObjectLockConfiguration(troposphere.s3.ObjectLockConfiguration, Mixin):
         super(ObjectLockConfiguration, self).__init__(**processed_kwargs)
 
 
-class PublicAccessBlockConfiguration(troposphere.s3.PublicAccessBlockConfiguration, Mixin):
-    def __init__(self,
-                 title=None,
-                 BlockPublicAcls=NOTHING, # type: bool
-                 BlockPublicPolicy=NOTHING, # type: bool
-                 IgnorePublicAcls=NOTHING, # type: bool
-                 RestrictPublicBuckets=NOTHING, # type: bool
-                 **kwargs):
-        processed_kwargs = preprocess_init_kwargs(
-            title=title,
-            BlockPublicAcls=BlockPublicAcls,
-            BlockPublicPolicy=BlockPublicPolicy,
-            IgnorePublicAcls=IgnorePublicAcls,
-            RestrictPublicBuckets=RestrictPublicBuckets,
-            **kwargs
-        )
-        super(PublicAccessBlockConfiguration, self).__init__(**processed_kwargs)
-
-
 class Bucket(troposphere.s3.Bucket, Mixin):
     def __init__(self,
                  title, # type: str

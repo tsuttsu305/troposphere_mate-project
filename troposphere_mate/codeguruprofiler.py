@@ -8,7 +8,7 @@ import sys
 if sys.version_info.major >= 3 and sys.version_info.minor >= 5:  # pragma: no cover
     from typing import Union, List, Any
 
-import troposphere.securityhub
+import troposphere.codeguruprofiler
 
 
 from troposphere import Template, AWSHelperFn
@@ -17,18 +17,22 @@ from troposphere_mate.core.sentiel import REQUIRED, NOTHING
 
 
 
-class Hub(troposphere.securityhub.Hub, Mixin):
+class ProfilingGroup(troposphere.codeguruprofiler.ProfilingGroup, Mixin):
     def __init__(self,
                  title, # type: str
                  template=None, # type: Template
                  validation=True, # type: bool
-                 Tags=NOTHING, # type: json_checker
+                 ProfilingGroupName=REQUIRED, # type: Union[str, AWSHelperFn]
+                 AgentPermissions=NOTHING, # type: dict
+                 ComputePlatform=NOTHING, # type: Union[str, AWSHelperFn]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             template=template,
             validation=validation,
-            Tags=Tags,
+            ProfilingGroupName=ProfilingGroupName,
+            AgentPermissions=AgentPermissions,
+            ComputePlatform=ComputePlatform,
             **kwargs
         )
-        super(Hub, self).__init__(**processed_kwargs)
+        super(ProfilingGroup, self).__init__(**processed_kwargs)

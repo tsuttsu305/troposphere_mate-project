@@ -38,6 +38,7 @@ from troposphere.firehose import (
     Serializer as _Serializer,
     SplunkDestinationConfiguration as _SplunkDestinationConfiguration,
     SplunkRetryOptions as _SplunkRetryOptions,
+    VpcConfiguration as _VpcConfiguration,
 )
 
 
@@ -207,6 +208,23 @@ class ProcessingConfiguration(troposphere.firehose.ProcessingConfiguration, Mixi
         super(ProcessingConfiguration, self).__init__(**processed_kwargs)
 
 
+class VpcConfiguration(troposphere.firehose.VpcConfiguration, Mixin):
+    def __init__(self,
+                 title=None,
+                 RoleARN=REQUIRED, # type: Union[str, AWSHelperFn]
+                 SecurityGroupIds=REQUIRED, # type: List[Union[str, AWSHelperFn]]
+                 SubnetIds=REQUIRED, # type: List[Union[str, AWSHelperFn]]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            RoleARN=RoleARN,
+            SecurityGroupIds=SecurityGroupIds,
+            SubnetIds=SubnetIds,
+            **kwargs
+        )
+        super(VpcConfiguration, self).__init__(**processed_kwargs)
+
+
 class ElasticsearchDestinationConfiguration(troposphere.firehose.ElasticsearchDestinationConfiguration, Mixin):
     def __init__(self,
                  title=None,
@@ -218,9 +236,11 @@ class ElasticsearchDestinationConfiguration(troposphere.firehose.ElasticsearchDe
                  S3BackupMode=REQUIRED, # type: Any
                  TypeName=REQUIRED, # type: Union[str, AWSHelperFn]
                  CloudWatchLoggingOptions=NOTHING, # type: _CloudWatchLoggingOptions
+                 ClusterEndpoint=NOTHING, # type: Union[str, AWSHelperFn]
                  ProcessingConfiguration=NOTHING, # type: _ProcessingConfiguration
                  RetryOptions=NOTHING, # type: _RetryOptions
                  S3Configuration=NOTHING, # type: _S3Configuration
+                 VpcConfiguration=NOTHING, # type: _VpcConfiguration
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
@@ -232,9 +252,11 @@ class ElasticsearchDestinationConfiguration(troposphere.firehose.ElasticsearchDe
             S3BackupMode=S3BackupMode,
             TypeName=TypeName,
             CloudWatchLoggingOptions=CloudWatchLoggingOptions,
+            ClusterEndpoint=ClusterEndpoint,
             ProcessingConfiguration=ProcessingConfiguration,
             RetryOptions=RetryOptions,
             S3Configuration=S3Configuration,
+            VpcConfiguration=VpcConfiguration,
             **kwargs
         )
         super(ElasticsearchDestinationConfiguration, self).__init__(**processed_kwargs)

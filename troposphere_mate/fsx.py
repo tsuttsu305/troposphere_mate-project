@@ -27,16 +27,26 @@ from troposphere_mate.core.sentiel import REQUIRED, NOTHING
 class LustreConfiguration(troposphere.fsx.LustreConfiguration, Mixin):
     def __init__(self,
                  title=None,
+                 AutomaticBackupRetentionDays=NOTHING, # type: int
+                 CopyTagsToBackups=NOTHING, # type: bool
+                 DailyAutomaticBackupStartTime=NOTHING, # type: Union[str, AWSHelperFn]
+                 DeploymentType=NOTHING, # type: Any
                  ExportPath=NOTHING, # type: Union[str, AWSHelperFn]
                  ImportedFileChunkSize=NOTHING, # type: int
                  ImportPath=NOTHING, # type: Union[str, AWSHelperFn]
+                 PerUnitStorageThroughput=NOTHING, # type: Any
                  WeeklyMaintenanceStartTime=NOTHING, # type: Union[str, AWSHelperFn]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
+            AutomaticBackupRetentionDays=AutomaticBackupRetentionDays,
+            CopyTagsToBackups=CopyTagsToBackups,
+            DailyAutomaticBackupStartTime=DailyAutomaticBackupStartTime,
+            DeploymentType=DeploymentType,
             ExportPath=ExportPath,
             ImportedFileChunkSize=ImportedFileChunkSize,
             ImportPath=ImportPath,
+            PerUnitStorageThroughput=PerUnitStorageThroughput,
             WeeklyMaintenanceStartTime=WeeklyMaintenanceStartTime,
             **kwargs
         )
@@ -73,6 +83,8 @@ class WindowsConfiguration(troposphere.fsx.WindowsConfiguration, Mixin):
                  AutomaticBackupRetentionDays=NOTHING, # type: int
                  CopyTagsToBackups=NOTHING, # type: bool
                  DailyAutomaticBackupStartTime=NOTHING, # type: Union[str, AWSHelperFn]
+                 DeploymentType=NOTHING, # type: Union[str, AWSHelperFn]
+                 PreferredSubnetId=NOTHING, # type: Union[str, AWSHelperFn]
                  SelfManagedActiveDirectoryConfiguration=NOTHING, # type: _SelfManagedActiveDirectoryConfiguration
                  ThroughputCapacity=NOTHING, # type: int
                  WeeklyMaintenanceStartTime=NOTHING, # type: Union[str, AWSHelperFn]
@@ -83,6 +95,8 @@ class WindowsConfiguration(troposphere.fsx.WindowsConfiguration, Mixin):
             AutomaticBackupRetentionDays=AutomaticBackupRetentionDays,
             CopyTagsToBackups=CopyTagsToBackups,
             DailyAutomaticBackupStartTime=DailyAutomaticBackupStartTime,
+            DeploymentType=DeploymentType,
+            PreferredSubnetId=PreferredSubnetId,
             SelfManagedActiveDirectoryConfiguration=SelfManagedActiveDirectoryConfiguration,
             ThroughputCapacity=ThroughputCapacity,
             WeeklyMaintenanceStartTime=WeeklyMaintenanceStartTime,
@@ -102,6 +116,7 @@ class FileSystem(troposphere.fsx.FileSystem, Mixin):
                  LustreConfiguration=NOTHING, # type: _LustreConfiguration
                  SecurityGroupIds=NOTHING, # type: List[Union[str, AWSHelperFn]]
                  StorageCapacity=NOTHING, # type: int
+                 StorageType=NOTHING, # type: Any
                  SubnetIds=NOTHING, # type: List[Union[str, AWSHelperFn]]
                  Tags=NOTHING, # type: _Tags
                  WindowsConfiguration=NOTHING, # type: _WindowsConfiguration
@@ -116,6 +131,7 @@ class FileSystem(troposphere.fsx.FileSystem, Mixin):
             LustreConfiguration=LustreConfiguration,
             SecurityGroupIds=SecurityGroupIds,
             StorageCapacity=StorageCapacity,
+            StorageType=StorageType,
             SubnetIds=SubnetIds,
             Tags=Tags,
             WindowsConfiguration=WindowsConfiguration,

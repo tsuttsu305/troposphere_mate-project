@@ -17,6 +17,7 @@ from troposphere.elasticloadbalancingv2 import (
     Certificate as _Certificate,
     Condition as _Condition,
     FixedResponseConfig as _FixedResponseConfig,
+    ForwardConfig as _ForwardConfig,
     HostHeaderConfig as _HostHeaderConfig,
     HttpHeaderConfig as _HttpHeaderConfig,
     HttpRequestMethodConfig as _HttpRequestMethodConfig,
@@ -31,6 +32,8 @@ from troposphere.elasticloadbalancingv2 import (
     Tags as _Tags,
     TargetDescription as _TargetDescription,
     TargetGroupAttribute as _TargetGroupAttribute,
+    TargetGroupStickinessConfig as _TargetGroupStickinessConfig,
+    TargetGroupTuple as _TargetGroupTuple,
 )
 
 
@@ -168,6 +171,51 @@ class FixedResponseConfig(troposphere.elasticloadbalancingv2.FixedResponseConfig
         super(FixedResponseConfig, self).__init__(**processed_kwargs)
 
 
+class TargetGroupTuple(troposphere.elasticloadbalancingv2.TargetGroupTuple, Mixin):
+    def __init__(self,
+                 title=None,
+                 TargetGroupArn=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Weight=NOTHING, # type: int
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            TargetGroupArn=TargetGroupArn,
+            Weight=Weight,
+            **kwargs
+        )
+        super(TargetGroupTuple, self).__init__(**processed_kwargs)
+
+
+class TargetGroupStickinessConfig(troposphere.elasticloadbalancingv2.TargetGroupStickinessConfig, Mixin):
+    def __init__(self,
+                 title=None,
+                 DurationSeconds=NOTHING, # type: int
+                 Enabled=NOTHING, # type: bool
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            DurationSeconds=DurationSeconds,
+            Enabled=Enabled,
+            **kwargs
+        )
+        super(TargetGroupStickinessConfig, self).__init__(**processed_kwargs)
+
+
+class ForwardConfig(troposphere.elasticloadbalancingv2.ForwardConfig, Mixin):
+    def __init__(self,
+                 title=None,
+                 TargetGroups=NOTHING, # type: List[_TargetGroupTuple]
+                 TargetGroupStickinessConfig=NOTHING, # type: _TargetGroupStickinessConfig
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            TargetGroups=TargetGroups,
+            TargetGroupStickinessConfig=TargetGroupStickinessConfig,
+            **kwargs
+        )
+        super(ForwardConfig, self).__init__(**processed_kwargs)
+
+
 class Action(troposphere.elasticloadbalancingv2.Action, Mixin):
     def __init__(self,
                  title=None,
@@ -178,6 +226,7 @@ class Action(troposphere.elasticloadbalancingv2.Action, Mixin):
                  Order=NOTHING, # type: int
                  RedirectConfig=NOTHING, # type: _RedirectConfig
                  TargetGroupArn=NOTHING, # type: Union[str, AWSHelperFn]
+                 ForwardConfig=NOTHING, # type: _ForwardConfig
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
@@ -188,6 +237,7 @@ class Action(troposphere.elasticloadbalancingv2.Action, Mixin):
             Order=Order,
             RedirectConfig=RedirectConfig,
             TargetGroupArn=TargetGroupArn,
+            ForwardConfig=ForwardConfig,
             **kwargs
         )
         super(Action, self).__init__(**processed_kwargs)
@@ -331,13 +381,15 @@ class Matcher(troposphere.elasticloadbalancingv2.Matcher, Mixin):
 class SubnetMapping(troposphere.elasticloadbalancingv2.SubnetMapping, Mixin):
     def __init__(self,
                  title=None,
-                 AllocationId=REQUIRED, # type: Union[str, AWSHelperFn]
                  SubnetId=REQUIRED, # type: Union[str, AWSHelperFn]
+                 AllocationId=NOTHING, # type: Union[str, AWSHelperFn]
+                 PrivateIPv4Address=NOTHING, # type: Union[str, AWSHelperFn]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
-            AllocationId=AllocationId,
             SubnetId=SubnetId,
+            AllocationId=AllocationId,
+            PrivateIPv4Address=PrivateIPv4Address,
             **kwargs
         )
         super(SubnetMapping, self).__init__(**processed_kwargs)
@@ -384,6 +436,7 @@ class Listener(troposphere.elasticloadbalancingv2.Listener, Mixin):
                  LoadBalancerArn=REQUIRED, # type: Union[str, AWSHelperFn]
                  Port=REQUIRED, # type: int
                  Protocol=REQUIRED, # type: Union[str, AWSHelperFn]
+                 AlpnPolicy=NOTHING, # type: List[Union[str, AWSHelperFn]]
                  Certificates=NOTHING, # type: List[_Certificate]
                  SslPolicy=NOTHING, # type: Union[str, AWSHelperFn]
                  **kwargs):
@@ -395,6 +448,7 @@ class Listener(troposphere.elasticloadbalancingv2.Listener, Mixin):
             LoadBalancerArn=LoadBalancerArn,
             Port=Port,
             Protocol=Protocol,
+            AlpnPolicy=AlpnPolicy,
             Certificates=Certificates,
             SslPolicy=SslPolicy,
             **kwargs
@@ -498,13 +552,13 @@ class LoadBalancer(troposphere.elasticloadbalancingv2.LoadBalancer, Mixin):
                  title, # type: str
                  template=None, # type: Template
                  validation=True, # type: bool
+                 IpAddressType=NOTHING, # type: Union[str, AWSHelperFn]
                  LoadBalancerAttributes=NOTHING, # type: List[_LoadBalancerAttributes]
                  Name=NOTHING, # type: str
                  Scheme=NOTHING, # type: Union[str, AWSHelperFn]
-                 IpAddressType=NOTHING, # type: Union[str, AWSHelperFn]
-                 SecurityGroups=NOTHING, # type: list
+                 SecurityGroups=NOTHING, # type: List[Union[str, AWSHelperFn]]
                  SubnetMappings=NOTHING, # type: List[_SubnetMapping]
-                 Subnets=NOTHING, # type: list
+                 Subnets=NOTHING, # type: List[Union[str, AWSHelperFn]]
                  Tags=NOTHING, # type: Union[_Tags, list]
                  Type=NOTHING, # type: Union[str, AWSHelperFn]
                  **kwargs):
@@ -512,10 +566,10 @@ class LoadBalancer(troposphere.elasticloadbalancingv2.LoadBalancer, Mixin):
             title=title,
             template=template,
             validation=validation,
+            IpAddressType=IpAddressType,
             LoadBalancerAttributes=LoadBalancerAttributes,
             Name=Name,
             Scheme=Scheme,
-            IpAddressType=IpAddressType,
             SecurityGroups=SecurityGroups,
             SubnetMappings=SubnetMappings,
             Subnets=Subnets,

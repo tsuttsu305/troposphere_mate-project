@@ -12,6 +12,9 @@ import troposphere.mediastore
 
 from troposphere.mediastore import (
     CorsRule as _CorsRule,
+    MetricPolicy as _MetricPolicy,
+    MetricPolicyRule as _MetricPolicyRule,
+    Tags as _Tags,
 )
 
 
@@ -42,6 +45,36 @@ class CorsRule(troposphere.mediastore.CorsRule, Mixin):
         super(CorsRule, self).__init__(**processed_kwargs)
 
 
+class MetricPolicyRule(troposphere.mediastore.MetricPolicyRule, Mixin):
+    def __init__(self,
+                 title=None,
+                 ObjectGroup=REQUIRED, # type: Union[str, AWSHelperFn]
+                 ObjectGroupName=REQUIRED, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            ObjectGroup=ObjectGroup,
+            ObjectGroupName=ObjectGroupName,
+            **kwargs
+        )
+        super(MetricPolicyRule, self).__init__(**processed_kwargs)
+
+
+class MetricPolicy(troposphere.mediastore.MetricPolicy, Mixin):
+    def __init__(self,
+                 title=None,
+                 ContainerLevelMetrics=REQUIRED, # type: Any
+                 MetricPolicyRules=NOTHING, # type: List[_MetricPolicyRule]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            ContainerLevelMetrics=ContainerLevelMetrics,
+            MetricPolicyRules=MetricPolicyRules,
+            **kwargs
+        )
+        super(MetricPolicy, self).__init__(**processed_kwargs)
+
+
 class Container(troposphere.mediastore.Container, Mixin):
     def __init__(self,
                  title, # type: str
@@ -51,7 +84,9 @@ class Container(troposphere.mediastore.Container, Mixin):
                  AccessLoggingEnabled=NOTHING, # type: bool
                  CorsPolicy=NOTHING, # type: List[_CorsRule]
                  LifecyclePolicy=NOTHING, # type: Union[str, AWSHelperFn]
+                 MetricPolicy=NOTHING, # type: _MetricPolicy
                  Policy=NOTHING, # type: Union[str, AWSHelperFn]
+                 Tags=NOTHING, # type: _Tags
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
@@ -61,7 +96,9 @@ class Container(troposphere.mediastore.Container, Mixin):
             AccessLoggingEnabled=AccessLoggingEnabled,
             CorsPolicy=CorsPolicy,
             LifecyclePolicy=LifecyclePolicy,
+            MetricPolicy=MetricPolicy,
             Policy=Policy,
+            Tags=Tags,
             **kwargs
         )
         super(Container, self).__init__(**processed_kwargs)

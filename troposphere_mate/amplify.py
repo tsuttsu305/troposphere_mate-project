@@ -118,6 +118,7 @@ class App(troposphere.amplify.App, Mixin):
                  BuildSpec=NOTHING, # type: Union[str, AWSHelperFn]
                  CustomRules=NOTHING, # type: List[_CustomRule]
                  Description=NOTHING, # type: Union[str, AWSHelperFn]
+                 EnableBranchAutoDeletion=NOTHING, # type: bool
                  EnvironmentVariables=NOTHING, # type: List[_EnvironmentVariable]
                  IAMServiceRole=NOTHING, # type: Union[str, AWSHelperFn]
                  OauthToken=NOTHING, # type: Union[str, AWSHelperFn]
@@ -135,6 +136,7 @@ class App(troposphere.amplify.App, Mixin):
             BuildSpec=BuildSpec,
             CustomRules=CustomRules,
             Description=Description,
+            EnableBranchAutoDeletion=EnableBranchAutoDeletion,
             EnvironmentVariables=EnvironmentVariables,
             IAMServiceRole=IAMServiceRole,
             OauthToken=OauthToken,
@@ -205,6 +207,9 @@ class Domain(troposphere.amplify.Domain, Mixin):
                  AppId=REQUIRED, # type: Union[str, AWSHelperFn]
                  DomainName=REQUIRED, # type: Union[str, AWSHelperFn]
                  SubDomainSettings=REQUIRED, # type: List[_SubDomainSetting]
+                 AutoSubDomainCreationPatterns=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 AutoSubDomainIAMRole=NOTHING, # type: Union[str, AWSHelperFn]
+                 EnableAutoSubDomain=NOTHING, # type: bool
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
@@ -213,6 +218,9 @@ class Domain(troposphere.amplify.Domain, Mixin):
             AppId=AppId,
             DomainName=DomainName,
             SubDomainSettings=SubDomainSettings,
+            AutoSubDomainCreationPatterns=AutoSubDomainCreationPatterns,
+            AutoSubDomainIAMRole=AutoSubDomainIAMRole,
+            EnableAutoSubDomain=EnableAutoSubDomain,
             **kwargs
         )
         super(Domain, self).__init__(**processed_kwargs)

@@ -39,7 +39,7 @@ from troposphere.glue import (
     PartitionInput as _PartitionInput,
     PhysicalConnectionRequirements as _PhysicalConnectionRequirements,
     Predicate as _Predicate,
-    S3Encryptions as _S3Encryptions,
+    S3Encryption as _S3Encryption,
     S3Target as _S3Target,
     Schedule as _Schedule,
     SchemaChangePolicy as _SchemaChangePolicy,
@@ -479,6 +479,7 @@ class DevEndpoint(troposphere.glue.DevEndpoint, Mixin):
                  NumberOfNodes=NOTHING, # type: int
                  NumberOfWorkers=NOTHING, # type: int
                  PublicKey=NOTHING, # type: Union[str, AWSHelperFn]
+                 PublicKeys=NOTHING, # type: List[Union[str, AWSHelperFn]]
                  SecurityConfiguration=NOTHING, # type: Union[str, AWSHelperFn]
                  SecurityGroupIds=NOTHING, # type: List[Union[str, AWSHelperFn]]
                  SubnetId=NOTHING, # type: Union[str, AWSHelperFn]
@@ -498,6 +499,7 @@ class DevEndpoint(troposphere.glue.DevEndpoint, Mixin):
             NumberOfNodes=NumberOfNodes,
             NumberOfWorkers=NumberOfWorkers,
             PublicKey=PublicKey,
+            PublicKeys=PublicKeys,
             SecurityConfiguration=SecurityConfiguration,
             SecurityGroupIds=SecurityGroupIds,
             SubnetId=SubnetId,
@@ -695,6 +697,7 @@ class MLTransform(troposphere.glue.MLTransform, Mixin):
                  MaxRetries=NOTHING, # type: int
                  Name=NOTHING, # type: Union[str, AWSHelperFn]
                  NumberOfWorkers=NOTHING, # type: int
+                 Tags=NOTHING, # type: dict
                  Timeout=NOTHING, # type: int
                  WorkerType=NOTHING, # type: Union[str, AWSHelperFn]
                  **kwargs):
@@ -711,6 +714,7 @@ class MLTransform(troposphere.glue.MLTransform, Mixin):
             MaxRetries=MaxRetries,
             Name=Name,
             NumberOfWorkers=NumberOfWorkers,
+            Tags=Tags,
             Timeout=Timeout,
             WorkerType=WorkerType,
             **kwargs
@@ -889,15 +893,19 @@ class JobBookmarksEncryption(troposphere.glue.JobBookmarksEncryption, Mixin):
         super(JobBookmarksEncryption, self).__init__(**processed_kwargs)
 
 
-class S3Encryptions(troposphere.glue.S3Encryptions, Mixin):
+class S3Encryption(troposphere.glue.S3Encryption, Mixin):
     def __init__(self,
                  title=None,
+                 KmsKeyArn=NOTHING, # type: Union[str, AWSHelperFn]
+                 S3EncryptionMode=NOTHING, # type: Union[str, AWSHelperFn]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
+            KmsKeyArn=KmsKeyArn,
+            S3EncryptionMode=S3EncryptionMode,
             **kwargs
         )
-        super(S3Encryptions, self).__init__(**processed_kwargs)
+        super(S3Encryption, self).__init__(**processed_kwargs)
 
 
 class EncryptionConfiguration(troposphere.glue.EncryptionConfiguration, Mixin):
@@ -905,7 +913,7 @@ class EncryptionConfiguration(troposphere.glue.EncryptionConfiguration, Mixin):
                  title=None,
                  CloudWatchEncryption=NOTHING, # type: _CloudWatchEncryption
                  JobBookmarksEncryption=NOTHING, # type: _JobBookmarksEncryption
-                 S3Encryptions=NOTHING, # type: _S3Encryptions
+                 S3Encryptions=NOTHING, # type: List[_S3Encryption]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,

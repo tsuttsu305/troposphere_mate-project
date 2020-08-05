@@ -15,6 +15,7 @@ from troposphere.servicediscovery import (
     DnsRecord as _DnsRecord,
     HealthCheckConfig as _HealthCheckConfig,
     HealthCheckCustomConfig as _HealthCheckCustomConfig,
+    Tags as _Tags,
 )
 
 
@@ -53,6 +54,7 @@ class PrivateDnsNamespace(troposphere.servicediscovery.PrivateDnsNamespace, Mixi
                  Name=REQUIRED, # type: Union[str, AWSHelperFn]
                  Vpc=REQUIRED, # type: Union[str, AWSHelperFn]
                  Description=NOTHING, # type: Union[str, AWSHelperFn]
+                 Tags=NOTHING, # type: _Tags
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
@@ -61,6 +63,7 @@ class PrivateDnsNamespace(troposphere.servicediscovery.PrivateDnsNamespace, Mixi
             Name=Name,
             Vpc=Vpc,
             Description=Description,
+            Tags=Tags,
             **kwargs
         )
         super(PrivateDnsNamespace, self).__init__(**processed_kwargs)
@@ -73,6 +76,7 @@ class PublicDnsNamespace(troposphere.servicediscovery.PublicDnsNamespace, Mixin)
                  validation=True, # type: bool
                  Name=REQUIRED, # type: Union[str, AWSHelperFn]
                  Description=NOTHING, # type: Union[str, AWSHelperFn]
+                 Tags=NOTHING, # type: _Tags
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
@@ -80,6 +84,7 @@ class PublicDnsNamespace(troposphere.servicediscovery.PublicDnsNamespace, Mixin)
             validation=validation,
             Name=Name,
             Description=Description,
+            Tags=Tags,
             **kwargs
         )
         super(PublicDnsNamespace, self).__init__(**processed_kwargs)
@@ -134,7 +139,7 @@ class DnsConfig(troposphere.servicediscovery.DnsConfig, Mixin):
     def __init__(self,
                  title=None,
                  DnsRecords=REQUIRED, # type: List[_DnsRecord]
-                 NamespaceId=REQUIRED, # type: Union[str, AWSHelperFn]
+                 NamespaceId=NOTHING, # type: Union[str, AWSHelperFn]
                  RoutingPolicy=NOTHING, # type: Union[str, AWSHelperFn]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
@@ -158,6 +163,7 @@ class Service(troposphere.servicediscovery.Service, Mixin):
                  HealthCheckCustomConfig=NOTHING, # type: _HealthCheckCustomConfig
                  Name=NOTHING, # type: Union[str, AWSHelperFn]
                  NamespaceId=NOTHING, # type: Union[str, AWSHelperFn]
+                 Tags=NOTHING, # type: _Tags
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
@@ -169,6 +175,7 @@ class Service(troposphere.servicediscovery.Service, Mixin):
             HealthCheckCustomConfig=HealthCheckCustomConfig,
             Name=Name,
             NamespaceId=NamespaceId,
+            Tags=Tags,
             **kwargs
         )
         super(Service, self).__init__(**processed_kwargs)
@@ -181,6 +188,7 @@ class HttpNamespace(troposphere.servicediscovery.HttpNamespace, Mixin):
                  validation=True, # type: bool
                  Name=REQUIRED, # type: Union[str, AWSHelperFn]
                  Description=NOTHING, # type: Union[str, AWSHelperFn]
+                 Tags=NOTHING, # type: _Tags
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
@@ -188,6 +196,7 @@ class HttpNamespace(troposphere.servicediscovery.HttpNamespace, Mixin):
             validation=validation,
             Name=Name,
             Description=Description,
+            Tags=Tags,
             **kwargs
         )
         super(HttpNamespace, self).__init__(**processed_kwargs)

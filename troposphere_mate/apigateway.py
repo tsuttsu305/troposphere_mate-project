@@ -654,7 +654,7 @@ class RestApi(troposphere.apigateway.RestApi, Mixin):
                  CloneFrom=NOTHING, # type: Union[str, AWSHelperFn]
                  Description=NOTHING, # type: Union[str, AWSHelperFn]
                  EndpointConfiguration=NOTHING, # type: _EndpointConfiguration
-                 FailOnWarnings=NOTHING, # type: Union[str, AWSHelperFn]
+                 FailOnWarnings=NOTHING, # type: bool
                  MinimumCompressionSize=NOTHING, # type: int
                  Name=NOTHING, # type: Union[str, AWSHelperFn]
                  Parameters=NOTHING, # type: dict
@@ -763,7 +763,7 @@ class ApiStage(troposphere.apigateway.ApiStage, Mixin):
                  title=None,
                  ApiId=NOTHING, # type: Union[str, AWSHelperFn]
                  Stage=NOTHING, # type: Union[str, AWSHelperFn]
-                 Throttle=NOTHING, # type: _ThrottleSettings
+                 Throttle=NOTHING, # type: dict
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,

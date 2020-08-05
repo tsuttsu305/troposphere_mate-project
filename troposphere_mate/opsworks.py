@@ -671,6 +671,7 @@ class Server(troposphere.opsworks.Server, Mixin):
                  SecurityGroupIds=NOTHING, # type: List[Union[str, AWSHelperFn]]
                  ServerName=NOTHING, # type: Union[str, AWSHelperFn]
                  SubnetIds=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 Tags=NOTHING, # type: Union[_Tags, list]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
@@ -696,6 +697,7 @@ class Server(troposphere.opsworks.Server, Mixin):
             SecurityGroupIds=SecurityGroupIds,
             ServerName=ServerName,
             SubnetIds=SubnetIds,
+            Tags=Tags,
             **kwargs
         )
         super(Server, self).__init__(**processed_kwargs)

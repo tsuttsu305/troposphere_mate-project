@@ -403,6 +403,7 @@ class GraphQLApi(troposphere.appsync.GraphQLApi, Mixin):
                  OpenIDConnectConfig=NOTHING, # type: _OpenIDConnectConfig
                  Tags=NOTHING, # type: _Tags
                  UserPoolConfig=NOTHING, # type: _UserPoolConfig
+                 XrayEnabled=NOTHING, # type: bool
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
@@ -415,6 +416,7 @@ class GraphQLApi(troposphere.appsync.GraphQLApi, Mixin):
             OpenIDConnectConfig=OpenIDConnectConfig,
             Tags=Tags,
             UserPoolConfig=UserPoolConfig,
+            XrayEnabled=XrayEnabled,
             **kwargs
         )
         super(GraphQLApi, self).__init__(**processed_kwargs)

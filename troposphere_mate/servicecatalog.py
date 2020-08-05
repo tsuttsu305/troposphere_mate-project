@@ -73,6 +73,7 @@ class CloudFormationProduct(troposphere.servicecatalog.CloudFormationProduct, Mi
                  AcceptLanguage=NOTHING, # type: Union[str, AWSHelperFn]
                  Description=NOTHING, # type: Union[str, AWSHelperFn]
                  Distributor=NOTHING, # type: Union[str, AWSHelperFn]
+                 ReplaceProvisioningArtifacts=NOTHING, # type: bool
                  SupportDescription=NOTHING, # type: Union[str, AWSHelperFn]
                  SupportEmail=NOTHING, # type: Union[str, AWSHelperFn]
                  SupportUrl=NOTHING, # type: Union[str, AWSHelperFn]
@@ -88,6 +89,7 @@ class CloudFormationProduct(troposphere.servicecatalog.CloudFormationProduct, Mi
             AcceptLanguage=AcceptLanguage,
             Description=Description,
             Distributor=Distributor,
+            ReplaceProvisioningArtifacts=ReplaceProvisioningArtifacts,
             SupportDescription=SupportDescription,
             SupportEmail=SupportEmail,
             SupportUrl=SupportUrl,
@@ -209,6 +211,7 @@ class LaunchRoleConstraint(troposphere.servicecatalog.LaunchRoleConstraint, Mixi
                  RoleArn=REQUIRED, # type: Union[str, AWSHelperFn]
                  AcceptLanguage=NOTHING, # type: Union[str, AWSHelperFn]
                  Description=NOTHING, # type: Union[str, AWSHelperFn]
+                 LocalRoleName=NOTHING, # type: Union[str, AWSHelperFn]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
@@ -219,6 +222,7 @@ class LaunchRoleConstraint(troposphere.servicecatalog.LaunchRoleConstraint, Mixi
             RoleArn=RoleArn,
             AcceptLanguage=AcceptLanguage,
             Description=Description,
+            LocalRoleName=LocalRoleName,
             **kwargs
         )
         super(LaunchRoleConstraint, self).__init__(**processed_kwargs)

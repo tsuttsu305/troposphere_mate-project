@@ -12,19 +12,32 @@ import troposphere.iot
 
 from troposphere.iot import (
     Action as _Action,
+    AssetPropertyTimestamp as _AssetPropertyTimestamp,
+    AssetPropertyValue as _AssetPropertyValue,
+    AssetPropertyVariant as _AssetPropertyVariant,
     CloudwatchAlarmAction as _CloudwatchAlarmAction,
     CloudwatchMetricAction as _CloudwatchMetricAction,
     DynamoDBAction as _DynamoDBAction,
     DynamoDBv2Action as _DynamoDBv2Action,
     ElasticsearchAction as _ElasticsearchAction,
     FirehoseAction as _FirehoseAction,
+    HttpAction as _HttpAction,
+    HttpActionHeader as _HttpActionHeader,
+    HttpAuthorization as _HttpAuthorization,
+    IotAnalyticsAction as _IotAnalyticsAction,
+    IotEventsAction as _IotEventsAction,
+    IotSiteWiseAction as _IotSiteWiseAction,
     KinesisAction as _KinesisAction,
     LambdaAction as _LambdaAction,
+    ProvisioningHook as _ProvisioningHook,
+    PutAssetPropertyValueEntry as _PutAssetPropertyValueEntry,
     PutItemInput as _PutItemInput,
     RepublishAction as _RepublishAction,
     S3Action as _S3Action,
+    SigV4Authorization as _SigV4Authorization,
     SnsAction as _SnsAction,
     SqsAction as _SqsAction,
+    StepFunctionsAction as _StepFunctionsAction,
     TopicRulePayload as _TopicRulePayload,
 )
 
@@ -172,6 +185,21 @@ class FirehoseAction(troposphere.iot.FirehoseAction, Mixin):
         super(FirehoseAction, self).__init__(**processed_kwargs)
 
 
+class IotAnalyticsAction(troposphere.iot.IotAnalyticsAction, Mixin):
+    def __init__(self,
+                 title=None,
+                 ChannelName=REQUIRED, # type: Union[str, AWSHelperFn]
+                 RoleArn=REQUIRED, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            ChannelName=ChannelName,
+            RoleArn=RoleArn,
+            **kwargs
+        )
+        super(IotAnalyticsAction, self).__init__(**processed_kwargs)
+
+
 class KinesisAction(troposphere.iot.KinesisAction, Mixin):
     def __init__(self,
                  title=None,
@@ -207,11 +235,13 @@ class RepublishAction(troposphere.iot.RepublishAction, Mixin):
                  title=None,
                  RoleArn=REQUIRED, # type: Union[str, AWSHelperFn]
                  Topic=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Qos=NOTHING, # type: int
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             RoleArn=RoleArn,
             Topic=Topic,
+            Qos=Qos,
             **kwargs
         )
         super(RepublishAction, self).__init__(**processed_kwargs)
@@ -268,6 +298,191 @@ class SqsAction(troposphere.iot.SqsAction, Mixin):
         super(SqsAction, self).__init__(**processed_kwargs)
 
 
+class SigV4Authorization(troposphere.iot.SigV4Authorization, Mixin):
+    def __init__(self,
+                 title=None,
+                 RoleArn=REQUIRED, # type: Union[str, AWSHelperFn]
+                 ServiceName=REQUIRED, # type: Union[str, AWSHelperFn]
+                 SigningRegion=REQUIRED, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            RoleArn=RoleArn,
+            ServiceName=ServiceName,
+            SigningRegion=SigningRegion,
+            **kwargs
+        )
+        super(SigV4Authorization, self).__init__(**processed_kwargs)
+
+
+class HttpActionHeader(troposphere.iot.HttpActionHeader, Mixin):
+    def __init__(self,
+                 title=None,
+                 Key=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Value=REQUIRED, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Key=Key,
+            Value=Value,
+            **kwargs
+        )
+        super(HttpActionHeader, self).__init__(**processed_kwargs)
+
+
+class HttpAuthorization(troposphere.iot.HttpAuthorization, Mixin):
+    def __init__(self,
+                 title=None,
+                 Sigv4=NOTHING, # type: _SigV4Authorization
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Sigv4=Sigv4,
+            **kwargs
+        )
+        super(HttpAuthorization, self).__init__(**processed_kwargs)
+
+
+class HttpAction(troposphere.iot.HttpAction, Mixin):
+    def __init__(self,
+                 title=None,
+                 Url=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Auth=NOTHING, # type: _HttpAuthorization
+                 ConfirmationUrl=NOTHING, # type: Union[str, AWSHelperFn]
+                 Headers=NOTHING, # type: List[_HttpActionHeader]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Url=Url,
+            Auth=Auth,
+            ConfirmationUrl=ConfirmationUrl,
+            Headers=Headers,
+            **kwargs
+        )
+        super(HttpAction, self).__init__(**processed_kwargs)
+
+
+class IotEventsAction(troposphere.iot.IotEventsAction, Mixin):
+    def __init__(self,
+                 title=None,
+                 InputName=REQUIRED, # type: Union[str, AWSHelperFn]
+                 RoleArn=REQUIRED, # type: Union[str, AWSHelperFn]
+                 MessageId=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            InputName=InputName,
+            RoleArn=RoleArn,
+            MessageId=MessageId,
+            **kwargs
+        )
+        super(IotEventsAction, self).__init__(**processed_kwargs)
+
+
+class AssetPropertyVariant(troposphere.iot.AssetPropertyVariant, Mixin):
+    def __init__(self,
+                 title=None,
+                 BooleanValue=NOTHING, # type: Union[str, AWSHelperFn]
+                 DoubleValue=NOTHING, # type: Union[str, AWSHelperFn]
+                 IntegerValue=NOTHING, # type: Union[str, AWSHelperFn]
+                 StringValue=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            BooleanValue=BooleanValue,
+            DoubleValue=DoubleValue,
+            IntegerValue=IntegerValue,
+            StringValue=StringValue,
+            **kwargs
+        )
+        super(AssetPropertyVariant, self).__init__(**processed_kwargs)
+
+
+class AssetPropertyTimestamp(troposphere.iot.AssetPropertyTimestamp, Mixin):
+    def __init__(self,
+                 title=None,
+                 TimeInSeconds=REQUIRED, # type: Union[str, AWSHelperFn]
+                 OffsetInNanos=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            TimeInSeconds=TimeInSeconds,
+            OffsetInNanos=OffsetInNanos,
+            **kwargs
+        )
+        super(AssetPropertyTimestamp, self).__init__(**processed_kwargs)
+
+
+class AssetPropertyValue(troposphere.iot.AssetPropertyValue, Mixin):
+    def __init__(self,
+                 title=None,
+                 Timestamp=REQUIRED, # type: _AssetPropertyTimestamp
+                 Value=REQUIRED, # type: _AssetPropertyVariant
+                 Quality=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Timestamp=Timestamp,
+            Value=Value,
+            Quality=Quality,
+            **kwargs
+        )
+        super(AssetPropertyValue, self).__init__(**processed_kwargs)
+
+
+class PutAssetPropertyValueEntry(troposphere.iot.PutAssetPropertyValueEntry, Mixin):
+    def __init__(self,
+                 title=None,
+                 PropertyValues=REQUIRED, # type: List[_AssetPropertyValue]
+                 AssetId=NOTHING, # type: Union[str, AWSHelperFn]
+                 EntryId=NOTHING, # type: Union[str, AWSHelperFn]
+                 PropertyAlias=NOTHING, # type: Union[str, AWSHelperFn]
+                 PropertyId=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            PropertyValues=PropertyValues,
+            AssetId=AssetId,
+            EntryId=EntryId,
+            PropertyAlias=PropertyAlias,
+            PropertyId=PropertyId,
+            **kwargs
+        )
+        super(PutAssetPropertyValueEntry, self).__init__(**processed_kwargs)
+
+
+class IotSiteWiseAction(troposphere.iot.IotSiteWiseAction, Mixin):
+    def __init__(self,
+                 title=None,
+                 PutAssetPropertyValueEntries=REQUIRED, # type: List[_PutAssetPropertyValueEntry]
+                 RoleArn=REQUIRED, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            PutAssetPropertyValueEntries=PutAssetPropertyValueEntries,
+            RoleArn=RoleArn,
+            **kwargs
+        )
+        super(IotSiteWiseAction, self).__init__(**processed_kwargs)
+
+
+class StepFunctionsAction(troposphere.iot.StepFunctionsAction, Mixin):
+    def __init__(self,
+                 title=None,
+                 RoleArn=REQUIRED, # type: Union[str, AWSHelperFn]
+                 StateMachineName=REQUIRED, # type: Union[str, AWSHelperFn]
+                 ExecutionNamePrefix=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            RoleArn=RoleArn,
+            StateMachineName=StateMachineName,
+            ExecutionNamePrefix=ExecutionNamePrefix,
+            **kwargs
+        )
+        super(StepFunctionsAction, self).__init__(**processed_kwargs)
+
+
 class Action(troposphere.iot.Action, Mixin):
     def __init__(self,
                  title=None,
@@ -277,12 +492,17 @@ class Action(troposphere.iot.Action, Mixin):
                  DynamoDBv2=NOTHING, # type: _DynamoDBv2Action
                  Elasticsearch=NOTHING, # type: _ElasticsearchAction
                  Firehose=NOTHING, # type: _FirehoseAction
+                 Http=NOTHING, # type: _HttpAction
+                 IotAnalytics=NOTHING, # type: _IotAnalyticsAction
+                 IotEvents=NOTHING, # type: _IotEventsAction
+                 IotSiteWise=NOTHING, # type: _IotSiteWiseAction
                  Kinesis=NOTHING, # type: _KinesisAction
                  Lambda=NOTHING, # type: _LambdaAction
                  Republish=NOTHING, # type: _RepublishAction
                  S3=NOTHING, # type: _S3Action
                  Sns=NOTHING, # type: _SnsAction
                  Sqs=NOTHING, # type: _SqsAction
+                 StepFunctions=NOTHING, # type: _StepFunctionsAction
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
@@ -292,12 +512,17 @@ class Action(troposphere.iot.Action, Mixin):
             DynamoDBv2=DynamoDBv2,
             Elasticsearch=Elasticsearch,
             Firehose=Firehose,
+            Http=Http,
+            IotAnalytics=IotAnalytics,
+            IotEvents=IotEvents,
+            IotSiteWise=IotSiteWise,
             Kinesis=Kinesis,
             Lambda=Lambda,
             Republish=Republish,
             S3=S3,
             Sns=Sns,
             Sqs=Sqs,
+            StepFunctions=StepFunctions,
             **kwargs
         )
         super(Action, self).__init__(**processed_kwargs)
@@ -436,3 +661,47 @@ class Certificate(troposphere.iot.Certificate, Mixin):
             **kwargs
         )
         super(Certificate, self).__init__(**processed_kwargs)
+
+
+class ProvisioningHook(troposphere.iot.ProvisioningHook, Mixin):
+    def __init__(self,
+                 title=None,
+                 PayloadVersion=NOTHING, # type: Union[str, AWSHelperFn]
+                 TargetArn=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            PayloadVersion=PayloadVersion,
+            TargetArn=TargetArn,
+            **kwargs
+        )
+        super(ProvisioningHook, self).__init__(**processed_kwargs)
+
+
+class ProvisioningTemplate(troposphere.iot.ProvisioningTemplate, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 ProvisioningRoleArn=REQUIRED, # type: Union[str, AWSHelperFn]
+                 TemplateBody=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Description=NOTHING, # type: Union[str, AWSHelperFn]
+                 Enabled=NOTHING, # type: bool
+                 PreProvisioningHook=NOTHING, # type: _ProvisioningHook
+                 Tags=NOTHING, # type: dict
+                 TemplateName=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            ProvisioningRoleArn=ProvisioningRoleArn,
+            TemplateBody=TemplateBody,
+            Description=Description,
+            Enabled=Enabled,
+            PreProvisioningHook=PreProvisioningHook,
+            Tags=Tags,
+            TemplateName=TemplateName,
+            **kwargs
+        )
+        super(ProvisioningTemplate, self).__init__(**processed_kwargs)

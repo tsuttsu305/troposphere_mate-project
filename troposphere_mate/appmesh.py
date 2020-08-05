@@ -15,6 +15,9 @@ from troposphere.appmesh import (
     AwsCloudMapInstanceAttribute as _AwsCloudMapInstanceAttribute,
     AwsCloudMapServiceDiscovery as _AwsCloudMapServiceDiscovery,
     Backend as _Backend,
+    BackendDefaults as _BackendDefaults,
+    ClientPolicy as _ClientPolicy,
+    ClientPolicyTls as _ClientPolicyTls,
     DnsServiceDiscovery as _DnsServiceDiscovery,
     Duration as _Duration,
     EgressFilter as _EgressFilter,
@@ -25,6 +28,7 @@ from troposphere.appmesh import (
     GrpcRouteMatch as _GrpcRouteMatch,
     GrpcRouteMetadata as _GrpcRouteMetadata,
     GrpcRouteMetadataMatchMethod as _GrpcRouteMetadataMatchMethod,
+    GrpcTimeout as _GrpcTimeout,
     HeaderMatchMethod as _HeaderMatchMethod,
     HealthCheck as _HealthCheck,
     HttpRetryPolicy as _HttpRetryPolicy,
@@ -32,7 +36,13 @@ from troposphere.appmesh import (
     HttpRouteAction as _HttpRouteAction,
     HttpRouteHeader as _HttpRouteHeader,
     HttpRouteMatch as _HttpRouteMatch,
+    HttpTimeout as _HttpTimeout,
     Listener as _Listener,
+    ListenerTimeout as _ListenerTimeout,
+    ListenerTls as _ListenerTls,
+    ListenerTlsAcmCertificate as _ListenerTlsAcmCertificate,
+    ListenerTlsCertificate as _ListenerTlsCertificate,
+    ListenerTlsFileCertificate as _ListenerTlsFileCertificate,
     Logging as _Logging,
     MatchRange as _MatchRange,
     MeshSpec as _MeshSpec,
@@ -42,6 +52,11 @@ from troposphere.appmesh import (
     Tags as _Tags,
     TcpRoute as _TcpRoute,
     TcpRouteAction as _TcpRouteAction,
+    TcpTimeout as _TcpTimeout,
+    TlsValidationContext as _TlsValidationContext,
+    TlsValidationContextAcmTrust as _TlsValidationContextAcmTrust,
+    TlsValidationContextFileTrust as _TlsValidationContextFileTrust,
+    TlsValidationContextTrust as _TlsValidationContextTrust,
     VirtualNodeServiceProvider as _VirtualNodeServiceProvider,
     VirtualNodeSpec as _VirtualNodeSpec,
     VirtualRouterListener as _VirtualRouterListener,
@@ -51,6 +66,7 @@ from troposphere.appmesh import (
     VirtualServiceProvider as _VirtualServiceProvider,
     VirtualServiceSpec as _VirtualServiceSpec,
     WeightedTarget as _WeightedTarget,
+    integer as _integer,
 )
 
 
@@ -241,18 +257,35 @@ class GrpcRouteMatch(troposphere.appmesh.GrpcRouteMatch, Mixin):
         super(GrpcRouteMatch, self).__init__(**processed_kwargs)
 
 
+class GrpcTimeout(troposphere.appmesh.GrpcTimeout, Mixin):
+    def __init__(self,
+                 title=None,
+                 Idle=NOTHING, # type: _Duration
+                 PerRequest=NOTHING, # type: _Duration
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Idle=Idle,
+            PerRequest=PerRequest,
+            **kwargs
+        )
+        super(GrpcTimeout, self).__init__(**processed_kwargs)
+
+
 class GrpcRoute(troposphere.appmesh.GrpcRoute, Mixin):
     def __init__(self,
                  title=None,
                  Action=REQUIRED, # type: _GrpcRouteAction
                  Match=REQUIRED, # type: _GrpcRouteMatch
                  RetryPolicy=NOTHING, # type: _GrpcRetryPolicy
+                 Timeout=NOTHING, # type: _GrpcTimeout
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             Action=Action,
             Match=Match,
             RetryPolicy=RetryPolicy,
+            Timeout=Timeout,
             **kwargs
         )
         super(GrpcRoute, self).__init__(**processed_kwargs)
@@ -347,18 +380,35 @@ class HttpRouteMatch(troposphere.appmesh.HttpRouteMatch, Mixin):
         super(HttpRouteMatch, self).__init__(**processed_kwargs)
 
 
+class HttpTimeout(troposphere.appmesh.HttpTimeout, Mixin):
+    def __init__(self,
+                 title=None,
+                 Idle=NOTHING, # type: _Duration
+                 PerRequest=NOTHING, # type: _Duration
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Idle=Idle,
+            PerRequest=PerRequest,
+            **kwargs
+        )
+        super(HttpTimeout, self).__init__(**processed_kwargs)
+
+
 class HttpRoute(troposphere.appmesh.HttpRoute, Mixin):
     def __init__(self,
                  title=None,
                  Action=REQUIRED, # type: _HttpRouteAction
                  Match=REQUIRED, # type: _HttpRouteMatch
                  RetryPolicy=NOTHING, # type: _HttpRetryPolicy
+                 Timeout=NOTHING, # type: _HttpTimeout
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             Action=Action,
             Match=Match,
             RetryPolicy=RetryPolicy,
+            Timeout=Timeout,
             **kwargs
         )
         super(HttpRoute, self).__init__(**processed_kwargs)
@@ -377,14 +427,29 @@ class TcpRouteAction(troposphere.appmesh.TcpRouteAction, Mixin):
         super(TcpRouteAction, self).__init__(**processed_kwargs)
 
 
+class TcpTimeout(troposphere.appmesh.TcpTimeout, Mixin):
+    def __init__(self,
+                 title=None,
+                 Idle=NOTHING, # type: _Duration
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Idle=Idle,
+            **kwargs
+        )
+        super(TcpTimeout, self).__init__(**processed_kwargs)
+
+
 class TcpRoute(troposphere.appmesh.TcpRoute, Mixin):
     def __init__(self,
                  title=None,
                  Action=REQUIRED, # type: _TcpRouteAction
+                 Timeout=NOTHING, # type: _TcpTimeout
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             Action=Action,
+            Timeout=Timeout,
             **kwargs
         )
         super(TcpRoute, self).__init__(**processed_kwargs)
@@ -420,6 +485,7 @@ class Route(troposphere.appmesh.Route, Mixin):
                  RouteName=REQUIRED, # type: Union[str, AWSHelperFn]
                  Spec=REQUIRED, # type: _RouteSpec
                  VirtualRouterName=REQUIRED, # type: Union[str, AWSHelperFn]
+                 MeshOwner=NOTHING, # type: Union[str, AWSHelperFn]
                  Tags=NOTHING, # type: _Tags
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
@@ -430,20 +496,107 @@ class Route(troposphere.appmesh.Route, Mixin):
             RouteName=RouteName,
             Spec=Spec,
             VirtualRouterName=VirtualRouterName,
+            MeshOwner=MeshOwner,
             Tags=Tags,
             **kwargs
         )
         super(Route, self).__init__(**processed_kwargs)
 
 
+class TlsValidationContextAcmTrust(troposphere.appmesh.TlsValidationContextAcmTrust, Mixin):
+    def __init__(self,
+                 title=None,
+                 CertificateAuthorityArns=REQUIRED, # type: List[Union[str, AWSHelperFn]]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            CertificateAuthorityArns=CertificateAuthorityArns,
+            **kwargs
+        )
+        super(TlsValidationContextAcmTrust, self).__init__(**processed_kwargs)
+
+
+class TlsValidationContextFileTrust(troposphere.appmesh.TlsValidationContextFileTrust, Mixin):
+    def __init__(self,
+                 title=None,
+                 CertificateChain=REQUIRED, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            CertificateChain=CertificateChain,
+            **kwargs
+        )
+        super(TlsValidationContextFileTrust, self).__init__(**processed_kwargs)
+
+
+class TlsValidationContextTrust(troposphere.appmesh.TlsValidationContextTrust, Mixin):
+    def __init__(self,
+                 title=None,
+                 ACM=NOTHING, # type: _TlsValidationContextAcmTrust
+                 File=NOTHING, # type: _TlsValidationContextFileTrust
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            ACM=ACM,
+            File=File,
+            **kwargs
+        )
+        super(TlsValidationContextTrust, self).__init__(**processed_kwargs)
+
+
+class TlsValidationContext(troposphere.appmesh.TlsValidationContext, Mixin):
+    def __init__(self,
+                 title=None,
+                 Trust=REQUIRED, # type: _TlsValidationContextTrust
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Trust=Trust,
+            **kwargs
+        )
+        super(TlsValidationContext, self).__init__(**processed_kwargs)
+
+
+class ClientPolicyTls(troposphere.appmesh.ClientPolicyTls, Mixin):
+    def __init__(self,
+                 title=None,
+                 Validation=REQUIRED, # type: _TlsValidationContext
+                 Enforce=NOTHING, # type: bool
+                 Ports=NOTHING, # type: List[_integer]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Validation=Validation,
+            Enforce=Enforce,
+            Ports=Ports,
+            **kwargs
+        )
+        super(ClientPolicyTls, self).__init__(**processed_kwargs)
+
+
+class ClientPolicy(troposphere.appmesh.ClientPolicy, Mixin):
+    def __init__(self,
+                 title=None,
+                 TLS=NOTHING, # type: _ClientPolicyTls
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            TLS=TLS,
+            **kwargs
+        )
+        super(ClientPolicy, self).__init__(**processed_kwargs)
+
+
 class VirtualServiceBackend(troposphere.appmesh.VirtualServiceBackend, Mixin):
     def __init__(self,
                  title=None,
                  VirtualServiceName=REQUIRED, # type: Union[str, AWSHelperFn]
+                 ClientPolicy=NOTHING, # type: _ClientPolicy
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             VirtualServiceName=VirtualServiceName,
+            ClientPolicy=ClientPolicy,
             **kwargs
         )
         super(VirtualServiceBackend, self).__init__(**processed_kwargs)
@@ -460,6 +613,19 @@ class Backend(troposphere.appmesh.Backend, Mixin):
             **kwargs
         )
         super(Backend, self).__init__(**processed_kwargs)
+
+
+class BackendDefaults(troposphere.appmesh.BackendDefaults, Mixin):
+    def __init__(self,
+                 title=None,
+                 ClientPolicy=NOTHING, # type: _ClientPolicy
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            ClientPolicy=ClientPolicy,
+            **kwargs
+        )
+        super(BackendDefaults, self).__init__(**processed_kwargs)
 
 
 class HealthCheck(troposphere.appmesh.HealthCheck, Mixin):
@@ -487,6 +653,83 @@ class HealthCheck(troposphere.appmesh.HealthCheck, Mixin):
         super(HealthCheck, self).__init__(**processed_kwargs)
 
 
+class ListenerTimeout(troposphere.appmesh.ListenerTimeout, Mixin):
+    def __init__(self,
+                 title=None,
+                 GRPC=NOTHING, # type: _GrpcTimeout
+                 HTTP=NOTHING, # type: _HttpTimeout
+                 HTTP2=NOTHING, # type: _HttpTimeout
+                 TCP=NOTHING, # type: _TcpTimeout
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            GRPC=GRPC,
+            HTTP=HTTP,
+            HTTP2=HTTP2,
+            TCP=TCP,
+            **kwargs
+        )
+        super(ListenerTimeout, self).__init__(**processed_kwargs)
+
+
+class ListenerTlsAcmCertificate(troposphere.appmesh.ListenerTlsAcmCertificate, Mixin):
+    def __init__(self,
+                 title=None,
+                 CertificateArn=REQUIRED, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            CertificateArn=CertificateArn,
+            **kwargs
+        )
+        super(ListenerTlsAcmCertificate, self).__init__(**processed_kwargs)
+
+
+class ListenerTlsFileCertificate(troposphere.appmesh.ListenerTlsFileCertificate, Mixin):
+    def __init__(self,
+                 title=None,
+                 CertificateChain=REQUIRED, # type: Union[str, AWSHelperFn]
+                 PrivateKey=REQUIRED, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            CertificateChain=CertificateChain,
+            PrivateKey=PrivateKey,
+            **kwargs
+        )
+        super(ListenerTlsFileCertificate, self).__init__(**processed_kwargs)
+
+
+class ListenerTlsCertificate(troposphere.appmesh.ListenerTlsCertificate, Mixin):
+    def __init__(self,
+                 title=None,
+                 ACM=NOTHING, # type: _ListenerTlsAcmCertificate
+                 File=NOTHING, # type: _ListenerTlsFileCertificate
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            ACM=ACM,
+            File=File,
+            **kwargs
+        )
+        super(ListenerTlsCertificate, self).__init__(**processed_kwargs)
+
+
+class ListenerTls(troposphere.appmesh.ListenerTls, Mixin):
+    def __init__(self,
+                 title=None,
+                 Certificate=REQUIRED, # type: _ListenerTlsCertificate
+                 Mode=REQUIRED, # type: Any
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Certificate=Certificate,
+            Mode=Mode,
+            **kwargs
+        )
+        super(ListenerTls, self).__init__(**processed_kwargs)
+
+
 class PortMapping(troposphere.appmesh.PortMapping, Mixin):
     def __init__(self,
                  title=None,
@@ -507,11 +750,15 @@ class Listener(troposphere.appmesh.Listener, Mixin):
                  title=None,
                  PortMapping=REQUIRED, # type: _PortMapping
                  HealthCheck=NOTHING, # type: _HealthCheck
+                 TLS=NOTHING, # type: _ListenerTls
+                 Timeout=NOTHING, # type: _ListenerTimeout
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             PortMapping=PortMapping,
             HealthCheck=HealthCheck,
+            TLS=TLS,
+            Timeout=Timeout,
             **kwargs
         )
         super(Listener, self).__init__(**processed_kwargs)
@@ -619,6 +866,7 @@ class ServiceDiscovery(troposphere.appmesh.ServiceDiscovery, Mixin):
 class VirtualNodeSpec(troposphere.appmesh.VirtualNodeSpec, Mixin):
     def __init__(self,
                  title=None,
+                 BackendDefaults=NOTHING, # type: _BackendDefaults
                  Backends=NOTHING, # type: List[_Backend]
                  Listeners=NOTHING, # type: List[_Listener]
                  Logging=NOTHING, # type: _Logging
@@ -626,6 +874,7 @@ class VirtualNodeSpec(troposphere.appmesh.VirtualNodeSpec, Mixin):
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
+            BackendDefaults=BackendDefaults,
             Backends=Backends,
             Listeners=Listeners,
             Logging=Logging,
@@ -643,6 +892,7 @@ class VirtualNode(troposphere.appmesh.VirtualNode, Mixin):
                  MeshName=REQUIRED, # type: Union[str, AWSHelperFn]
                  Spec=REQUIRED, # type: _VirtualNodeSpec
                  VirtualNodeName=REQUIRED, # type: Union[str, AWSHelperFn]
+                 MeshOwner=NOTHING, # type: Union[str, AWSHelperFn]
                  Tags=NOTHING, # type: _Tags
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
@@ -652,6 +902,7 @@ class VirtualNode(troposphere.appmesh.VirtualNode, Mixin):
             MeshName=MeshName,
             Spec=Spec,
             VirtualNodeName=VirtualNodeName,
+            MeshOwner=MeshOwner,
             Tags=Tags,
             **kwargs
         )
@@ -692,6 +943,7 @@ class VirtualRouter(troposphere.appmesh.VirtualRouter, Mixin):
                  MeshName=REQUIRED, # type: Union[str, AWSHelperFn]
                  Spec=REQUIRED, # type: _VirtualRouterSpec
                  VirtualRouterName=REQUIRED, # type: Union[str, AWSHelperFn]
+                 MeshOwner=NOTHING, # type: Union[str, AWSHelperFn]
                  Tags=NOTHING, # type: _Tags
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
@@ -701,6 +953,7 @@ class VirtualRouter(troposphere.appmesh.VirtualRouter, Mixin):
             MeshName=MeshName,
             Spec=Spec,
             VirtualRouterName=VirtualRouterName,
+            MeshOwner=MeshOwner,
             Tags=Tags,
             **kwargs
         )
@@ -769,6 +1022,7 @@ class VirtualService(troposphere.appmesh.VirtualService, Mixin):
                  MeshName=REQUIRED, # type: Union[str, AWSHelperFn]
                  Spec=REQUIRED, # type: _VirtualServiceSpec
                  VirtualServiceName=REQUIRED, # type: Union[str, AWSHelperFn]
+                 MeshOwner=NOTHING, # type: Union[str, AWSHelperFn]
                  Tags=NOTHING, # type: _Tags
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
@@ -778,6 +1032,7 @@ class VirtualService(troposphere.appmesh.VirtualService, Mixin):
             MeshName=MeshName,
             Spec=Spec,
             VirtualServiceName=VirtualServiceName,
+            MeshOwner=MeshOwner,
             Tags=Tags,
             **kwargs
         )

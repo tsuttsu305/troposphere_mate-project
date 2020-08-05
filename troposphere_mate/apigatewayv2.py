@@ -17,6 +17,7 @@ from troposphere.apigatewayv2 import (
     DomainNameConfiguration as _DomainNameConfiguration,
     JWTConfiguration as _JWTConfiguration,
     RouteSettings as _RouteSettings,
+    TlsConfig as _TlsConfig,
 )
 
 
@@ -245,6 +246,19 @@ class DomainName(troposphere.apigatewayv2.DomainName, Mixin):
         super(DomainName, self).__init__(**processed_kwargs)
 
 
+class TlsConfig(troposphere.apigatewayv2.TlsConfig, Mixin):
+    def __init__(self,
+                 title=None,
+                 ServerNameToVerify=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            ServerNameToVerify=ServerNameToVerify,
+            **kwargs
+        )
+        super(TlsConfig, self).__init__(**processed_kwargs)
+
+
 class Integration(troposphere.apigatewayv2.Integration, Mixin):
     def __init__(self,
                  title, # type: str
@@ -253,6 +267,7 @@ class Integration(troposphere.apigatewayv2.Integration, Mixin):
                  ApiId=REQUIRED, # type: Union[str, AWSHelperFn]
                  IntegrationType=REQUIRED, # type: Any
                  ConnectionType=NOTHING, # type: Union[str, AWSHelperFn]
+                 ConnectionId=NOTHING, # type: Union[str, AWSHelperFn]
                  ContentHandlingStrategy=NOTHING, # type: Any
                  CredentialsArn=NOTHING, # type: Union[str, AWSHelperFn]
                  Description=NOTHING, # type: Union[str, AWSHelperFn]
@@ -264,6 +279,7 @@ class Integration(troposphere.apigatewayv2.Integration, Mixin):
                  RequestTemplates=NOTHING, # type: dict
                  TemplateSelectionExpression=NOTHING, # type: Union[str, AWSHelperFn]
                  TimeoutInMillis=NOTHING, # type: Any
+                 TlsConfig=NOTHING, # type: _TlsConfig
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
@@ -272,6 +288,7 @@ class Integration(troposphere.apigatewayv2.Integration, Mixin):
             ApiId=ApiId,
             IntegrationType=IntegrationType,
             ConnectionType=ConnectionType,
+            ConnectionId=ConnectionId,
             ContentHandlingStrategy=ContentHandlingStrategy,
             CredentialsArn=CredentialsArn,
             Description=Description,
@@ -283,6 +300,7 @@ class Integration(troposphere.apigatewayv2.Integration, Mixin):
             RequestTemplates=RequestTemplates,
             TemplateSelectionExpression=TemplateSelectionExpression,
             TimeoutInMillis=TimeoutInMillis,
+            TlsConfig=TlsConfig,
             **kwargs
         )
         super(Integration, self).__init__(**processed_kwargs)
@@ -479,3 +497,26 @@ class Stage(troposphere.apigatewayv2.Stage, Mixin):
             **kwargs
         )
         super(Stage, self).__init__(**processed_kwargs)
+
+
+class VpcLink(troposphere.apigatewayv2.VpcLink, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 Name=REQUIRED, # type: Union[str, AWSHelperFn]
+                 SubnetIds=REQUIRED, # type: List[Union[str, AWSHelperFn]]
+                 SecurityGroupIds=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 Tags=NOTHING, # type: dict
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            Name=Name,
+            SubnetIds=SubnetIds,
+            SecurityGroupIds=SecurityGroupIds,
+            Tags=Tags,
+            **kwargs
+        )
+        super(VpcLink, self).__init__(**processed_kwargs)

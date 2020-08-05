@@ -13,8 +13,10 @@ import troposphere.dms
 from troposphere.dms import (
     DynamoDbSettings as _DynamoDbSettings,
     ElasticsearchSettings as _ElasticsearchSettings,
+    KafkaSettings as _KafkaSettings,
     KinesisSettings as _KinesisSettings,
     MongoDbSettings as _MongoDbSettings,
+    NeptuneSettings as _NeptuneSettings,
     S3Settings as _S3Settings,
     Tags as _Tags,
 )
@@ -154,6 +156,46 @@ class S3Settings(troposphere.dms.S3Settings, Mixin):
         super(S3Settings, self).__init__(**processed_kwargs)
 
 
+class KafkaSettings(troposphere.dms.KafkaSettings, Mixin):
+    def __init__(self,
+                 title=None,
+                 Broker=NOTHING, # type: Union[str, AWSHelperFn]
+                 Topic=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Broker=Broker,
+            Topic=Topic,
+            **kwargs
+        )
+        super(KafkaSettings, self).__init__(**processed_kwargs)
+
+
+class NeptuneSettings(troposphere.dms.NeptuneSettings, Mixin):
+    def __init__(self,
+                 title=None,
+                 ErrorRetryDuration=NOTHING, # type: int
+                 IamAuthEnabled=NOTHING, # type: bool
+                 MaxFileSize=NOTHING, # type: int
+                 MaxRetryCount=NOTHING, # type: int
+                 S3BucketFolder=NOTHING, # type: Union[str, AWSHelperFn]
+                 S3BucketName=NOTHING, # type: Union[str, AWSHelperFn]
+                 ServiceAccessRoleArn=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            ErrorRetryDuration=ErrorRetryDuration,
+            IamAuthEnabled=IamAuthEnabled,
+            MaxFileSize=MaxFileSize,
+            MaxRetryCount=MaxRetryCount,
+            S3BucketFolder=S3BucketFolder,
+            S3BucketName=S3BucketName,
+            ServiceAccessRoleArn=ServiceAccessRoleArn,
+            **kwargs
+        )
+        super(NeptuneSettings, self).__init__(**processed_kwargs)
+
+
 class Endpoint(troposphere.dms.Endpoint, Mixin):
     def __init__(self,
                  title, # type: str
@@ -167,9 +209,11 @@ class Endpoint(troposphere.dms.Endpoint, Mixin):
                  ElasticsearchSettings=NOTHING, # type: _ElasticsearchSettings
                  EndpointIdentifier=NOTHING, # type: Union[str, AWSHelperFn]
                  ExtraConnectionAttributes=NOTHING, # type: Union[str, AWSHelperFn]
+                 KafkaSettings=NOTHING, # type: _KafkaSettings
                  KinesisSettings=NOTHING, # type: _KinesisSettings
                  KmsKeyId=NOTHING, # type: Union[str, AWSHelperFn]
                  MongoDbSettings=NOTHING, # type: _MongoDbSettings
+                 NeptuneSettings=NOTHING, # type: _NeptuneSettings
                  Password=NOTHING, # type: Union[str, AWSHelperFn]
                  Port=NOTHING, # type: int
                  S3Settings=NOTHING, # type: _S3Settings
@@ -190,9 +234,11 @@ class Endpoint(troposphere.dms.Endpoint, Mixin):
             ElasticsearchSettings=ElasticsearchSettings,
             EndpointIdentifier=EndpointIdentifier,
             ExtraConnectionAttributes=ExtraConnectionAttributes,
+            KafkaSettings=KafkaSettings,
             KinesisSettings=KinesisSettings,
             KmsKeyId=KmsKeyId,
             MongoDbSettings=MongoDbSettings,
+            NeptuneSettings=NeptuneSettings,
             Password=Password,
             Port=Port,
             S3Settings=S3Settings,
@@ -316,6 +362,7 @@ class ReplicationTask(troposphere.dms.ReplicationTask, Mixin):
                  ReplicationTaskIdentifier=NOTHING, # type: Union[str, AWSHelperFn]
                  ReplicationTaskSettings=NOTHING, # type: Union[str, AWSHelperFn]
                  Tags=NOTHING, # type: _Tags
+                 TaskData=NOTHING, # type: Union[str, AWSHelperFn]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
@@ -332,6 +379,7 @@ class ReplicationTask(troposphere.dms.ReplicationTask, Mixin):
             ReplicationTaskIdentifier=ReplicationTaskIdentifier,
             ReplicationTaskSettings=ReplicationTaskSettings,
             Tags=Tags,
+            TaskData=TaskData,
             **kwargs
         )
         super(ReplicationTask, self).__init__(**processed_kwargs)

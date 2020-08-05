@@ -11,13 +11,22 @@ if sys.version_info.major >= 3 and sys.version_info.minor >= 5:  # pragma: no co
 import troposphere.msk
 
 from troposphere.msk import (
+    BrokerLogs as _BrokerLogs,
     BrokerNodeGroupInfo as _BrokerNodeGroupInfo,
     ClientAuthentication as _ClientAuthentication,
+    CloudWatchLogs as _CloudWatchLogs,
     ConfigurationInfo as _ConfigurationInfo,
     EBSStorageInfo as _EBSStorageInfo,
     EncryptionAtRest as _EncryptionAtRest,
     EncryptionInTransit as _EncryptionInTransit,
     EncryptionInfo as _EncryptionInfo,
+    Firehose as _Firehose,
+    JmxExporter as _JmxExporter,
+    LoggingInfo as _LoggingInfo,
+    NodeExporter as _NodeExporter,
+    OpenMonitoring as _OpenMonitoring,
+    Prometheus as _Prometheus,
+    S3 as _S3,
     StorageInfo as _StorageInfo,
     Tls as _Tls,
 )
@@ -160,6 +169,137 @@ class EncryptionInfo(troposphere.msk.EncryptionInfo, Mixin):
         super(EncryptionInfo, self).__init__(**processed_kwargs)
 
 
+class JmxExporter(troposphere.msk.JmxExporter, Mixin):
+    def __init__(self,
+                 title=None,
+                 EnabledInBroker=REQUIRED, # type: bool
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            EnabledInBroker=EnabledInBroker,
+            **kwargs
+        )
+        super(JmxExporter, self).__init__(**processed_kwargs)
+
+
+class NodeExporter(troposphere.msk.NodeExporter, Mixin):
+    def __init__(self,
+                 title=None,
+                 EnabledInBroker=REQUIRED, # type: bool
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            EnabledInBroker=EnabledInBroker,
+            **kwargs
+        )
+        super(NodeExporter, self).__init__(**processed_kwargs)
+
+
+class Prometheus(troposphere.msk.Prometheus, Mixin):
+    def __init__(self,
+                 title=None,
+                 JmxExporter=NOTHING, # type: _JmxExporter
+                 NodeExporter=NOTHING, # type: _NodeExporter
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            JmxExporter=JmxExporter,
+            NodeExporter=NodeExporter,
+            **kwargs
+        )
+        super(Prometheus, self).__init__(**processed_kwargs)
+
+
+class OpenMonitoring(troposphere.msk.OpenMonitoring, Mixin):
+    def __init__(self,
+                 title=None,
+                 Prometheus=REQUIRED, # type: _Prometheus
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Prometheus=Prometheus,
+            **kwargs
+        )
+        super(OpenMonitoring, self).__init__(**processed_kwargs)
+
+
+class Firehose(troposphere.msk.Firehose, Mixin):
+    def __init__(self,
+                 title=None,
+                 DeliveryStream=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Enabled=REQUIRED, # type: bool
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            DeliveryStream=DeliveryStream,
+            Enabled=Enabled,
+            **kwargs
+        )
+        super(Firehose, self).__init__(**processed_kwargs)
+
+
+class CloudWatchLogs(troposphere.msk.CloudWatchLogs, Mixin):
+    def __init__(self,
+                 title=None,
+                 Enabled=REQUIRED, # type: bool
+                 LogGroup=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Enabled=Enabled,
+            LogGroup=LogGroup,
+            **kwargs
+        )
+        super(CloudWatchLogs, self).__init__(**processed_kwargs)
+
+
+class S3(troposphere.msk.S3, Mixin):
+    def __init__(self,
+                 title=None,
+                 Enabled=REQUIRED, # type: bool
+                 Bucket=NOTHING, # type: Union[str, AWSHelperFn]
+                 Prefix=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Enabled=Enabled,
+            Bucket=Bucket,
+            Prefix=Prefix,
+            **kwargs
+        )
+        super(S3, self).__init__(**processed_kwargs)
+
+
+class BrokerLogs(troposphere.msk.BrokerLogs, Mixin):
+    def __init__(self,
+                 title=None,
+                 CloudWatchLogs=NOTHING, # type: _CloudWatchLogs
+                 Firehose=NOTHING, # type: _Firehose
+                 S3=NOTHING, # type: _S3
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            CloudWatchLogs=CloudWatchLogs,
+            Firehose=Firehose,
+            S3=S3,
+            **kwargs
+        )
+        super(BrokerLogs, self).__init__(**processed_kwargs)
+
+
+class LoggingInfo(troposphere.msk.LoggingInfo, Mixin):
+    def __init__(self,
+                 title=None,
+                 BrokerLogs=REQUIRED, # type: _BrokerLogs
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            BrokerLogs=BrokerLogs,
+            **kwargs
+        )
+        super(LoggingInfo, self).__init__(**processed_kwargs)
+
+
 class Cluster(troposphere.msk.Cluster, Mixin):
     def __init__(self,
                  title, # type: str
@@ -173,6 +313,8 @@ class Cluster(troposphere.msk.Cluster, Mixin):
                  ConfigurationInfo=NOTHING, # type: _ConfigurationInfo
                  EncryptionInfo=NOTHING, # type: _EncryptionInfo
                  EnhancedMonitoring=NOTHING, # type: Union[str, AWSHelperFn]
+                 LoggingInfo=NOTHING, # type: _LoggingInfo
+                 OpenMonitoring=NOTHING, # type: _OpenMonitoring
                  Tags=NOTHING, # type: dict
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
@@ -187,6 +329,8 @@ class Cluster(troposphere.msk.Cluster, Mixin):
             ConfigurationInfo=ConfigurationInfo,
             EncryptionInfo=EncryptionInfo,
             EnhancedMonitoring=EnhancedMonitoring,
+            LoggingInfo=LoggingInfo,
+            OpenMonitoring=OpenMonitoring,
             Tags=Tags,
             **kwargs
         )

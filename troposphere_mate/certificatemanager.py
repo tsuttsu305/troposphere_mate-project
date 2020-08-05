@@ -26,11 +26,13 @@ class DomainValidationOption(troposphere.certificatemanager.DomainValidationOpti
     def __init__(self,
                  title=None,
                  DomainName=REQUIRED, # type: Union[str, AWSHelperFn]
-                 ValidationDomain=REQUIRED, # type: Union[str, AWSHelperFn]
+                 HostedZoneId=NOTHING, # type: Union[str, AWSHelperFn]
+                 ValidationDomain=NOTHING, # type: Union[str, AWSHelperFn]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             DomainName=DomainName,
+            HostedZoneId=HostedZoneId,
             ValidationDomain=ValidationDomain,
             **kwargs
         )
@@ -43,6 +45,8 @@ class Certificate(troposphere.certificatemanager.Certificate, Mixin):
                  template=None, # type: Template
                  validation=True, # type: bool
                  DomainName=REQUIRED, # type: Union[str, AWSHelperFn]
+                 CertificateAuthorityArn=NOTHING, # type: Union[str, AWSHelperFn]
+                 CertificateTransparencyLoggingPreference=NOTHING, # type: Union[str, AWSHelperFn]
                  DomainValidationOptions=NOTHING, # type: List[_DomainValidationOption]
                  SubjectAlternativeNames=NOTHING, # type: List[Union[str, AWSHelperFn]]
                  Tags=NOTHING, # type: Union[_Tags, list]
@@ -53,6 +57,8 @@ class Certificate(troposphere.certificatemanager.Certificate, Mixin):
             template=template,
             validation=validation,
             DomainName=DomainName,
+            CertificateAuthorityArn=CertificateAuthorityArn,
+            CertificateTransparencyLoggingPreference=CertificateTransparencyLoggingPreference,
             DomainValidationOptions=DomainValidationOptions,
             SubjectAlternativeNames=SubjectAlternativeNames,
             Tags=Tags,

@@ -586,8 +586,10 @@ class EmailTemplate(troposphere.pinpoint.EmailTemplate, Mixin):
                  validation=True, # type: bool
                  Subject=REQUIRED, # type: Union[str, AWSHelperFn]
                  TemplateName=REQUIRED, # type: Union[str, AWSHelperFn]
+                 DefaultSubstitutions=NOTHING, # type: Union[str, AWSHelperFn]
                  HtmlPart=NOTHING, # type: Union[str, AWSHelperFn]
                  Tags=NOTHING, # type: dict
+                 TemplateDescription=NOTHING, # type: Union[str, AWSHelperFn]
                  TextPart=NOTHING, # type: Union[str, AWSHelperFn]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
@@ -596,8 +598,10 @@ class EmailTemplate(troposphere.pinpoint.EmailTemplate, Mixin):
             validation=validation,
             Subject=Subject,
             TemplateName=TemplateName,
+            DefaultSubstitutions=DefaultSubstitutions,
             HtmlPart=HtmlPart,
             Tags=Tags,
+            TemplateDescription=TemplateDescription,
             TextPart=TextPart,
             **kwargs
         )
@@ -727,8 +731,10 @@ class PushTemplate(troposphere.pinpoint.PushTemplate, Mixin):
                  APNS=NOTHING, # type: _APNSPushNotificationTemplate
                  Baidu=NOTHING, # type: _AndroidPushNotificationTemplate
                  Default=NOTHING, # type: _DefaultPushNotificationTemplate
+                 DefaultSubstitutions=NOTHING, # type: Union[str, AWSHelperFn]
                  GCM=NOTHING, # type: _AndroidPushNotificationTemplate
                  Tags=NOTHING, # type: dict
+                 TemplateDescription=NOTHING, # type: Union[str, AWSHelperFn]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
@@ -739,8 +745,10 @@ class PushTemplate(troposphere.pinpoint.PushTemplate, Mixin):
             APNS=APNS,
             Baidu=Baidu,
             Default=Default,
+            DefaultSubstitutions=DefaultSubstitutions,
             GCM=GCM,
             Tags=Tags,
+            TemplateDescription=TemplateDescription,
             **kwargs
         )
         super(PushTemplate, self).__init__(**processed_kwargs)
@@ -969,7 +977,9 @@ class SmsTemplate(troposphere.pinpoint.SmsTemplate, Mixin):
                  validation=True, # type: bool
                  Body=REQUIRED, # type: Union[str, AWSHelperFn]
                  TemplateName=REQUIRED, # type: Union[str, AWSHelperFn]
+                 DefaultSubstitutions=NOTHING, # type: Union[str, AWSHelperFn]
                  Tags=NOTHING, # type: dict
+                 TemplateDescription=NOTHING, # type: Union[str, AWSHelperFn]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
@@ -977,7 +987,9 @@ class SmsTemplate(troposphere.pinpoint.SmsTemplate, Mixin):
             validation=validation,
             Body=Body,
             TemplateName=TemplateName,
+            DefaultSubstitutions=DefaultSubstitutions,
             Tags=Tags,
+            TemplateDescription=TemplateDescription,
             **kwargs
         )
         super(SmsTemplate, self).__init__(**processed_kwargs)

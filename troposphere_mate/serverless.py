@@ -12,6 +12,7 @@ import troposphere.serverless
 
 from troposphere.serverless import (
     AccessLogSetting as _AccessLogSetting,
+    ApplicationLocation as _ApplicationLocation,
     Auth as _Auth,
     Authorizers as _Authorizers,
     CanarySetting as _CanarySetting,
@@ -29,7 +30,9 @@ from troposphere.serverless import (
     LambdaTokenAuthIdentity as _LambdaTokenAuthIdentity,
     MethodSetting as _MethodSetting,
     PrimaryKey as _PrimaryKey,
+    ProvisionedConcurrencyConfiguration as _ProvisionedConcurrencyConfiguration,
     ProvisionedThroughput as _ProvisionedThroughput,
+    ResourcePolicyStatement as _ResourcePolicyStatement,
     S3Location as _S3Location,
     SSESpecification as _SSESpecification,
     VPCConfig as _VPCConfig,
@@ -136,6 +139,7 @@ class Function(troposphere.serverless.Function, Mixin):
                  Layers=NOTHING, # type: List[Union[str, AWSHelperFn]]
                  AutoPublishAlias=NOTHING, # type: Union[str, AWSHelperFn]
                  ReservedConcurrentExecutions=NOTHING, # type: int
+                 ProvisionedConcurrencyConfig=NOTHING, # type: _ProvisionedConcurrencyConfiguration
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
@@ -162,6 +166,7 @@ class Function(troposphere.serverless.Function, Mixin):
             Layers=Layers,
             AutoPublishAlias=AutoPublishAlias,
             ReservedConcurrentExecutions=ReservedConcurrentExecutions,
+            ProvisionedConcurrencyConfig=ProvisionedConcurrencyConfig,
             **kwargs
         )
         super(Function, self).__init__(**processed_kwargs)
@@ -292,16 +297,49 @@ class Authorizers(troposphere.serverless.Authorizers, Mixin):
         super(Authorizers, self).__init__(**processed_kwargs)
 
 
-class Auth(troposphere.serverless.Auth, Mixin):
+class ResourcePolicyStatement(troposphere.serverless.ResourcePolicyStatement, Mixin):
     def __init__(self,
                  title=None,
-                 DefaultAuthorizer=NOTHING, # type: Union[str, AWSHelperFn]
-                 Authorizers=NOTHING, # type: _Authorizers
+                 AwsAccountBlacklist=NOTHING, # type: list
+                 AwsAccountWhitelist=NOTHING, # type: list
+                 CustomStatements=NOTHING, # type: list
+                 IpRangeBlacklist=NOTHING, # type: list
+                 IpRangeWhitelist=NOTHING, # type: list
+                 SourceVpcBlacklist=NOTHING, # type: list
+                 SourceVpcWhitelist=NOTHING, # type: list
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
-            DefaultAuthorizer=DefaultAuthorizer,
+            AwsAccountBlacklist=AwsAccountBlacklist,
+            AwsAccountWhitelist=AwsAccountWhitelist,
+            CustomStatements=CustomStatements,
+            IpRangeBlacklist=IpRangeBlacklist,
+            IpRangeWhitelist=IpRangeWhitelist,
+            SourceVpcBlacklist=SourceVpcBlacklist,
+            SourceVpcWhitelist=SourceVpcWhitelist,
+            **kwargs
+        )
+        super(ResourcePolicyStatement, self).__init__(**processed_kwargs)
+
+
+class Auth(troposphere.serverless.Auth, Mixin):
+    def __init__(self,
+                 title=None,
+                 AddDefaultAuthorizerToCorsPreflight=NOTHING, # type: bool
+                 ApiKeyRequired=NOTHING, # type: bool
+                 Authorizers=NOTHING, # type: _Authorizers
+                 DefaultAuthorizer=NOTHING, # type: Union[str, AWSHelperFn]
+                 InvokeRole=NOTHING, # type: Union[str, AWSHelperFn]
+                 ResourcePolicy=NOTHING, # type: _ResourcePolicyStatement
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            AddDefaultAuthorizerToCorsPreflight=AddDefaultAuthorizerToCorsPreflight,
+            ApiKeyRequired=ApiKeyRequired,
             Authorizers=Authorizers,
+            DefaultAuthorizer=DefaultAuthorizer,
+            InvokeRole=InvokeRole,
+            ResourcePolicy=ResourcePolicy,
             **kwargs
         )
         super(Auth, self).__init__(**processed_kwargs)
@@ -548,6 +586,9 @@ class ScheduleEvent(troposphere.serverless.ScheduleEvent, Mixin):
                  validation=True, # type: bool
                  Schedule=REQUIRED, # type: Union[str, AWSHelperFn]
                  Input=NOTHING, # type: Union[str, AWSHelperFn]
+                 Description=NOTHING, # type: Union[str, AWSHelperFn]
+                 Enabled=NOTHING, # type: bool
+                 Name=NOTHING, # type: Union[str, AWSHelperFn]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
@@ -555,6 +596,9 @@ class ScheduleEvent(troposphere.serverless.ScheduleEvent, Mixin):
             validation=validation,
             Schedule=Schedule,
             Input=Input,
+            Description=Description,
+            Enabled=Enabled,
+            Name=Name,
             **kwargs
         )
         super(ScheduleEvent, self).__init__(**processed_kwargs)
@@ -632,3 +676,43 @@ class SQSEvent(troposphere.serverless.SQSEvent, Mixin):
             **kwargs
         )
         super(SQSEvent, self).__init__(**processed_kwargs)
+
+
+class ApplicationLocation(troposphere.serverless.ApplicationLocation, Mixin):
+    def __init__(self,
+                 title=None,
+                 ApplicationId=REQUIRED, # type: Union[str, AWSHelperFn]
+                 SemanticVersion=REQUIRED, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            ApplicationId=ApplicationId,
+            SemanticVersion=SemanticVersion,
+            **kwargs
+        )
+        super(ApplicationLocation, self).__init__(**processed_kwargs)
+
+
+class Application(troposphere.serverless.Application, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 Location=REQUIRED, # type: Union[_ApplicationLocation, Union[str, AWSHelperFn]]
+                 NotificationARNs=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 Parameters=NOTHING, # type: dict
+                 Tags=NOTHING, # type: dict
+                 TimeoutInMinutes=NOTHING, # type: int
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            Location=Location,
+            NotificationARNs=NotificationARNs,
+            Parameters=Parameters,
+            Tags=Tags,
+            TimeoutInMinutes=TimeoutInMinutes,
+            **kwargs
+        )
+        super(Application, self).__init__(**processed_kwargs)

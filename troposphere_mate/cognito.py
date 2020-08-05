@@ -11,6 +11,7 @@ if sys.version_info.major >= 3 and sys.version_info.minor >= 5:  # pragma: no co
 import troposphere.cognito
 
 from troposphere.cognito import (
+    AccountRecoverySetting as _AccountRecoverySetting,
     AccountTakeoverActionType as _AccountTakeoverActionType,
     AccountTakeoverActionsType as _AccountTakeoverActionsType,
     AccountTakeoverRiskConfigurationType as _AccountTakeoverRiskConfigurationType,
@@ -33,6 +34,7 @@ from troposphere.cognito import (
     PasswordPolicy as _PasswordPolicy,
     Policies as _Policies,
     PushSync as _PushSync,
+    RecoveryOption as _RecoveryOption,
     ResourceServerScopeType as _ResourceServerScopeType,
     RiskExceptionConfigurationType as _RiskExceptionConfigurationType,
     RulesConfiguration as _RulesConfiguration,
@@ -40,6 +42,7 @@ from troposphere.cognito import (
     SmsConfiguration as _SmsConfiguration,
     StringAttributeConstraints as _StringAttributeConstraints,
     UserPoolAddOns as _UserPoolAddOns,
+    UsernameConfiguration as _UsernameConfiguration,
     VerificationMessageTemplate as _VerificationMessageTemplate,
 )
 
@@ -447,11 +450,53 @@ class VerificationMessageTemplate(troposphere.cognito.VerificationMessageTemplat
         super(VerificationMessageTemplate, self).__init__(**processed_kwargs)
 
 
+class RecoveryOption(troposphere.cognito.RecoveryOption, Mixin):
+    def __init__(self,
+                 title=None,
+                 Name=NOTHING, # type: Any
+                 Priority=NOTHING, # type: int
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Name=Name,
+            Priority=Priority,
+            **kwargs
+        )
+        super(RecoveryOption, self).__init__(**processed_kwargs)
+
+
+class AccountRecoverySetting(troposphere.cognito.AccountRecoverySetting, Mixin):
+    def __init__(self,
+                 title=None,
+                 RecoveryMechanisms=NOTHING, # type: List[_RecoveryOption]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            RecoveryMechanisms=RecoveryMechanisms,
+            **kwargs
+        )
+        super(AccountRecoverySetting, self).__init__(**processed_kwargs)
+
+
+class UsernameConfiguration(troposphere.cognito.UsernameConfiguration, Mixin):
+    def __init__(self,
+                 title=None,
+                 CaseSensitive=NOTHING, # type: bool
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            CaseSensitive=CaseSensitive,
+            **kwargs
+        )
+        super(UsernameConfiguration, self).__init__(**processed_kwargs)
+
+
 class UserPool(troposphere.cognito.UserPool, Mixin):
     def __init__(self,
                  title, # type: str
                  template=None, # type: Template
                  validation=True, # type: bool
+                 AccountRecoverySetting=NOTHING, # type: _AccountRecoverySetting
                  AdminCreateUserConfig=NOTHING, # type: _AdminCreateUserConfig
                  AliasAttributes=NOTHING, # type: List[Union[str, AWSHelperFn]]
                  AutoVerifiedAttributes=NOTHING, # type: List[Union[str, AWSHelperFn]]
@@ -471,12 +516,14 @@ class UserPool(troposphere.cognito.UserPool, Mixin):
                  UserPoolName=NOTHING, # type: Union[str, AWSHelperFn]
                  UserPoolTags=NOTHING, # type: dict
                  UsernameAttributes=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 UsernameConfiguration=NOTHING, # type: _UsernameConfiguration
                  VerificationMessageTemplate=NOTHING, # type: _VerificationMessageTemplate
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             template=template,
             validation=validation,
+            AccountRecoverySetting=AccountRecoverySetting,
             AdminCreateUserConfig=AdminCreateUserConfig,
             AliasAttributes=AliasAttributes,
             AutoVerifiedAttributes=AutoVerifiedAttributes,
@@ -496,6 +543,7 @@ class UserPool(troposphere.cognito.UserPool, Mixin):
             UserPoolName=UserPoolName,
             UserPoolTags=UserPoolTags,
             UsernameAttributes=UsernameAttributes,
+            UsernameConfiguration=UsernameConfiguration,
             VerificationMessageTemplate=VerificationMessageTemplate,
             **kwargs
         )

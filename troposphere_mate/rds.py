@@ -11,6 +11,8 @@ if sys.version_info.major >= 3 and sys.version_info.minor >= 5:  # pragma: no co
 import troposphere.rds
 
 from troposphere.rds import (
+    AuthFormat as _AuthFormat,
+    ConnectionPoolConfigurationInfoFormat as _ConnectionPoolConfigurationInfoFormat,
     DBClusterRole as _DBClusterRole,
     DBInstanceRole as _DBInstanceRole,
     OptionConfiguration as _OptionConfiguration,
@@ -71,6 +73,7 @@ class DBInstance(troposphere.rds.DBInstance, Mixin):
                  AutoMinorVersionUpgrade=NOTHING, # type: bool
                  AvailabilityZone=NOTHING, # type: Union[str, AWSHelperFn]
                  BackupRetentionPeriod=NOTHING, # type: Any
+                 CACertificateIdentifier=NOTHING, # type: Union[str, AWSHelperFn]
                  CharacterSetName=NOTHING, # type: Union[str, AWSHelperFn]
                  CopyTagsToSnapshot=NOTHING, # type: bool
                  DBClusterIdentifier=NOTHING, # type: Union[str, AWSHelperFn]
@@ -94,6 +97,7 @@ class DBInstance(troposphere.rds.DBInstance, Mixin):
                  LicenseModel=NOTHING, # type: Any
                  MasterUsername=NOTHING, # type: Union[str, AWSHelperFn]
                  MasterUserPassword=NOTHING, # type: Union[str, AWSHelperFn]
+                 MaxAllocatedStorage=NOTHING, # type: int
                  MonitoringInterval=NOTHING, # type: int
                  MonitoringRoleArn=NOTHING, # type: Union[str, AWSHelperFn]
                  MultiAZ=NOTHING, # type: bool
@@ -126,6 +130,7 @@ class DBInstance(troposphere.rds.DBInstance, Mixin):
             AutoMinorVersionUpgrade=AutoMinorVersionUpgrade,
             AvailabilityZone=AvailabilityZone,
             BackupRetentionPeriod=BackupRetentionPeriod,
+            CACertificateIdentifier=CACertificateIdentifier,
             CharacterSetName=CharacterSetName,
             CopyTagsToSnapshot=CopyTagsToSnapshot,
             DBClusterIdentifier=DBClusterIdentifier,
@@ -149,6 +154,7 @@ class DBInstance(troposphere.rds.DBInstance, Mixin):
             LicenseModel=LicenseModel,
             MasterUsername=MasterUsername,
             MasterUserPassword=MasterUserPassword,
+            MaxAllocatedStorage=MaxAllocatedStorage,
             MonitoringInterval=MonitoringInterval,
             MonitoringRoleArn=MonitoringRoleArn,
             MultiAZ=MultiAZ,
@@ -195,6 +201,108 @@ class DBParameterGroup(troposphere.rds.DBParameterGroup, Mixin):
             **kwargs
         )
         super(DBParameterGroup, self).__init__(**processed_kwargs)
+
+
+class AuthFormat(troposphere.rds.AuthFormat, Mixin):
+    def __init__(self,
+                 title=None,
+                 AuthScheme=NOTHING, # type: Union[str, AWSHelperFn]
+                 Description=NOTHING, # type: Union[str, AWSHelperFn]
+                 IAMAuth=NOTHING, # type: Union[str, AWSHelperFn]
+                 SecretArn=NOTHING, # type: Union[str, AWSHelperFn]
+                 UserName=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            AuthScheme=AuthScheme,
+            Description=Description,
+            IAMAuth=IAMAuth,
+            SecretArn=SecretArn,
+            UserName=UserName,
+            **kwargs
+        )
+        super(AuthFormat, self).__init__(**processed_kwargs)
+
+
+class DBProxy(troposphere.rds.DBProxy, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 Auth=REQUIRED, # type: List[_AuthFormat]
+                 DBProxyName=REQUIRED, # type: Union[str, AWSHelperFn]
+                 EngineFamily=REQUIRED, # type: Union[str, AWSHelperFn]
+                 RoleArn=REQUIRED, # type: Union[str, AWSHelperFn]
+                 VpcSubnetIds=REQUIRED, # type: List[Union[str, AWSHelperFn]]
+                 DebugLogging=NOTHING, # type: bool
+                 IdleClientTimeout=NOTHING, # type: int
+                 RequireTLS=NOTHING, # type: bool
+                 Tags=NOTHING, # type: _Tags
+                 VpcSecurityGroupIds=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            Auth=Auth,
+            DBProxyName=DBProxyName,
+            EngineFamily=EngineFamily,
+            RoleArn=RoleArn,
+            VpcSubnetIds=VpcSubnetIds,
+            DebugLogging=DebugLogging,
+            IdleClientTimeout=IdleClientTimeout,
+            RequireTLS=RequireTLS,
+            Tags=Tags,
+            VpcSecurityGroupIds=VpcSecurityGroupIds,
+            **kwargs
+        )
+        super(DBProxy, self).__init__(**processed_kwargs)
+
+
+class ConnectionPoolConfigurationInfoFormat(troposphere.rds.ConnectionPoolConfigurationInfoFormat, Mixin):
+    def __init__(self,
+                 title=None,
+                 ConnectionBorrowTimeout=NOTHING, # type: int
+                 InitQuery=NOTHING, # type: Union[str, AWSHelperFn]
+                 MaxConnectionsPercent=NOTHING, # type: int
+                 MaxIdleConnectionsPercent=NOTHING, # type: int
+                 SessionPinningFilters=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            ConnectionBorrowTimeout=ConnectionBorrowTimeout,
+            InitQuery=InitQuery,
+            MaxConnectionsPercent=MaxConnectionsPercent,
+            MaxIdleConnectionsPercent=MaxIdleConnectionsPercent,
+            SessionPinningFilters=SessionPinningFilters,
+            **kwargs
+        )
+        super(ConnectionPoolConfigurationInfoFormat, self).__init__(**processed_kwargs)
+
+
+class DBProxyTargetGroup(troposphere.rds.DBProxyTargetGroup, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 DBProxyName=REQUIRED, # type: Union[str, AWSHelperFn]
+                 TargetGroupName=REQUIRED, # type: Union[str, AWSHelperFn]
+                 ConnectionPoolConfigurationInfo=NOTHING, # type: _ConnectionPoolConfigurationInfoFormat
+                 DBClusterIdentifiers=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 DBInstanceIdentifiers=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            DBProxyName=DBProxyName,
+            TargetGroupName=TargetGroupName,
+            ConnectionPoolConfigurationInfo=ConnectionPoolConfigurationInfo,
+            DBClusterIdentifiers=DBClusterIdentifiers,
+            DBInstanceIdentifiers=DBInstanceIdentifiers,
+            **kwargs
+        )
+        super(DBProxyTargetGroup, self).__init__(**processed_kwargs)
 
 
 class DBSubnetGroup(troposphere.rds.DBSubnetGroup, Mixin):

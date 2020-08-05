@@ -14,6 +14,7 @@ from troposphere.stepfunctions import (
     CloudWatchLogsLogGroup as _CloudWatchLogsLogGroup,
     LogDestination as _LogDestination,
     LoggingConfiguration as _LoggingConfiguration,
+    S3Location as _S3Location,
     Tags as _Tags,
 )
 
@@ -86,6 +87,23 @@ class LoggingConfiguration(troposphere.stepfunctions.LoggingConfiguration, Mixin
         super(LoggingConfiguration, self).__init__(**processed_kwargs)
 
 
+class S3Location(troposphere.stepfunctions.S3Location, Mixin):
+    def __init__(self,
+                 title=None,
+                 Bucket=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Key=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Version=REQUIRED, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Bucket=Bucket,
+            Key=Key,
+            Version=Version,
+            **kwargs
+        )
+        super(S3Location, self).__init__(**processed_kwargs)
+
+
 class StateMachine(troposphere.stepfunctions.StateMachine, Mixin):
     def __init__(self,
                  title, # type: str
@@ -93,6 +111,8 @@ class StateMachine(troposphere.stepfunctions.StateMachine, Mixin):
                  validation=True, # type: bool
                  DefinitionString=REQUIRED, # type: Union[str, AWSHelperFn]
                  RoleArn=REQUIRED, # type: Union[str, AWSHelperFn]
+                 DefinitionS3Location=NOTHING, # type: _S3Location
+                 DefinitionSubstitutions=NOTHING, # type: dict
                  LoggingConfiguration=NOTHING, # type: _LoggingConfiguration
                  StateMachineName=NOTHING, # type: Union[str, AWSHelperFn]
                  StateMachineType=NOTHING, # type: Union[str, AWSHelperFn]
@@ -104,6 +124,8 @@ class StateMachine(troposphere.stepfunctions.StateMachine, Mixin):
             validation=validation,
             DefinitionString=DefinitionString,
             RoleArn=RoleArn,
+            DefinitionS3Location=DefinitionS3Location,
+            DefinitionSubstitutions=DefinitionSubstitutions,
             LoggingConfiguration=LoggingConfiguration,
             StateMachineName=StateMachineName,
             StateMachineType=StateMachineType,

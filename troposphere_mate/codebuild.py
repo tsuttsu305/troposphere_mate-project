@@ -12,15 +12,19 @@ import troposphere.codebuild
 
 from troposphere.codebuild import (
     Artifacts as _Artifacts,
+    BuildStatusConfig as _BuildStatusConfig,
     CloudWatchLogs as _CloudWatchLogs,
     Environment as _Environment,
     GitSubmodulesConfig as _GitSubmodulesConfig,
     LogsConfig as _LogsConfig,
     ProjectCache as _ProjectCache,
+    ProjectFileSystemLocation as _ProjectFileSystemLocation,
     ProjectSourceVersion as _ProjectSourceVersion,
     ProjectTriggers as _ProjectTriggers,
     RegistryCredential as _RegistryCredential,
+    ReportExportConfig as _ReportExportConfig,
     S3Logs as _S3Logs,
+    S3ReportExportConfig as _S3ReportExportConfig,
     Source as _Source,
     SourceAuth as _SourceAuth,
     Tags as _Tags,
@@ -152,6 +156,21 @@ class ProjectCache(troposphere.codebuild.ProjectCache, Mixin):
         super(ProjectCache, self).__init__(**processed_kwargs)
 
 
+class BuildStatusConfig(troposphere.codebuild.BuildStatusConfig, Mixin):
+    def __init__(self,
+                 title=None,
+                 Context=NOTHING, # type: Union[str, AWSHelperFn]
+                 TargetUrl=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Context=Context,
+            TargetUrl=TargetUrl,
+            **kwargs
+        )
+        super(BuildStatusConfig, self).__init__(**processed_kwargs)
+
+
 class GitSubmodulesConfig(troposphere.codebuild.GitSubmodulesConfig, Mixin):
     def __init__(self,
                  title=None,
@@ -171,6 +190,7 @@ class Source(troposphere.codebuild.Source, Mixin):
                  Type=REQUIRED, # type: Union[str, AWSHelperFn]
                  Auth=NOTHING, # type: _SourceAuth
                  BuildSpec=NOTHING, # type: Union[str, AWSHelperFn]
+                 BuildStatusConfig=NOTHING, # type: _BuildStatusConfig
                  GitCloneDepth=NOTHING, # type: int
                  GitSubmodulesConfig=NOTHING, # type: _GitSubmodulesConfig
                  InsecureSsl=NOTHING, # type: bool
@@ -183,6 +203,7 @@ class Source(troposphere.codebuild.Source, Mixin):
             Type=Type,
             Auth=Auth,
             BuildSpec=BuildSpec,
+            BuildStatusConfig=BuildStatusConfig,
             GitCloneDepth=GitCloneDepth,
             GitSubmodulesConfig=GitSubmodulesConfig,
             InsecureSsl=InsecureSsl,
@@ -307,6 +328,27 @@ class ProjectSourceVersion(troposphere.codebuild.ProjectSourceVersion, Mixin):
         super(ProjectSourceVersion, self).__init__(**processed_kwargs)
 
 
+class ProjectFileSystemLocation(troposphere.codebuild.ProjectFileSystemLocation, Mixin):
+    def __init__(self,
+                 title=None,
+                 Identifier=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Location=REQUIRED, # type: Union[str, AWSHelperFn]
+                 MountPoint=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Type=REQUIRED, # type: Any
+                 MountOptions=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Identifier=Identifier,
+            Location=Location,
+            MountPoint=MountPoint,
+            Type=Type,
+            MountOptions=MountOptions,
+            **kwargs
+        )
+        super(ProjectFileSystemLocation, self).__init__(**processed_kwargs)
+
+
 class Project(troposphere.codebuild.Project, Mixin):
     def __init__(self,
                  title, # type: str
@@ -320,8 +362,10 @@ class Project(troposphere.codebuild.Project, Mixin):
                  Cache=NOTHING, # type: _ProjectCache
                  Description=NOTHING, # type: Union[str, AWSHelperFn]
                  EncryptionKey=NOTHING, # type: Union[str, AWSHelperFn]
+                 FileSystemLocations=NOTHING, # type: List[_ProjectFileSystemLocation]
                  LogsConfig=NOTHING, # type: _LogsConfig
                  Name=NOTHING, # type: Union[str, AWSHelperFn]
+                 QueuedTimeoutInMinutes=NOTHING, # type: int
                  SecondaryArtifacts=NOTHING, # type: List[_Artifacts]
                  SecondarySourceVersions=NOTHING, # type: List[_ProjectSourceVersion]
                  SecondarySources=NOTHING, # type: List[_Source]
@@ -343,8 +387,10 @@ class Project(troposphere.codebuild.Project, Mixin):
             Cache=Cache,
             Description=Description,
             EncryptionKey=EncryptionKey,
+            FileSystemLocations=FileSystemLocations,
             LogsConfig=LogsConfig,
             Name=Name,
+            QueuedTimeoutInMinutes=QueuedTimeoutInMinutes,
             SecondaryArtifacts=SecondaryArtifacts,
             SecondarySourceVersions=SecondarySourceVersions,
             SecondarySources=SecondarySources,
@@ -356,3 +402,85 @@ class Project(troposphere.codebuild.Project, Mixin):
             **kwargs
         )
         super(Project, self).__init__(**processed_kwargs)
+
+
+class S3ReportExportConfig(troposphere.codebuild.S3ReportExportConfig, Mixin):
+    def __init__(self,
+                 title=None,
+                 Bucket=REQUIRED, # type: Union[str, AWSHelperFn]
+                 EncryptionDisabled=NOTHING, # type: bool
+                 EncryptionKey=NOTHING, # type: Union[str, AWSHelperFn]
+                 Packaging=NOTHING, # type: Union[str, AWSHelperFn]
+                 Path=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Bucket=Bucket,
+            EncryptionDisabled=EncryptionDisabled,
+            EncryptionKey=EncryptionKey,
+            Packaging=Packaging,
+            Path=Path,
+            **kwargs
+        )
+        super(S3ReportExportConfig, self).__init__(**processed_kwargs)
+
+
+class ReportExportConfig(troposphere.codebuild.ReportExportConfig, Mixin):
+    def __init__(self,
+                 title=None,
+                 ExportConfigType=REQUIRED, # type: Union[str, AWSHelperFn]
+                 S3Destination=NOTHING, # type: _S3ReportExportConfig
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            ExportConfigType=ExportConfigType,
+            S3Destination=S3Destination,
+            **kwargs
+        )
+        super(ReportExportConfig, self).__init__(**processed_kwargs)
+
+
+class ReportGroup(troposphere.codebuild.ReportGroup, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 ExportConfig=REQUIRED, # type: _ReportExportConfig
+                 Type=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Name=NOTHING, # type: Union[str, AWSHelperFn]
+                 Tags=NOTHING, # type: _Tags
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            ExportConfig=ExportConfig,
+            Type=Type,
+            Name=Name,
+            Tags=Tags,
+            **kwargs
+        )
+        super(ReportGroup, self).__init__(**processed_kwargs)
+
+
+class SourceCredential(troposphere.codebuild.SourceCredential, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 AuthType=REQUIRED, # type: Union[str, AWSHelperFn]
+                 ServerType=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Token=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Username=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            AuthType=AuthType,
+            ServerType=ServerType,
+            Token=Token,
+            Username=Username,
+            **kwargs
+        )
+        super(SourceCredential, self).__init__(**processed_kwargs)

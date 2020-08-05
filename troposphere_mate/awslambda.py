@@ -17,7 +17,9 @@ from troposphere.awslambda import (
     DeadLetterConfig as _DeadLetterConfig,
     DestinationConfig as _DestinationConfig,
     Environment as _Environment,
+    FileSystemConfig as _FileSystemConfig,
     OnFailure as _OnFailure,
+    OnSuccess as _OnSuccess,
     ProvisionedConcurrencyConfiguration as _ProvisionedConcurrencyConfiguration,
     Tags as _Tags,
     TracingConfig as _TracingConfig,
@@ -79,14 +81,29 @@ class OnFailure(troposphere.awslambda.OnFailure, Mixin):
         super(OnFailure, self).__init__(**processed_kwargs)
 
 
+class OnSuccess(troposphere.awslambda.OnSuccess, Mixin):
+    def __init__(self,
+                 title=None,
+                 Destination=REQUIRED, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Destination=Destination,
+            **kwargs
+        )
+        super(OnSuccess, self).__init__(**processed_kwargs)
+
+
 class DestinationConfig(troposphere.awslambda.DestinationConfig, Mixin):
     def __init__(self,
                  title=None,
                  OnFailure=REQUIRED, # type: _OnFailure
+                 OnSuccess=REQUIRED, # type: _OnSuccess
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             OnFailure=OnFailure,
+            OnSuccess=OnSuccess,
             **kwargs
         )
         super(DestinationConfig, self).__init__(**processed_kwargs)
@@ -180,6 +197,21 @@ class Environment(troposphere.awslambda.Environment, Mixin):
         super(Environment, self).__init__(**processed_kwargs)
 
 
+class FileSystemConfig(troposphere.awslambda.FileSystemConfig, Mixin):
+    def __init__(self,
+                 title=None,
+                 Arn=REQUIRED, # type: Union[str, AWSHelperFn]
+                 LocalMountPath=REQUIRED, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Arn=Arn,
+            LocalMountPath=LocalMountPath,
+            **kwargs
+        )
+        super(FileSystemConfig, self).__init__(**processed_kwargs)
+
+
 class TracingConfig(troposphere.awslambda.TracingConfig, Mixin):
     def __init__(self,
                  title=None,
@@ -205,6 +237,7 @@ class Function(troposphere.awslambda.Function, Mixin):
                  Description=NOTHING, # type: Union[str, AWSHelperFn]
                  DeadLetterConfig=NOTHING, # type: _DeadLetterConfig
                  Environment=NOTHING, # type: _Environment
+                 FileSystemConfigs=NOTHING, # type: List[_FileSystemConfig]
                  FunctionName=NOTHING, # type: Union[str, AWSHelperFn]
                  KmsKeyArn=NOTHING, # type: Union[str, AWSHelperFn]
                  MemorySize=NOTHING, # type: Any
@@ -226,6 +259,7 @@ class Function(troposphere.awslambda.Function, Mixin):
             Description=Description,
             DeadLetterConfig=DeadLetterConfig,
             Environment=Environment,
+            FileSystemConfigs=FileSystemConfigs,
             FunctionName=FunctionName,
             KmsKeyArn=KmsKeyArn,
             MemorySize=MemorySize,

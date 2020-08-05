@@ -12,6 +12,7 @@ import troposphere.transfer
 
 from troposphere.transfer import (
     EndpointDetails as _EndpointDetails,
+    HomeDirectoryMapEntry as _HomeDirectoryMapEntry,
     IdentityProviderDetails as _IdentityProviderDetails,
     Tags as _Tags,
 )
@@ -26,11 +27,17 @@ from troposphere_mate.core.sentiel import REQUIRED, NOTHING
 class EndpointDetails(troposphere.transfer.EndpointDetails, Mixin):
     def __init__(self,
                  title=None,
-                 VpcEndpointId=REQUIRED, # type: Union[str, AWSHelperFn]
+                 AddressAllocationIds=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 SubnetIds=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 VpcEndpointId=NOTHING, # type: Union[str, AWSHelperFn]
+                 VpcId=NOTHING, # type: Union[str, AWSHelperFn]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
+            AddressAllocationIds=AddressAllocationIds,
+            SubnetIds=SubnetIds,
             VpcEndpointId=VpcEndpointId,
+            VpcId=VpcId,
             **kwargs
         )
         super(EndpointDetails, self).__init__(**processed_kwargs)
@@ -56,26 +63,45 @@ class Server(troposphere.transfer.Server, Mixin):
                  title, # type: str
                  template=None, # type: Template
                  validation=True, # type: bool
+                 Certificate=NOTHING, # type: Union[str, AWSHelperFn]
                  EndpointDetails=NOTHING, # type: _EndpointDetails
                  EndpointType=NOTHING, # type: Union[str, AWSHelperFn]
                  IdentityProviderDetails=NOTHING, # type: _IdentityProviderDetails
                  IdentityProviderType=NOTHING, # type: Union[str, AWSHelperFn]
                  LoggingRole=NOTHING, # type: Union[str, AWSHelperFn]
+                 Protocols=NOTHING, # type: List[Union[str, AWSHelperFn]]
                  Tags=NOTHING, # type: _Tags
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             template=template,
             validation=validation,
+            Certificate=Certificate,
             EndpointDetails=EndpointDetails,
             EndpointType=EndpointType,
             IdentityProviderDetails=IdentityProviderDetails,
             IdentityProviderType=IdentityProviderType,
             LoggingRole=LoggingRole,
+            Protocols=Protocols,
             Tags=Tags,
             **kwargs
         )
         super(Server, self).__init__(**processed_kwargs)
+
+
+class HomeDirectoryMapEntry(troposphere.transfer.HomeDirectoryMapEntry, Mixin):
+    def __init__(self,
+                 title=None,
+                 Entry=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Target=REQUIRED, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Entry=Entry,
+            Target=Target,
+            **kwargs
+        )
+        super(HomeDirectoryMapEntry, self).__init__(**processed_kwargs)
 
 
 class User(troposphere.transfer.User, Mixin):
@@ -87,6 +113,8 @@ class User(troposphere.transfer.User, Mixin):
                  ServerId=REQUIRED, # type: Union[str, AWSHelperFn]
                  UserName=REQUIRED, # type: Union[str, AWSHelperFn]
                  HomeDirectory=NOTHING, # type: Union[str, AWSHelperFn]
+                 HomeDirectoryMappings=NOTHING, # type: List[_HomeDirectoryMapEntry]
+                 HomeDirectoryType=NOTHING, # type: Any
                  Policy=NOTHING, # type: Union[str, AWSHelperFn]
                  SshPublicKeys=NOTHING, # type: List[Union[str, AWSHelperFn]]
                  Tags=NOTHING, # type: _Tags
@@ -99,6 +127,8 @@ class User(troposphere.transfer.User, Mixin):
             ServerId=ServerId,
             UserName=UserName,
             HomeDirectory=HomeDirectory,
+            HomeDirectoryMappings=HomeDirectoryMappings,
+            HomeDirectoryType=HomeDirectoryType,
             Policy=Policy,
             SshPublicKeys=SshPublicKeys,
             Tags=Tags,

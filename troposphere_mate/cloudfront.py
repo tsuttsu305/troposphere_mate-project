@@ -24,13 +24,20 @@ from troposphere.cloudfront import (
     Logging as _Logging,
     Origin as _Origin,
     OriginCustomHeader as _OriginCustomHeader,
+    OriginGroup as _OriginGroup,
+    OriginGroupFailoverCriteria as _OriginGroupFailoverCriteria,
+    OriginGroupMember as _OriginGroupMember,
+    OriginGroupMembers as _OriginGroupMembers,
+    OriginGroups as _OriginGroups,
     Restrictions as _Restrictions,
     S3Origin as _S3Origin,
     S3OriginConfig as _S3OriginConfig,
+    StatusCodes as _StatusCodes,
     StreamingDistributionConfig as _StreamingDistributionConfig,
     Tags as _Tags,
     TrustedSigners as _TrustedSigners,
     ViewerCertificate as _ViewerCertificate,
+    integer as _integer,
 )
 
 
@@ -236,6 +243,8 @@ class Origin(troposphere.cloudfront.Origin, Mixin):
                  title=None,
                  DomainName=REQUIRED, # type: Union[str, AWSHelperFn]
                  Id=REQUIRED, # type: Union[str, AWSHelperFn]
+                 ConnectionAttempts=NOTHING, # type: int
+                 ConnectionTimeout=NOTHING, # type: int
                  CustomOriginConfig=NOTHING, # type: _CustomOriginConfig
                  OriginCustomHeaders=NOTHING, # type: List[_OriginCustomHeader]
                  OriginPath=NOTHING, # type: Union[str, AWSHelperFn]
@@ -245,6 +254,8 @@ class Origin(troposphere.cloudfront.Origin, Mixin):
             title=title,
             DomainName=DomainName,
             Id=Id,
+            ConnectionAttempts=ConnectionAttempts,
+            ConnectionTimeout=ConnectionTimeout,
             CustomOriginConfig=CustomOriginConfig,
             OriginCustomHeaders=OriginCustomHeaders,
             OriginPath=OriginPath,
@@ -339,6 +350,94 @@ class ViewerCertificate(troposphere.cloudfront.ViewerCertificate, Mixin):
         super(ViewerCertificate, self).__init__(**processed_kwargs)
 
 
+class StatusCodes(troposphere.cloudfront.StatusCodes, Mixin):
+    def __init__(self,
+                 title=None,
+                 Items=REQUIRED, # type: List[_integer]
+                 Quantity=REQUIRED, # type: int
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Items=Items,
+            Quantity=Quantity,
+            **kwargs
+        )
+        super(StatusCodes, self).__init__(**processed_kwargs)
+
+
+class OriginGroupFailoverCriteria(troposphere.cloudfront.OriginGroupFailoverCriteria, Mixin):
+    def __init__(self,
+                 title=None,
+                 StatusCodes=REQUIRED, # type: _StatusCodes
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            StatusCodes=StatusCodes,
+            **kwargs
+        )
+        super(OriginGroupFailoverCriteria, self).__init__(**processed_kwargs)
+
+
+class OriginGroupMember(troposphere.cloudfront.OriginGroupMember, Mixin):
+    def __init__(self,
+                 title=None,
+                 OriginId=REQUIRED, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            OriginId=OriginId,
+            **kwargs
+        )
+        super(OriginGroupMember, self).__init__(**processed_kwargs)
+
+
+class OriginGroupMembers(troposphere.cloudfront.OriginGroupMembers, Mixin):
+    def __init__(self,
+                 title=None,
+                 Items=NOTHING, # type: List[_OriginGroupMember]
+                 Quantity=NOTHING, # type: int
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Items=Items,
+            Quantity=Quantity,
+            **kwargs
+        )
+        super(OriginGroupMembers, self).__init__(**processed_kwargs)
+
+
+class OriginGroup(troposphere.cloudfront.OriginGroup, Mixin):
+    def __init__(self,
+                 title=None,
+                 FailoverCriteria=REQUIRED, # type: _OriginGroupFailoverCriteria
+                 Id=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Members=REQUIRED, # type: _OriginGroupMembers
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            FailoverCriteria=FailoverCriteria,
+            Id=Id,
+            Members=Members,
+            **kwargs
+        )
+        super(OriginGroup, self).__init__(**processed_kwargs)
+
+
+class OriginGroups(troposphere.cloudfront.OriginGroups, Mixin):
+    def __init__(self,
+                 title=None,
+                 Items=NOTHING, # type: List[_OriginGroup]
+                 Quantity=NOTHING, # type: int
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Items=Items,
+            Quantity=Quantity,
+            **kwargs
+        )
+        super(OriginGroups, self).__init__(**processed_kwargs)
+
+
 class DistributionConfig(troposphere.cloudfront.DistributionConfig, Mixin):
     def __init__(self,
                  title=None,
@@ -353,6 +452,7 @@ class DistributionConfig(troposphere.cloudfront.DistributionConfig, Mixin):
                  HttpVersion=NOTHING, # type: Union[str, AWSHelperFn]
                  IPV6Enabled=NOTHING, # type: bool
                  Logging=NOTHING, # type: _Logging
+                 OriginGroups=NOTHING, # type: _OriginGroups
                  PriceClass=NOTHING, # type: str
                  Restrictions=NOTHING, # type: _Restrictions
                  ViewerCertificate=NOTHING, # type: _ViewerCertificate
@@ -371,6 +471,7 @@ class DistributionConfig(troposphere.cloudfront.DistributionConfig, Mixin):
             HttpVersion=HttpVersion,
             IPV6Enabled=IPV6Enabled,
             Logging=Logging,
+            OriginGroups=OriginGroups,
             PriceClass=PriceClass,
             Restrictions=Restrictions,
             ViewerCertificate=ViewerCertificate,

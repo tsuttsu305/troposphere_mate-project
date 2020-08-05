@@ -11,12 +11,13 @@ if sys.version_info.major >= 3 and sys.version_info.minor >= 5:  # pragma: no co
 import troposphere.eks
 
 from troposphere.eks import (
+    EncryptionConfig as _EncryptionConfig,
     LogSetup as _LogSetup,
     Logging as _Logging,
+    Provider as _Provider,
     RemoteAccess as _RemoteAccess,
     ResourcesVpcConfig as _ResourcesVpcConfig,
     ScalingConfig as _ScalingConfig,
-    Tags as _Tags,
 )
 
 
@@ -69,6 +70,34 @@ class ResourcesVpcConfig(troposphere.eks.ResourcesVpcConfig, Mixin):
         super(ResourcesVpcConfig, self).__init__(**processed_kwargs)
 
 
+class Provider(troposphere.eks.Provider, Mixin):
+    def __init__(self,
+                 title=None,
+                 KeyArn=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            KeyArn=KeyArn,
+            **kwargs
+        )
+        super(Provider, self).__init__(**processed_kwargs)
+
+
+class EncryptionConfig(troposphere.eks.EncryptionConfig, Mixin):
+    def __init__(self,
+                 title=None,
+                 Provider=NOTHING, # type: _Provider
+                 Resources=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Provider=Provider,
+            Resources=Resources,
+            **kwargs
+        )
+        super(EncryptionConfig, self).__init__(**processed_kwargs)
+
+
 class Cluster(troposphere.eks.Cluster, Mixin):
     def __init__(self,
                  title, # type: str
@@ -76,6 +105,7 @@ class Cluster(troposphere.eks.Cluster, Mixin):
                  validation=True, # type: bool
                  ResourcesVpcConfig=REQUIRED, # type: _ResourcesVpcConfig
                  RoleArn=REQUIRED, # type: Union[str, AWSHelperFn]
+                 EncryptionConfig=NOTHING, # type: List[_EncryptionConfig]
                  Name=NOTHING, # type: Union[str, AWSHelperFn]
                  Logging=NOTHING, # type: _Logging
                  Version=NOTHING, # type: Union[str, AWSHelperFn]
@@ -86,6 +116,7 @@ class Cluster(troposphere.eks.Cluster, Mixin):
             validation=validation,
             ResourcesVpcConfig=ResourcesVpcConfig,
             RoleArn=RoleArn,
+            EncryptionConfig=EncryptionConfig,
             Name=Name,
             Logging=Logging,
             Version=Version,
@@ -137,13 +168,13 @@ class Nodegroup(troposphere.eks.Nodegroup, Mixin):
                  DiskSize=NOTHING, # type: float
                  ForceUpdateEnabled=NOTHING, # type: bool
                  InstanceTypes=NOTHING, # type: List[Union[str, AWSHelperFn]]
-                 Labels=NOTHING, # type: Union[str, AWSHelperFn]
+                 Labels=NOTHING, # type: dict
                  NodegroupName=NOTHING, # type: Union[str, AWSHelperFn]
                  ReleaseVersion=NOTHING, # type: Union[str, AWSHelperFn]
                  RemoteAccess=NOTHING, # type: _RemoteAccess
                  ScalingConfig=NOTHING, # type: _ScalingConfig
                  Subnets=NOTHING, # type: List[Union[str, AWSHelperFn]]
-                 Tags=NOTHING, # type: _Tags
+                 Tags=NOTHING, # type: dict
                  Version=NOTHING, # type: Union[str, AWSHelperFn]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(

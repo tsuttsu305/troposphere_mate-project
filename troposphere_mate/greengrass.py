@@ -32,6 +32,7 @@ from troposphere.greengrass import (
     ResourceAccessPolicy as _ResourceAccessPolicy,
     ResourceDataContainer as _ResourceDataContainer,
     ResourceDefinitionVersion as _ResourceDefinitionVersion,
+    ResourceDownloadOwnerSetting as _ResourceDownloadOwnerSetting,
     ResourceInstance as _ResourceInstance,
     RunAs as _RunAs,
     S3MachineLearningModelResourceData as _S3MachineLearningModelResourceData,
@@ -650,16 +651,33 @@ class LocalVolumeResourceData(troposphere.greengrass.LocalVolumeResourceData, Mi
         super(LocalVolumeResourceData, self).__init__(**processed_kwargs)
 
 
+class ResourceDownloadOwnerSetting(troposphere.greengrass.ResourceDownloadOwnerSetting, Mixin):
+    def __init__(self,
+                 title=None,
+                 GroupOwner=REQUIRED, # type: Union[str, AWSHelperFn]
+                 GroupPermission=REQUIRED, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            GroupOwner=GroupOwner,
+            GroupPermission=GroupPermission,
+            **kwargs
+        )
+        super(ResourceDownloadOwnerSetting, self).__init__(**processed_kwargs)
+
+
 class S3MachineLearningModelResourceData(troposphere.greengrass.S3MachineLearningModelResourceData, Mixin):
     def __init__(self,
                  title=None,
                  DestinationPath=REQUIRED, # type: Union[str, AWSHelperFn]
                  S3Uri=REQUIRED, # type: Union[str, AWSHelperFn]
+                 OwnerSetting=NOTHING, # type: _ResourceDownloadOwnerSetting
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             DestinationPath=DestinationPath,
             S3Uri=S3Uri,
+            OwnerSetting=OwnerSetting,
             **kwargs
         )
         super(S3MachineLearningModelResourceData, self).__init__(**processed_kwargs)
@@ -670,11 +688,13 @@ class SageMakerMachineLearningModelResourceData(troposphere.greengrass.SageMaker
                  title=None,
                  DestinationPath=REQUIRED, # type: Union[str, AWSHelperFn]
                  SageMakerJobArn=REQUIRED, # type: Union[str, AWSHelperFn]
+                 OwnerSetting=NOTHING, # type: _ResourceDownloadOwnerSetting
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             DestinationPath=DestinationPath,
             SageMakerJobArn=SageMakerJobArn,
+            OwnerSetting=OwnerSetting,
             **kwargs
         )
         super(SageMakerMachineLearningModelResourceData, self).__init__(**processed_kwargs)

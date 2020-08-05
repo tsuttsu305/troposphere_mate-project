@@ -14,12 +14,15 @@ from troposphere.iotanalytics import (
     Action as _Action,
     Activity as _Activity,
     ActivityChannel as _ActivityChannel,
+    ActivityDatastore as _ActivityDatastore,
     AddAttributes as _AddAttributes,
+    ChannelStorage as _ChannelStorage,
     ContainerAction as _ContainerAction,
+    CustomerManagedS3 as _CustomerManagedS3,
     DatasetContentDeliveryRule as _DatasetContentDeliveryRule,
     DatasetContentDeliveryRuleDestination as _DatasetContentDeliveryRuleDestination,
     DatasetContentVersionValue as _DatasetContentVersionValue,
-    Datastore as _Datastore,
+    DatastoreStorage as _DatastoreStorage,
     DeltaTime as _DeltaTime,
     DeviceRegistryEnrich as _DeviceRegistryEnrich,
     DeviceShadowEnrich as _DeviceShadowEnrich,
@@ -37,6 +40,7 @@ from troposphere.iotanalytics import (
     S3DestinationConfiguration as _S3DestinationConfiguration,
     Schedule as _Schedule,
     SelectAttributes as _SelectAttributes,
+    ServiceManagedS3 as _ServiceManagedS3,
     Tags as _Tags,
     Trigger as _Trigger,
     TriggeringDataset as _TriggeringDataset,
@@ -66,12 +70,56 @@ class RetentionPeriod(troposphere.iotanalytics.RetentionPeriod, Mixin):
         super(RetentionPeriod, self).__init__(**processed_kwargs)
 
 
+class CustomerManagedS3(troposphere.iotanalytics.CustomerManagedS3, Mixin):
+    def __init__(self,
+                 title=None,
+                 Bucket=REQUIRED, # type: Union[str, AWSHelperFn]
+                 RoleArn=REQUIRED, # type: Union[str, AWSHelperFn]
+                 KeyPrefix=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Bucket=Bucket,
+            RoleArn=RoleArn,
+            KeyPrefix=KeyPrefix,
+            **kwargs
+        )
+        super(CustomerManagedS3, self).__init__(**processed_kwargs)
+
+
+class ServiceManagedS3(troposphere.iotanalytics.ServiceManagedS3, Mixin):
+    def __init__(self,
+                 title=None,
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            **kwargs
+        )
+        super(ServiceManagedS3, self).__init__(**processed_kwargs)
+
+
+class ChannelStorage(troposphere.iotanalytics.ChannelStorage, Mixin):
+    def __init__(self,
+                 title=None,
+                 CustomerManagedS3=NOTHING, # type: _CustomerManagedS3
+                 ServiceManagedS3=NOTHING, # type: _ServiceManagedS3
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            CustomerManagedS3=CustomerManagedS3,
+            ServiceManagedS3=ServiceManagedS3,
+            **kwargs
+        )
+        super(ChannelStorage, self).__init__(**processed_kwargs)
+
+
 class Channel(troposphere.iotanalytics.Channel, Mixin):
     def __init__(self,
                  title, # type: str
                  template=None, # type: Template
                  validation=True, # type: bool
                  ChannelName=NOTHING, # type: Union[str, AWSHelperFn]
+                 ChannelStorage=NOTHING, # type: _ChannelStorage
                  RetentionPeriod=NOTHING, # type: _RetentionPeriod
                  Tags=NOTHING, # type: Union[_Tags, list]
                  **kwargs):
@@ -80,6 +128,7 @@ class Channel(troposphere.iotanalytics.Channel, Mixin):
             template=template,
             validation=validation,
             ChannelName=ChannelName,
+            ChannelStorage=ChannelStorage,
             RetentionPeriod=RetentionPeriod,
             Tags=Tags,
             **kwargs
@@ -90,7 +139,7 @@ class Channel(troposphere.iotanalytics.Channel, Mixin):
 class AddAttributes(troposphere.iotanalytics.AddAttributes, Mixin):
     def __init__(self,
                  title=None,
-                 Attributes=NOTHING, # type: json_checker
+                 Attributes=NOTHING, # type: dict
                  Name=NOTHING, # type: Union[str, AWSHelperFn]
                  Next=NOTHING, # type: Union[str, AWSHelperFn]
                  **kwargs):
@@ -121,21 +170,19 @@ class ActivityChannel(troposphere.iotanalytics.ActivityChannel, Mixin):
         super(ActivityChannel, self).__init__(**processed_kwargs)
 
 
-class Datastore(troposphere.iotanalytics.Datastore, Mixin):
+class ActivityDatastore(troposphere.iotanalytics.ActivityDatastore, Mixin):
     def __init__(self,
                  title=None,
                  DatastoreName=NOTHING, # type: Union[str, AWSHelperFn]
-                 RetentionPeriod=NOTHING, # type: _RetentionPeriod
-                 Tags=NOTHING, # type: Union[_Tags, list]
+                 Name=NOTHING, # type: Union[str, AWSHelperFn]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             DatastoreName=DatastoreName,
-            RetentionPeriod=RetentionPeriod,
-            Tags=Tags,
+            Name=Name,
             **kwargs
         )
-        super(Datastore, self).__init__(**processed_kwargs)
+        super(ActivityDatastore, self).__init__(**processed_kwargs)
 
 
 class DeviceRegistryEnrich(troposphere.iotanalytics.DeviceRegistryEnrich, Mixin):
@@ -274,7 +321,7 @@ class Activity(troposphere.iotanalytics.Activity, Mixin):
                  title=None,
                  AddAttributes=NOTHING, # type: _AddAttributes
                  Channel=NOTHING, # type: _ActivityChannel
-                 Datastore=NOTHING, # type: _Datastore
+                 Datastore=NOTHING, # type: _ActivityDatastore
                  DeviceRegistryEnrich=NOTHING, # type: _DeviceRegistryEnrich
                  DeviceShadowEnrich=NOTHING, # type: _DeviceShadowEnrich
                  Filter=NOTHING, # type: _Filter
@@ -319,42 +366,6 @@ class Pipeline(troposphere.iotanalytics.Pipeline, Mixin):
             **kwargs
         )
         super(Pipeline, self).__init__(**processed_kwargs)
-
-
-class RetentionPeriod(troposphere.iotanalytics.RetentionPeriod, Mixin):
-    def __init__(self,
-                 title=None,
-                 NumberOfDays=NOTHING, # type: int
-                 Unlimited=NOTHING, # type: bool
-                 **kwargs):
-        processed_kwargs = preprocess_init_kwargs(
-            title=title,
-            NumberOfDays=NumberOfDays,
-            Unlimited=Unlimited,
-            **kwargs
-        )
-        super(RetentionPeriod, self).__init__(**processed_kwargs)
-
-
-class Datastore(troposphere.iotanalytics.Datastore, Mixin):
-    def __init__(self,
-                 title, # type: str
-                 template=None, # type: Template
-                 validation=True, # type: bool
-                 DatastoreName=NOTHING, # type: Union[str, AWSHelperFn]
-                 RetentionPeriod=NOTHING, # type: _RetentionPeriod
-                 Tags=NOTHING, # type: Union[_Tags, list]
-                 **kwargs):
-        processed_kwargs = preprocess_init_kwargs(
-            title=title,
-            template=template,
-            validation=validation,
-            DatastoreName=DatastoreName,
-            RetentionPeriod=RetentionPeriod,
-            Tags=Tags,
-            **kwargs
-        )
-        super(Datastore, self).__init__(**processed_kwargs)
 
 
 class ResourceConfiguration(troposphere.iotanalytics.ResourceConfiguration, Mixin):
@@ -660,3 +671,41 @@ class Dataset(troposphere.iotanalytics.Dataset, Mixin):
             **kwargs
         )
         super(Dataset, self).__init__(**processed_kwargs)
+
+
+class DatastoreStorage(troposphere.iotanalytics.DatastoreStorage, Mixin):
+    def __init__(self,
+                 title=None,
+                 CustomerManagedS3=NOTHING, # type: _CustomerManagedS3
+                 ServiceManagedS3=NOTHING, # type: _ServiceManagedS3
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            CustomerManagedS3=CustomerManagedS3,
+            ServiceManagedS3=ServiceManagedS3,
+            **kwargs
+        )
+        super(DatastoreStorage, self).__init__(**processed_kwargs)
+
+
+class Datastore(troposphere.iotanalytics.Datastore, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 DatastoreName=NOTHING, # type: Union[str, AWSHelperFn]
+                 DatastoreStorage=NOTHING, # type: _DatastoreStorage
+                 RetentionPeriod=NOTHING, # type: _RetentionPeriod
+                 Tags=NOTHING, # type: Union[_Tags, list]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            DatastoreName=DatastoreName,
+            DatastoreStorage=DatastoreStorage,
+            RetentionPeriod=RetentionPeriod,
+            Tags=Tags,
+            **kwargs
+        )
+        super(Datastore, self).__init__(**processed_kwargs)

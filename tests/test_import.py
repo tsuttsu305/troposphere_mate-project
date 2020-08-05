@@ -26,11 +26,13 @@ def test():
     _ = canned.iam.AWSManagedPolicyArn
 
     from troposphere_mate import accessanalyzer
+    from troposphere_mate import acmpca
     from troposphere_mate import amazonmq
     from troposphere_mate import amplify
     from troposphere_mate import analytics
     from troposphere_mate import apigateway
     from troposphere_mate import apigatewayv2
+    from troposphere_mate import appconfig
     from troposphere_mate import applicationautoscaling
     from troposphere_mate import appmesh
     from troposphere_mate import appstream
@@ -43,7 +45,10 @@ def test():
     from troposphere_mate import backup
     from troposphere_mate import batch
     from troposphere_mate import budgets
+    from troposphere_mate import cassandra
+    from troposphere_mate import ce
     from troposphere_mate import certificatemanager
+    from troposphere_mate import chatbot
     from troposphere_mate import cloud9
     from troposphere_mate import cloudformation
     from troposphere_mate import cloudfront
@@ -52,8 +57,10 @@ def test():
     from troposphere_mate import codebuild
     from troposphere_mate import codecommit
     from troposphere_mate import codedeploy
+    from troposphere_mate import codeguruprofiler
     from troposphere_mate import codepipeline
     from troposphere_mate import codestar
+    from troposphere_mate import codestarconnections
     from troposphere_mate import codestarnotifications
     from troposphere_mate import cognito
     from troposphere_mate import compat
@@ -61,11 +68,13 @@ def test():
     from troposphere_mate import constants
     from troposphere_mate import datapipeline
     from troposphere_mate import dax
+    from troposphere_mate import detective
     from troposphere_mate import directoryservice
     from troposphere_mate import dlm
     from troposphere_mate import dms
     from troposphere_mate import docdb
     from troposphere_mate import dynamodb
+    from troposphere_mate import dynamodb2
     from troposphere_mate import ec2
     from troposphere_mate import ecr
     from troposphere_mate import ecs
@@ -80,12 +89,16 @@ def test():
     from troposphere_mate import events
     from troposphere_mate import eventschemas
     from troposphere_mate import firehose
+    from troposphere_mate import fms
     from troposphere_mate import fsx
     from troposphere_mate import gamelift
+    from troposphere_mate import globalaccelerator
     from troposphere_mate import glue
     from troposphere_mate import greengrass
+    from troposphere_mate import groundstation
     from troposphere_mate import guardduty
     from troposphere_mate import iam
+    from troposphere_mate import imagebuilder
     from troposphere_mate import inspector
     from troposphere_mate import iot
     from troposphere_mate import iot1click
@@ -96,12 +109,14 @@ def test():
     from troposphere_mate import kms
     from troposphere_mate import lakeformation
     from troposphere_mate import logs
+    from troposphere_mate import macie
     from troposphere_mate import managedblockchain
     from troposphere_mate import mediaconvert
     from troposphere_mate import medialive
     from troposphere_mate import mediastore
     from troposphere_mate import msk
     from troposphere_mate import neptune
+    from troposphere_mate import networkmanager
     from troposphere_mate import opsworks
     from troposphere_mate import pinpoint
     from troposphere_mate import pinpointemail
@@ -110,6 +125,7 @@ def test():
     from troposphere_mate import ram
     from troposphere_mate import rds
     from troposphere_mate import redshift
+    from troposphere_mate import resourcegroups
     from troposphere_mate import robomaker
     from troposphere_mate import route53
     from troposphere_mate import s3
@@ -125,12 +141,14 @@ def test():
     from troposphere_mate import sqs
     from troposphere_mate import ssm
     from troposphere_mate import stepfunctions
+    from troposphere_mate import synthetics
     from troposphere_mate import template_generator
     from troposphere_mate import transfer
     from troposphere_mate import utils
     from troposphere_mate import validators
     from troposphere_mate import waf
     from troposphere_mate import wafregional
+    from troposphere_mate import wafv2
     from troposphere_mate import workspaces
 
 

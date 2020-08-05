@@ -135,10 +135,12 @@ class LaunchTemplateOverrides(troposphere.autoscaling.LaunchTemplateOverrides, M
     def __init__(self,
                  title=None,
                  InstanceType=NOTHING, # type: Union[str, AWSHelperFn]
+                 WeightedCapacity=NOTHING, # type: Union[str, AWSHelperFn]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             InstanceType=InstanceType,
+            WeightedCapacity=WeightedCapacity,
             **kwargs
         )
         super(LaunchTemplateOverrides, self).__init__(**processed_kwargs)
@@ -192,6 +194,7 @@ class AutoScalingGroup(troposphere.autoscaling.AutoScalingGroup, Mixin):
                  LaunchTemplate=NOTHING, # type: _LaunchTemplateSpecification
                  LifecycleHookSpecificationList=NOTHING, # type: List[_LifecycleHookSpecification]
                  LoadBalancerNames=NOTHING, # type: list
+                 MaxInstanceLifetime=NOTHING, # type: int
                  MetricsCollection=NOTHING, # type: List[_MetricsCollection]
                  MixedInstancesPolicy=NOTHING, # type: _MixedInstancesPolicy
                  NotificationConfigurations=NOTHING, # type: List[_NotificationConfigurations]
@@ -219,6 +222,7 @@ class AutoScalingGroup(troposphere.autoscaling.AutoScalingGroup, Mixin):
             LaunchTemplate=LaunchTemplate,
             LifecycleHookSpecificationList=LifecycleHookSpecificationList,
             LoadBalancerNames=LoadBalancerNames,
+            MaxInstanceLifetime=MaxInstanceLifetime,
             MetricsCollection=MetricsCollection,
             MixedInstancesPolicy=MixedInstancesPolicy,
             NotificationConfigurations=NotificationConfigurations,

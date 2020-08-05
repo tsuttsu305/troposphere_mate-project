@@ -10,15 +10,13 @@ if sys.version_info.major >= 3 and sys.version_info.minor >= 5:  # pragma: no co
 
 import troposphere.kinesisanalyticsv2
 
-# monkey patch
-troposphere.kinesisanalyticsv2.VALID_RUNTIME_ENVIRONMENTS = ('SQL-1_0', 'FLINK-1_6')
-
 from troposphere.kinesisanalyticsv2 import (
     ApplicationCodeConfiguration as _ApplicationCodeConfiguration,
     ApplicationConfiguration as _ApplicationConfiguration,
     ApplicationSnapshotConfiguration as _ApplicationSnapshotConfiguration,
     CSVMappingParameters as _CSVMappingParameters,
     CheckpointConfiguration as _CheckpointConfiguration,
+    CloudWatchLoggingOption as _CloudWatchLoggingOption,
     CodeContent as _CodeContent,
     DestinationSchema as _DestinationSchema,
     EnvironmentProperties as _EnvironmentProperties,
@@ -75,15 +73,15 @@ class S3ContentLocation(troposphere.kinesisanalyticsv2.S3ContentLocation, Mixin)
 class CodeContent(troposphere.kinesisanalyticsv2.CodeContent, Mixin):
     def __init__(self,
                  title=None,
-                 ZipFileContent=NOTHING, # type: Union[str, AWSHelperFn]
                  S3ContentLocation=NOTHING, # type: _S3ContentLocation
                  TextContent=NOTHING, # type: Union[str, AWSHelperFn]
+                 ZipFileContent=NOTHING, # type: Union[str, AWSHelperFn]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
-            ZipFileContent=ZipFileContent,
             S3ContentLocation=S3ContentLocation,
             TextContent=TextContent,
+            ZipFileContent=ZipFileContent,
             **kwargs
         )
         super(CodeContent, self).__init__(**processed_kwargs)
@@ -92,13 +90,13 @@ class CodeContent(troposphere.kinesisanalyticsv2.CodeContent, Mixin):
 class ApplicationCodeConfiguration(troposphere.kinesisanalyticsv2.ApplicationCodeConfiguration, Mixin):
     def __init__(self,
                  title=None,
-                 CodeContentType=REQUIRED, # type: Union[str, AWSHelperFn]
                  CodeContent=REQUIRED, # type: _CodeContent
+                 CodeContentType=REQUIRED, # type: Union[str, AWSHelperFn]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
-            CodeContentType=CodeContentType,
             CodeContent=CodeContent,
+            CodeContentType=CodeContentType,
             **kwargs
         )
         super(ApplicationCodeConfiguration, self).__init__(**processed_kwargs)
@@ -107,13 +105,13 @@ class ApplicationCodeConfiguration(troposphere.kinesisanalyticsv2.ApplicationCod
 class PropertyGroup(troposphere.kinesisanalyticsv2.PropertyGroup, Mixin):
     def __init__(self,
                  title=None,
-                 PropertyMap=NOTHING, # type: json_checker
                  PropertyGroupId=NOTHING, # type: Union[str, AWSHelperFn]
+                 PropertyMap=NOTHING, # type: json_checker
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
-            PropertyMap=PropertyMap,
             PropertyGroupId=PropertyGroupId,
+            PropertyMap=PropertyMap,
             **kwargs
         )
         super(PropertyGroup, self).__init__(**processed_kwargs)
@@ -137,15 +135,15 @@ class CheckpointConfiguration(troposphere.kinesisanalyticsv2.CheckpointConfigura
                  title=None,
                  ConfigurationType=REQUIRED, # type: Union[str, AWSHelperFn]
                  CheckpointInterval=NOTHING, # type: int
-                 MinPauseBetweenCheckpoints=NOTHING, # type: int
                  CheckpointingEnabled=NOTHING, # type: bool
+                 MinPauseBetweenCheckpoints=NOTHING, # type: int
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             ConfigurationType=ConfigurationType,
             CheckpointInterval=CheckpointInterval,
-            MinPauseBetweenCheckpoints=MinPauseBetweenCheckpoints,
             CheckpointingEnabled=CheckpointingEnabled,
+            MinPauseBetweenCheckpoints=MinPauseBetweenCheckpoints,
             **kwargs
         )
         super(CheckpointConfiguration, self).__init__(**processed_kwargs)
@@ -155,14 +153,14 @@ class MonitoringConfiguration(troposphere.kinesisanalyticsv2.MonitoringConfigura
     def __init__(self,
                  title=None,
                  ConfigurationType=REQUIRED, # type: Union[str, AWSHelperFn]
-                 MetricsLevel=NOTHING, # type: Union[str, AWSHelperFn]
                  LogLevel=NOTHING, # type: Union[str, AWSHelperFn]
+                 MetricsLevel=NOTHING, # type: Union[str, AWSHelperFn]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             ConfigurationType=ConfigurationType,
-            MetricsLevel=MetricsLevel,
             LogLevel=LogLevel,
+            MetricsLevel=MetricsLevel,
             **kwargs
         )
         super(MonitoringConfiguration, self).__init__(**processed_kwargs)
@@ -172,16 +170,16 @@ class ParallelismConfiguration(troposphere.kinesisanalyticsv2.ParallelismConfigu
     def __init__(self,
                  title=None,
                  ConfigurationType=REQUIRED, # type: Union[str, AWSHelperFn]
-                 ParallelismPerKPU=NOTHING, # type: int
                  AutoScalingEnabled=NOTHING, # type: bool
                  Parallelism=NOTHING, # type: int
+                 ParallelismPerKPU=NOTHING, # type: int
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             ConfigurationType=ConfigurationType,
-            ParallelismPerKPU=ParallelismPerKPU,
             AutoScalingEnabled=AutoScalingEnabled,
             Parallelism=Parallelism,
+            ParallelismPerKPU=ParallelismPerKPU,
             **kwargs
         )
         super(ParallelismConfiguration, self).__init__(**processed_kwargs)
@@ -191,14 +189,14 @@ class FlinkApplicationConfiguration(troposphere.kinesisanalyticsv2.FlinkApplicat
     def __init__(self,
                  title=None,
                  CheckpointConfiguration=NOTHING, # type: _CheckpointConfiguration
-                 ParallelismConfiguration=NOTHING, # type: _ParallelismConfiguration
                  MonitoringConfiguration=NOTHING, # type: _MonitoringConfiguration
+                 ParallelismConfiguration=NOTHING, # type: _ParallelismConfiguration
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             CheckpointConfiguration=CheckpointConfiguration,
-            ParallelismConfiguration=ParallelismConfiguration,
             MonitoringConfiguration=MonitoringConfiguration,
+            ParallelismConfiguration=ParallelismConfiguration,
             **kwargs
         )
         super(FlinkApplicationConfiguration, self).__init__(**processed_kwargs)
@@ -246,14 +244,14 @@ class InputProcessingConfiguration(troposphere.kinesisanalyticsv2.InputProcessin
 class RecordColumn(troposphere.kinesisanalyticsv2.RecordColumn, Mixin):
     def __init__(self,
                  title=None,
-                 SqlType=REQUIRED, # type: Union[str, AWSHelperFn]
                  Name=REQUIRED, # type: Union[str, AWSHelperFn]
+                 SqlType=REQUIRED, # type: Union[str, AWSHelperFn]
                  Mapping=NOTHING, # type: Union[str, AWSHelperFn]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
-            SqlType=SqlType,
             Name=Name,
+            SqlType=SqlType,
             Mapping=Mapping,
             **kwargs
         )
@@ -276,13 +274,13 @@ class JSONMappingParameters(troposphere.kinesisanalyticsv2.JSONMappingParameters
 class CSVMappingParameters(troposphere.kinesisanalyticsv2.CSVMappingParameters, Mixin):
     def __init__(self,
                  title=None,
-                 RecordRowDelimiter=REQUIRED, # type: Union[str, AWSHelperFn]
                  RecordColumnDelimiter=REQUIRED, # type: Union[str, AWSHelperFn]
+                 RecordRowDelimiter=REQUIRED, # type: Union[str, AWSHelperFn]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
-            RecordRowDelimiter=RecordRowDelimiter,
             RecordColumnDelimiter=RecordColumnDelimiter,
+            RecordRowDelimiter=RecordRowDelimiter,
             **kwargs
         )
         super(CSVMappingParameters, self).__init__(**processed_kwargs)
@@ -291,13 +289,13 @@ class CSVMappingParameters(troposphere.kinesisanalyticsv2.CSVMappingParameters, 
 class MappingParameters(troposphere.kinesisanalyticsv2.MappingParameters, Mixin):
     def __init__(self,
                  title=None,
-                 JSONMappingParameters=NOTHING, # type: _JSONMappingParameters
                  CSVMappingParameters=NOTHING, # type: _CSVMappingParameters
+                 JSONMappingParameters=NOTHING, # type: _JSONMappingParameters
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
-            JSONMappingParameters=JSONMappingParameters,
             CSVMappingParameters=CSVMappingParameters,
+            JSONMappingParameters=JSONMappingParameters,
             **kwargs
         )
         super(MappingParameters, self).__init__(**processed_kwargs)
@@ -365,20 +363,20 @@ class Input(troposphere.kinesisanalyticsv2.Input, Mixin):
     def __init__(self,
                  title=None,
                  InputSchema=REQUIRED, # type: _InputSchema
-                 NamePrefix=NOTHING, # type: Union[str, AWSHelperFn]
-                 KinesisStreamsInput=NOTHING, # type: _KinesisStreamsInput
-                 KinesisFirehoseInput=NOTHING, # type: _KinesisFirehoseInput
-                 InputProcessingConfiguration=NOTHING, # type: _InputProcessingConfiguration
                  InputParallelism=NOTHING, # type: _InputParallelism
+                 InputProcessingConfiguration=NOTHING, # type: _InputProcessingConfiguration
+                 KinesisFirehoseInput=NOTHING, # type: _KinesisFirehoseInput
+                 KinesisStreamsInput=NOTHING, # type: _KinesisStreamsInput
+                 NamePrefix=NOTHING, # type: Union[str, AWSHelperFn]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             InputSchema=InputSchema,
-            NamePrefix=NamePrefix,
-            KinesisStreamsInput=KinesisStreamsInput,
-            KinesisFirehoseInput=KinesisFirehoseInput,
-            InputProcessingConfiguration=InputProcessingConfiguration,
             InputParallelism=InputParallelism,
+            InputProcessingConfiguration=InputProcessingConfiguration,
+            KinesisFirehoseInput=KinesisFirehoseInput,
+            KinesisStreamsInput=KinesisStreamsInput,
+            NamePrefix=NamePrefix,
             **kwargs
         )
         super(Input, self).__init__(**processed_kwargs)
@@ -414,18 +412,18 @@ class ApplicationConfiguration(troposphere.kinesisanalyticsv2.ApplicationConfigu
     def __init__(self,
                  title=None,
                  ApplicationCodeConfiguration=NOTHING, # type: _ApplicationCodeConfiguration
+                 ApplicationSnapshotConfiguration=NOTHING, # type: _ApplicationSnapshotConfiguration
                  EnvironmentProperties=NOTHING, # type: _EnvironmentProperties
                  FlinkApplicationConfiguration=NOTHING, # type: _FlinkApplicationConfiguration
                  SqlApplicationConfiguration=NOTHING, # type: _SqlApplicationConfiguration
-                 ApplicationSnapshotConfiguration=NOTHING, # type: _ApplicationSnapshotConfiguration
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             ApplicationCodeConfiguration=ApplicationCodeConfiguration,
+            ApplicationSnapshotConfiguration=ApplicationSnapshotConfiguration,
             EnvironmentProperties=EnvironmentProperties,
             FlinkApplicationConfiguration=FlinkApplicationConfiguration,
             SqlApplicationConfiguration=SqlApplicationConfiguration,
-            ApplicationSnapshotConfiguration=ApplicationSnapshotConfiguration,
             **kwargs
         )
         super(ApplicationConfiguration, self).__init__(**processed_kwargs)
@@ -438,9 +436,9 @@ class Application(troposphere.kinesisanalyticsv2.Application, Mixin):
                  validation=True, # type: bool
                  RuntimeEnvironment=REQUIRED, # type: Any
                  ServiceExecutionRole=REQUIRED, # type: Union[str, AWSHelperFn]
-                 ApplicationName=NOTHING, # type: Union[str, AWSHelperFn]
                  ApplicationConfiguration=NOTHING, # type: _ApplicationConfiguration
                  ApplicationDescription=NOTHING, # type: Union[str, AWSHelperFn]
+                 ApplicationName=NOTHING, # type: Union[str, AWSHelperFn]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
@@ -448,12 +446,44 @@ class Application(troposphere.kinesisanalyticsv2.Application, Mixin):
             validation=validation,
             RuntimeEnvironment=RuntimeEnvironment,
             ServiceExecutionRole=ServiceExecutionRole,
-            ApplicationName=ApplicationName,
             ApplicationConfiguration=ApplicationConfiguration,
             ApplicationDescription=ApplicationDescription,
+            ApplicationName=ApplicationName,
             **kwargs
         )
         super(Application, self).__init__(**processed_kwargs)
+
+
+class CloudWatchLoggingOption(troposphere.kinesisanalyticsv2.CloudWatchLoggingOption, Mixin):
+    def __init__(self,
+                 title=None,
+                 LogStreamARN=REQUIRED, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            LogStreamARN=LogStreamARN,
+            **kwargs
+        )
+        super(CloudWatchLoggingOption, self).__init__(**processed_kwargs)
+
+
+class ApplicationCloudWatchLoggingOption(troposphere.kinesisanalyticsv2.ApplicationCloudWatchLoggingOption, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 ApplicationName=REQUIRED, # type: Union[str, AWSHelperFn]
+                 CloudWatchLoggingOption=REQUIRED, # type: _CloudWatchLoggingOption
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            ApplicationName=ApplicationName,
+            CloudWatchLoggingOption=CloudWatchLoggingOption,
+            **kwargs
+        )
+        super(ApplicationCloudWatchLoggingOption, self).__init__(**processed_kwargs)
 
 
 class S3ReferenceDataSource(troposphere.kinesisanalyticsv2.S3ReferenceDataSource, Mixin):

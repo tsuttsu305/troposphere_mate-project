@@ -63,6 +63,27 @@ class Registry(troposphere.eventschemas.Registry, Mixin):
         super(Registry, self).__init__(**processed_kwargs)
 
 
+class RegistryPolicy(troposphere.eventschemas.RegistryPolicy, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 Policy=REQUIRED, # type: dict
+                 RegistryName=REQUIRED, # type: Union[str, AWSHelperFn]
+                 RevisionId=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            Policy=Policy,
+            RegistryName=RegistryName,
+            RevisionId=RevisionId,
+            **kwargs
+        )
+        super(RegistryPolicy, self).__init__(**processed_kwargs)
+
+
 class Schema(troposphere.eventschemas.Schema, Mixin):
     def __init__(self,
                  title, # type: str

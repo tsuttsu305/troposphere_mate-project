@@ -56,7 +56,9 @@ class DBCluster(troposphere.neptune.DBCluster, Mixin):
                  DBClusterIdentifier=NOTHING, # type: Union[str, AWSHelperFn]
                  DBClusterParameterGroupName=NOTHING, # type: Union[str, AWSHelperFn]
                  DBSubnetGroupName=NOTHING, # type: Union[str, AWSHelperFn]
+                 DeletionProtection=NOTHING, # type: bool
                  EnableCloudwatchLogsExports=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 EngineVersion=NOTHING, # type: Union[str, AWSHelperFn]
                  IamAuthEnabled=NOTHING, # type: bool
                  KmsKeyId=NOTHING, # type: Union[str, AWSHelperFn]
                  Port=NOTHING, # type: int
@@ -76,7 +78,9 @@ class DBCluster(troposphere.neptune.DBCluster, Mixin):
             DBClusterIdentifier=DBClusterIdentifier,
             DBClusterParameterGroupName=DBClusterParameterGroupName,
             DBSubnetGroupName=DBSubnetGroupName,
+            DeletionProtection=DeletionProtection,
             EnableCloudwatchLogsExports=EnableCloudwatchLogsExports,
+            EngineVersion=EngineVersion,
             IamAuthEnabled=IamAuthEnabled,
             KmsKeyId=KmsKeyId,
             Port=Port,

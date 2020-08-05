@@ -11,7 +11,10 @@ if sys.version_info.major >= 3 and sys.version_info.minor >= 5:  # pragma: no co
 import troposphere.efs
 
 from troposphere.efs import (
+    CreationInfo as _CreationInfo,
     LifecyclePolicy as _LifecyclePolicy,
+    PosixUser as _PosixUser,
+    RootDirectory as _RootDirectory,
     Tags as _Tags,
 )
 
@@ -20,6 +23,80 @@ from troposphere import Template, AWSHelperFn
 from troposphere_mate.core.mate import preprocess_init_kwargs, Mixin
 from troposphere_mate.core.sentiel import REQUIRED, NOTHING
 
+
+
+class PosixUser(troposphere.efs.PosixUser, Mixin):
+    def __init__(self,
+                 title=None,
+                 Gid=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Uid=REQUIRED, # type: Union[str, AWSHelperFn]
+                 SecondaryGids=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Gid=Gid,
+            Uid=Uid,
+            SecondaryGids=SecondaryGids,
+            **kwargs
+        )
+        super(PosixUser, self).__init__(**processed_kwargs)
+
+
+class CreationInfo(troposphere.efs.CreationInfo, Mixin):
+    def __init__(self,
+                 title=None,
+                 OwnerGid=REQUIRED, # type: Union[str, AWSHelperFn]
+                 OwnerUid=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Permissions=REQUIRED, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            OwnerGid=OwnerGid,
+            OwnerUid=OwnerUid,
+            Permissions=Permissions,
+            **kwargs
+        )
+        super(CreationInfo, self).__init__(**processed_kwargs)
+
+
+class RootDirectory(troposphere.efs.RootDirectory, Mixin):
+    def __init__(self,
+                 title=None,
+                 CreationInfo=NOTHING, # type: _CreationInfo
+                 Path=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            CreationInfo=CreationInfo,
+            Path=Path,
+            **kwargs
+        )
+        super(RootDirectory, self).__init__(**processed_kwargs)
+
+
+class AccessPoint(troposphere.efs.AccessPoint, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 FileSystemId=REQUIRED, # type: Union[str, AWSHelperFn]
+                 AccessPointTags=NOTHING, # type: _Tags
+                 ClientToken=NOTHING, # type: Union[str, AWSHelperFn]
+                 PosixUser=NOTHING, # type: _PosixUser
+                 RootDirectory=NOTHING, # type: _RootDirectory
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            FileSystemId=FileSystemId,
+            AccessPointTags=AccessPointTags,
+            ClientToken=ClientToken,
+            PosixUser=PosixUser,
+            RootDirectory=RootDirectory,
+            **kwargs
+        )
+        super(AccessPoint, self).__init__(**processed_kwargs)
 
 
 class LifecyclePolicy(troposphere.efs.LifecyclePolicy, Mixin):
@@ -41,6 +118,7 @@ class FileSystem(troposphere.efs.FileSystem, Mixin):
                  template=None, # type: Template
                  validation=True, # type: bool
                  Encrypted=NOTHING, # type: bool
+                 FileSystemPolicy=NOTHING, # type: dict
                  FileSystemTags=NOTHING, # type: _Tags
                  KmsKeyId=NOTHING, # type: Union[str, AWSHelperFn]
                  LifecyclePolicies=NOTHING, # type: List[_LifecyclePolicy]
@@ -53,6 +131,7 @@ class FileSystem(troposphere.efs.FileSystem, Mixin):
             template=template,
             validation=validation,
             Encrypted=Encrypted,
+            FileSystemPolicy=FileSystemPolicy,
             FileSystemTags=FileSystemTags,
             KmsKeyId=KmsKeyId,
             LifecyclePolicies=LifecyclePolicies,

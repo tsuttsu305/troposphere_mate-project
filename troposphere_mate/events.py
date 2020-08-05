@@ -17,6 +17,7 @@ from troposphere.events import (
     BatchRetryStrategy as _BatchRetryStrategy,
     Condition as _Condition,
     EcsParameters as _EcsParameters,
+    HttpParameters as _HttpParameters,
     InputTransformer as _InputTransformer,
     KinesisParameters as _KinesisParameters,
     NetworkConfiguration as _NetworkConfiguration,
@@ -192,6 +193,23 @@ class EcsParameters(troposphere.events.EcsParameters, Mixin):
         super(EcsParameters, self).__init__(**processed_kwargs)
 
 
+class HttpParameters(troposphere.events.HttpParameters, Mixin):
+    def __init__(self,
+                 title=None,
+                 HeaderParameters=NOTHING, # type: dict
+                 PathParameterValues=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 QueryStringParameters=NOTHING, # type: dict
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            HeaderParameters=HeaderParameters,
+            PathParameterValues=PathParameterValues,
+            QueryStringParameters=QueryStringParameters,
+            **kwargs
+        )
+        super(HttpParameters, self).__init__(**processed_kwargs)
+
+
 class InputTransformer(troposphere.events.InputTransformer, Mixin):
     def __init__(self,
                  title=None,
@@ -268,6 +286,7 @@ class Target(troposphere.events.Target, Mixin):
                  Id=REQUIRED, # type: Union[str, AWSHelperFn]
                  BatchParameters=NOTHING, # type: _BatchParameters
                  EcsParameters=NOTHING, # type: _EcsParameters
+                 HttpParameters=NOTHING, # type: _HttpParameters
                  Input=NOTHING, # type: Union[str, AWSHelperFn]
                  InputPath=NOTHING, # type: Union[str, AWSHelperFn]
                  InputTransformer=NOTHING, # type: _InputTransformer
@@ -282,6 +301,7 @@ class Target(troposphere.events.Target, Mixin):
             Id=Id,
             BatchParameters=BatchParameters,
             EcsParameters=EcsParameters,
+            HttpParameters=HttpParameters,
             Input=Input,
             InputPath=InputPath,
             InputTransformer=InputTransformer,

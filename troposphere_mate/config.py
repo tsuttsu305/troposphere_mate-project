@@ -13,6 +13,7 @@ import troposphere.config
 from troposphere.config import (
     AccountAggregationSources as _AccountAggregationSources,
     ConfigSnapshotDeliveryProperties as _ConfigSnapshotDeliveryProperties,
+    ConformancePackInputParameter as _ConformancePackInputParameter,
     ExecutionControls as _ExecutionControls,
     OrganizationAggregationSource as _OrganizationAggregationSource,
     OrganizationCustomRuleMetadata as _OrganizationCustomRuleMetadata,
@@ -401,3 +402,74 @@ class RemediationConfiguration(troposphere.config.RemediationConfiguration, Mixi
             **kwargs
         )
         super(RemediationConfiguration, self).__init__(**processed_kwargs)
+
+
+class ConformancePackInputParameter(troposphere.config.ConformancePackInputParameter, Mixin):
+    def __init__(self,
+                 title=None,
+                 ParameterName=REQUIRED, # type: Union[str, AWSHelperFn]
+                 ParameterValue=REQUIRED, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            ParameterName=ParameterName,
+            ParameterValue=ParameterValue,
+            **kwargs
+        )
+        super(ConformancePackInputParameter, self).__init__(**processed_kwargs)
+
+
+class ConformancePack(troposphere.config.ConformancePack, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 ConformancePackName=REQUIRED, # type: Union[str, AWSHelperFn]
+                 DeliveryS3Bucket=REQUIRED, # type: Union[str, AWSHelperFn]
+                 ConformancePackInputParameters=NOTHING, # type: List[_ConformancePackInputParameter]
+                 DeliveryS3KeyPrefix=NOTHING, # type: Union[str, AWSHelperFn]
+                 TemplateBody=NOTHING, # type: Union[str, AWSHelperFn]
+                 TemplateS3Uri=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            ConformancePackName=ConformancePackName,
+            DeliveryS3Bucket=DeliveryS3Bucket,
+            ConformancePackInputParameters=ConformancePackInputParameters,
+            DeliveryS3KeyPrefix=DeliveryS3KeyPrefix,
+            TemplateBody=TemplateBody,
+            TemplateS3Uri=TemplateS3Uri,
+            **kwargs
+        )
+        super(ConformancePack, self).__init__(**processed_kwargs)
+
+
+class OrganizationConformancePack(troposphere.config.OrganizationConformancePack, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 DeliveryS3Bucket=REQUIRED, # type: Union[str, AWSHelperFn]
+                 OrganizationConformancePackName=REQUIRED, # type: Union[str, AWSHelperFn]
+                 ConformancePackInputParameters=NOTHING, # type: List[_ConformancePackInputParameter]
+                 DeliveryS3KeyPrefix=NOTHING, # type: Union[str, AWSHelperFn]
+                 ExcludedAccounts=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 TemplateBody=NOTHING, # type: Union[str, AWSHelperFn]
+                 TemplateS3Uri=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            DeliveryS3Bucket=DeliveryS3Bucket,
+            OrganizationConformancePackName=OrganizationConformancePackName,
+            ConformancePackInputParameters=ConformancePackInputParameters,
+            DeliveryS3KeyPrefix=DeliveryS3KeyPrefix,
+            ExcludedAccounts=ExcludedAccounts,
+            TemplateBody=TemplateBody,
+            TemplateS3Uri=TemplateS3Uri,
+            **kwargs
+        )
+        super(OrganizationConformancePack, self).__init__(**processed_kwargs)

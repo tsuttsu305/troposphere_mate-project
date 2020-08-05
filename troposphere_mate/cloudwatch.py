@@ -17,6 +17,7 @@ from troposphere.cloudwatch import (
     MetricDimension as _MetricDimension,
     MetricStat as _MetricStat,
     Range as _Range,
+    Tags as _Tags,
 )
 
 
@@ -122,7 +123,7 @@ class Alarm(troposphere.cloudwatch.Alarm, Mixin):
                  Statistic=NOTHING, # type: Union[str, AWSHelperFn]
                  Threshold=NOTHING, # type: float
                  ThresholdMetricId=NOTHING, # type: Union[str, AWSHelperFn]
-                 TreatMissingData=NOTHING, # type: Union[str, AWSHelperFn]
+                 TreatMissingData=NOTHING, # type: Any
                  Unit=NOTHING, # type: Union[str, AWSHelperFn]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
@@ -237,6 +238,7 @@ class InsightRule(troposphere.cloudwatch.InsightRule, Mixin):
                  RuleBody=REQUIRED, # type: Union[str, AWSHelperFn]
                  RuleName=REQUIRED, # type: Union[str, AWSHelperFn]
                  RuleState=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Tags=NOTHING, # type: _Tags
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
@@ -245,6 +247,36 @@ class InsightRule(troposphere.cloudwatch.InsightRule, Mixin):
             RuleBody=RuleBody,
             RuleName=RuleName,
             RuleState=RuleState,
+            Tags=Tags,
             **kwargs
         )
         super(InsightRule, self).__init__(**processed_kwargs)
+
+
+class CompositeAlarm(troposphere.cloudwatch.CompositeAlarm, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 AlarmName=REQUIRED, # type: Union[str, AWSHelperFn]
+                 AlarmRule=REQUIRED, # type: Union[str, AWSHelperFn]
+                 ActionsEnabled=NOTHING, # type: bool
+                 AlarmActions=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 AlarmDescription=NOTHING, # type: Union[str, AWSHelperFn]
+                 InsufficientDataActions=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 OKActions=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            AlarmName=AlarmName,
+            AlarmRule=AlarmRule,
+            ActionsEnabled=ActionsEnabled,
+            AlarmActions=AlarmActions,
+            AlarmDescription=AlarmDescription,
+            InsufficientDataActions=InsufficientDataActions,
+            OKActions=OKActions,
+            **kwargs
+        )
+        super(CompositeAlarm, self).__init__(**processed_kwargs)
