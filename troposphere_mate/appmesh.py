@@ -22,6 +22,15 @@ from troposphere.appmesh import (
     Duration as _Duration,
     EgressFilter as _EgressFilter,
     FileAccessLog as _FileAccessLog,
+    GatewayGrpcRoute as _GatewayGrpcRoute,
+    GatewayGrpcRouteAction as _GatewayGrpcRouteAction,
+    GatewayGrpcRouteMatch as _GatewayGrpcRouteMatch,
+    GatewayHttpRoute as _GatewayHttpRoute,
+    GatewayHttpRouteAction as _GatewayHttpRouteAction,
+    GatewayHttpRouteMatch as _GatewayHttpRouteMatch,
+    GatewayRouteSpec as _GatewayRouteSpec,
+    GatewayRouteTarget as _GatewayRouteTarget,
+    GatewayRouteVirtualService as _GatewayRouteVirtualService,
     GrpcRetryPolicy as _GrpcRetryPolicy,
     GrpcRoute as _GrpcRoute,
     GrpcRouteAction as _GrpcRouteAction,
@@ -57,6 +66,8 @@ from troposphere.appmesh import (
     TlsValidationContextAcmTrust as _TlsValidationContextAcmTrust,
     TlsValidationContextFileTrust as _TlsValidationContextFileTrust,
     TlsValidationContextTrust as _TlsValidationContextTrust,
+    VirtualGatewayListener as _VirtualGatewayListener,
+    VirtualGatewaySpec as _VirtualGatewaySpec,
     VirtualNodeServiceProvider as _VirtualNodeServiceProvider,
     VirtualNodeSpec as _VirtualNodeSpec,
     VirtualRouterListener as _VirtualRouterListener,
@@ -1037,3 +1048,214 @@ class VirtualService(troposphere.appmesh.VirtualService, Mixin):
             **kwargs
         )
         super(VirtualService, self).__init__(**processed_kwargs)
+
+
+class VirtualGatewayListener(troposphere.appmesh.VirtualGatewayListener, Mixin):
+    def __init__(self,
+                 title=None,
+                 PortMapping=REQUIRED, # type: _PortMapping
+                 HealthCheck=NOTHING, # type: _HealthCheck
+                 TLS=NOTHING, # type: _ListenerTls
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            PortMapping=PortMapping,
+            HealthCheck=HealthCheck,
+            TLS=TLS,
+            **kwargs
+        )
+        super(VirtualGatewayListener, self).__init__(**processed_kwargs)
+
+
+class VirtualGatewaySpec(troposphere.appmesh.VirtualGatewaySpec, Mixin):
+    def __init__(self,
+                 title=None,
+                 Listeners=REQUIRED, # type: List[_VirtualGatewayListener]
+                 BackendDefaults=NOTHING, # type: _BackendDefaults
+                 Logging=NOTHING, # type: _Logging
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Listeners=Listeners,
+            BackendDefaults=BackendDefaults,
+            Logging=Logging,
+            **kwargs
+        )
+        super(VirtualGatewaySpec, self).__init__(**processed_kwargs)
+
+
+class VirtualGateway(troposphere.appmesh.VirtualGateway, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 MeshName=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Spec=REQUIRED, # type: _VirtualGatewaySpec
+                 VirtualGatewayName=REQUIRED, # type: Union[str, AWSHelperFn]
+                 MeshOwner=NOTHING, # type: Union[str, AWSHelperFn]
+                 Tags=NOTHING, # type: List[_Tags]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            MeshName=MeshName,
+            Spec=Spec,
+            VirtualGatewayName=VirtualGatewayName,
+            MeshOwner=MeshOwner,
+            Tags=Tags,
+            **kwargs
+        )
+        super(VirtualGateway, self).__init__(**processed_kwargs)
+
+
+class GatewayHttpRouteMatch(troposphere.appmesh.GatewayHttpRouteMatch, Mixin):
+    def __init__(self,
+                 title=None,
+                 Prefix=REQUIRED, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Prefix=Prefix,
+            **kwargs
+        )
+        super(GatewayHttpRouteMatch, self).__init__(**processed_kwargs)
+
+
+class GatewayRouteVirtualService(troposphere.appmesh.GatewayRouteVirtualService, Mixin):
+    def __init__(self,
+                 title=None,
+                 VirtualServiceName=REQUIRED, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            VirtualServiceName=VirtualServiceName,
+            **kwargs
+        )
+        super(GatewayRouteVirtualService, self).__init__(**processed_kwargs)
+
+
+class GatewayRouteTarget(troposphere.appmesh.GatewayRouteTarget, Mixin):
+    def __init__(self,
+                 title=None,
+                 VirtualService=REQUIRED, # type: _GatewayRouteVirtualService
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            VirtualService=VirtualService,
+            **kwargs
+        )
+        super(GatewayRouteTarget, self).__init__(**processed_kwargs)
+
+
+class GatewayHttpRouteAction(troposphere.appmesh.GatewayHttpRouteAction, Mixin):
+    def __init__(self,
+                 title=None,
+                 Target=REQUIRED, # type: _GatewayRouteTarget
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Target=Target,
+            **kwargs
+        )
+        super(GatewayHttpRouteAction, self).__init__(**processed_kwargs)
+
+
+class GatewayHttpRoute(troposphere.appmesh.GatewayHttpRoute, Mixin):
+    def __init__(self,
+                 title=None,
+                 Action=REQUIRED, # type: _GatewayHttpRouteAction
+                 Match=REQUIRED, # type: _GatewayHttpRouteMatch
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Action=Action,
+            Match=Match,
+            **kwargs
+        )
+        super(GatewayHttpRoute, self).__init__(**processed_kwargs)
+
+
+class GatewayGrpcRouteMatch(troposphere.appmesh.GatewayGrpcRouteMatch, Mixin):
+    def __init__(self,
+                 title=None,
+                 ServiceName=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            ServiceName=ServiceName,
+            **kwargs
+        )
+        super(GatewayGrpcRouteMatch, self).__init__(**processed_kwargs)
+
+
+class GatewayGrpcRouteAction(troposphere.appmesh.GatewayGrpcRouteAction, Mixin):
+    def __init__(self,
+                 title=None,
+                 WeightedTargets=REQUIRED, # type: _GatewayRouteTarget
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            WeightedTargets=WeightedTargets,
+            **kwargs
+        )
+        super(GatewayGrpcRouteAction, self).__init__(**processed_kwargs)
+
+
+class GatewayGrpcRoute(troposphere.appmesh.GatewayGrpcRoute, Mixin):
+    def __init__(self,
+                 title=None,
+                 Action=REQUIRED, # type: _GatewayGrpcRouteAction
+                 Match=REQUIRED, # type: _GatewayGrpcRouteMatch
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Action=Action,
+            Match=Match,
+            **kwargs
+        )
+        super(GatewayGrpcRoute, self).__init__(**processed_kwargs)
+
+
+class GatewayRouteSpec(troposphere.appmesh.GatewayRouteSpec, Mixin):
+    def __init__(self,
+                 title=None,
+                 GrpcRoute=NOTHING, # type: _GatewayGrpcRoute
+                 Http2Route=NOTHING, # type: _GatewayHttpRoute
+                 HttpRoute=NOTHING, # type: _GatewayHttpRoute
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            GrpcRoute=GrpcRoute,
+            Http2Route=Http2Route,
+            HttpRoute=HttpRoute,
+            **kwargs
+        )
+        super(GatewayRouteSpec, self).__init__(**processed_kwargs)
+
+
+class GatewayRoute(troposphere.appmesh.GatewayRoute, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 GatewayRouteName=REQUIRED, # type: Union[str, AWSHelperFn]
+                 MeshName=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Spec=REQUIRED, # type: _GatewayRouteSpec
+                 VirtualGatewayName=REQUIRED, # type: Union[str, AWSHelperFn]
+                 MeshOwner=NOTHING, # type: Union[str, AWSHelperFn]
+                 Tags=NOTHING, # type: List[_Tags]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            GatewayRouteName=GatewayRouteName,
+            MeshName=MeshName,
+            Spec=Spec,
+            VirtualGatewayName=VirtualGatewayName,
+            MeshOwner=MeshOwner,
+            Tags=Tags,
+            **kwargs
+        )
+        super(GatewayRoute, self).__init__(**processed_kwargs)

@@ -21,6 +21,7 @@ from troposphere.apigateway import (
     Location as _Location,
     MethodResponse as _MethodResponse,
     MethodSetting as _MethodSetting,
+    MutualTlsAuthentication as _MutualTlsAuthentication,
     QuotaSettings as _QuotaSettings,
     S3Location as _S3Location,
     StageDescription as _StageDescription,
@@ -409,6 +410,21 @@ class EndpointConfiguration(troposphere.apigateway.EndpointConfiguration, Mixin)
         super(EndpointConfiguration, self).__init__(**processed_kwargs)
 
 
+class MutualTlsAuthentication(troposphere.apigateway.MutualTlsAuthentication, Mixin):
+    def __init__(self,
+                 title=None,
+                 TruststoreUri=NOTHING, # type: Union[str, AWSHelperFn]
+                 TruststoreVersion=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            TruststoreUri=TruststoreUri,
+            TruststoreVersion=TruststoreVersion,
+            **kwargs
+        )
+        super(MutualTlsAuthentication, self).__init__(**processed_kwargs)
+
+
 class DomainName(troposphere.apigateway.DomainName, Mixin):
     def __init__(self,
                  title, # type: str
@@ -417,6 +433,7 @@ class DomainName(troposphere.apigateway.DomainName, Mixin):
                  DomainName=REQUIRED, # type: Union[str, AWSHelperFn]
                  CertificateArn=NOTHING, # type: Union[str, AWSHelperFn]
                  EndpointConfiguration=NOTHING, # type: _EndpointConfiguration
+                 MutualTlsAuthentication=NOTHING, # type: _MutualTlsAuthentication
                  RegionalCertificateArn=NOTHING, # type: Union[str, AWSHelperFn]
                  SecurityPolicy=NOTHING, # type: Union[str, AWSHelperFn]
                  Tags=NOTHING, # type: _Tags
@@ -428,6 +445,7 @@ class DomainName(troposphere.apigateway.DomainName, Mixin):
             DomainName=DomainName,
             CertificateArn=CertificateArn,
             EndpointConfiguration=EndpointConfiguration,
+            MutualTlsAuthentication=MutualTlsAuthentication,
             RegionalCertificateArn=RegionalCertificateArn,
             SecurityPolicy=SecurityPolicy,
             Tags=Tags,

@@ -21,6 +21,9 @@ from troposphere.serverless import (
     Cors as _Cors,
     DeadLetterQueue as _DeadLetterQueue,
     DeploymentPreference as _DeploymentPreference,
+    DestinationConfig as _DestinationConfig,
+    Domain as _Domain,
+    EndpointConfiguration as _EndpointConfiguration,
     Environment as _Environment,
     Filter as _Filter,
     Hooks as _Hooks,
@@ -33,6 +36,7 @@ from troposphere.serverless import (
     ProvisionedConcurrencyConfiguration as _ProvisionedConcurrencyConfiguration,
     ProvisionedThroughput as _ProvisionedThroughput,
     ResourcePolicyStatement as _ResourcePolicyStatement,
+    Route53 as _Route53,
     S3Location as _S3Location,
     SSESpecification as _SSESpecification,
     VPCConfig as _VPCConfig,
@@ -366,6 +370,63 @@ class Cors(troposphere.serverless.Cors, Mixin):
         super(Cors, self).__init__(**processed_kwargs)
 
 
+class Route53(troposphere.serverless.Route53, Mixin):
+    def __init__(self,
+                 title=None,
+                 DistributionDomainName=NOTHING, # type: Union[str, AWSHelperFn]
+                 EvaluateTargetHealth=NOTHING, # type: bool
+                 HostedZoneId=NOTHING, # type: Union[str, AWSHelperFn]
+                 HostedZoneName=NOTHING, # type: Union[str, AWSHelperFn]
+                 IpV6=NOTHING, # type: bool
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            DistributionDomainName=DistributionDomainName,
+            EvaluateTargetHealth=EvaluateTargetHealth,
+            HostedZoneId=HostedZoneId,
+            HostedZoneName=HostedZoneName,
+            IpV6=IpV6,
+            **kwargs
+        )
+        super(Route53, self).__init__(**processed_kwargs)
+
+
+class Domain(troposphere.serverless.Domain, Mixin):
+    def __init__(self,
+                 title=None,
+                 CertificateArn=REQUIRED, # type: Union[str, AWSHelperFn]
+                 DomainName=REQUIRED, # type: Union[str, AWSHelperFn]
+                 BasePath=NOTHING, # type: list
+                 EndpointConfiguration=NOTHING, # type: Union[str, AWSHelperFn]
+                 Route53=NOTHING, # type: _Route53
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            CertificateArn=CertificateArn,
+            DomainName=DomainName,
+            BasePath=BasePath,
+            EndpointConfiguration=EndpointConfiguration,
+            Route53=Route53,
+            **kwargs
+        )
+        super(Domain, self).__init__(**processed_kwargs)
+
+
+class EndpointConfiguration(troposphere.serverless.EndpointConfiguration, Mixin):
+    def __init__(self,
+                 title=None,
+                 Type=NOTHING, # type: Union[str, AWSHelperFn]
+                 VPCEndpointIds=NOTHING, # type: list
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Type=Type,
+            VPCEndpointIds=VPCEndpointIds,
+            **kwargs
+        )
+        super(EndpointConfiguration, self).__init__(**processed_kwargs)
+
+
 class Api(troposphere.serverless.Api, Mixin):
     def __init__(self,
                  title, # type: str
@@ -381,9 +442,11 @@ class Api(troposphere.serverless.Api, Mixin):
                  Cors=NOTHING, # type: Union[Union[str, AWSHelperFn], _Cors]
                  DefinitionBody=NOTHING, # type: dict
                  DefinitionUri=NOTHING, # type: Union[str, AWSHelperFn]
-                 EndpointConfiguration=NOTHING, # type: Union[str, AWSHelperFn]
+                 Domain=NOTHING, # type: _Domain
+                 EndpointConfiguration=NOTHING, # type: _EndpointConfiguration
                  MethodSettings=NOTHING, # type: List[_MethodSetting]
                  Name=NOTHING, # type: Union[str, AWSHelperFn]
+                 OpenApiVersion=NOTHING, # type: Union[str, AWSHelperFn]
                  TracingEnabled=NOTHING, # type: bool
                  Variables=NOTHING, # type: dict
                  **kwargs):
@@ -401,9 +464,11 @@ class Api(troposphere.serverless.Api, Mixin):
             Cors=Cors,
             DefinitionBody=DefinitionBody,
             DefinitionUri=DefinitionUri,
+            Domain=Domain,
             EndpointConfiguration=EndpointConfiguration,
             MethodSettings=MethodSettings,
             Name=Name,
+            OpenApiVersion=OpenApiVersion,
             TracingEnabled=TracingEnabled,
             Variables=Variables,
             **kwargs
@@ -524,6 +589,13 @@ class KinesisEvent(troposphere.serverless.KinesisEvent, Mixin):
                  Stream=REQUIRED, # type: Union[str, AWSHelperFn]
                  StartingPosition=REQUIRED, # type: Any
                  BatchSize=NOTHING, # type: int
+                 BisectBatchOnFunctionError=NOTHING, # type: bool
+                 DestinationConfig=NOTHING, # type: _DestinationConfig
+                 Enabled=NOTHING, # type: bool
+                 MaximumBatchingWindowInSeconds=NOTHING, # type: int
+                 MaximumRecordAgeInSeconds=NOTHING, # type: Any
+                 MaximumRetryAttempts=NOTHING, # type: int
+                 ParallelizationFactor=NOTHING, # type: Any
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
@@ -532,6 +604,13 @@ class KinesisEvent(troposphere.serverless.KinesisEvent, Mixin):
             Stream=Stream,
             StartingPosition=StartingPosition,
             BatchSize=BatchSize,
+            BisectBatchOnFunctionError=BisectBatchOnFunctionError,
+            DestinationConfig=DestinationConfig,
+            Enabled=Enabled,
+            MaximumBatchingWindowInSeconds=MaximumBatchingWindowInSeconds,
+            MaximumRecordAgeInSeconds=MaximumRecordAgeInSeconds,
+            MaximumRetryAttempts=MaximumRetryAttempts,
+            ParallelizationFactor=ParallelizationFactor,
             **kwargs
         )
         super(KinesisEvent, self).__init__(**processed_kwargs)

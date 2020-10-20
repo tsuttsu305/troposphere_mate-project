@@ -21,7 +21,9 @@ from troposphere.ecs import (
     DeploymentController as _DeploymentController,
     Device as _Device,
     DockerVolumeConfiguration as _DockerVolumeConfiguration,
+    EFSVolumeConfiguration as _EFSVolumeConfiguration,
     Environment as _Environment,
+    EnvironmentFile as _EnvironmentFile,
     FirelensConfiguration as _FirelensConfiguration,
     HealthCheck as _HealthCheck,
     Host as _Host,
@@ -325,6 +327,7 @@ class Service(troposphere.ecs.Service, Mixin):
                  template=None, # type: Template
                  validation=True, # type: bool
                  TaskDefinition=REQUIRED, # type: Union[str, AWSHelperFn]
+                 CapacityProviderStrategy=NOTHING, # type: List[_CapacityProviderStrategyItem]
                  Cluster=NOTHING, # type: Union[str, AWSHelperFn]
                  DeploymentConfiguration=NOTHING, # type: _DeploymentConfiguration
                  DeploymentController=NOTHING, # type: _DeploymentController
@@ -349,6 +352,7 @@ class Service(troposphere.ecs.Service, Mixin):
             template=template,
             validation=validation,
             TaskDefinition=TaskDefinition,
+            CapacityProviderStrategy=CapacityProviderStrategy,
             Cluster=Cluster,
             DeploymentConfiguration=DeploymentConfiguration,
             DeploymentController=DeploymentController,
@@ -664,6 +668,21 @@ class ContainerDependency(troposphere.ecs.ContainerDependency, Mixin):
         super(ContainerDependency, self).__init__(**processed_kwargs)
 
 
+class EnvironmentFile(troposphere.ecs.EnvironmentFile, Mixin):
+    def __init__(self,
+                 title=None,
+                 Type=NOTHING, # type: Union[str, AWSHelperFn]
+                 Value=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Type=Type,
+            Value=Value,
+            **kwargs
+        )
+        super(EnvironmentFile, self).__init__(**processed_kwargs)
+
+
 class ContainerDefinition(troposphere.ecs.ContainerDefinition, Mixin):
     def __init__(self,
                  title=None,
@@ -677,6 +696,7 @@ class ContainerDefinition(troposphere.ecs.ContainerDefinition, Mixin):
                  DockerSecurityOptions=NOTHING, # type: List[Union[str, AWSHelperFn]]
                  EntryPoint=NOTHING, # type: List[Union[str, AWSHelperFn]]
                  Environment=NOTHING, # type: List[_Environment]
+                 EnvironmentFiles=NOTHING, # type: List[_EnvironmentFile]
                  Essential=NOTHING, # type: bool
                  ExtraHosts=NOTHING, # type: List[_HostEntry]
                  FirelensConfiguration=NOTHING, # type: _FirelensConfiguration
@@ -718,6 +738,7 @@ class ContainerDefinition(troposphere.ecs.ContainerDefinition, Mixin):
             DockerSecurityOptions=DockerSecurityOptions,
             EntryPoint=EntryPoint,
             Environment=Environment,
+            EnvironmentFiles=EnvironmentFiles,
             Essential=Essential,
             ExtraHosts=ExtraHosts,
             FirelensConfiguration=FirelensConfiguration,
@@ -785,18 +806,54 @@ class DockerVolumeConfiguration(troposphere.ecs.DockerVolumeConfiguration, Mixin
         super(DockerVolumeConfiguration, self).__init__(**processed_kwargs)
 
 
+class AuthorizationConfig(troposphere.ecs.AuthorizationConfig, Mixin):
+    def __init__(self,
+                 title=None,
+                 AccessPointId=NOTHING, # type: Union[str, AWSHelperFn]
+                 IAM=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            AccessPointId=AccessPointId,
+            IAM=IAM,
+            **kwargs
+        )
+        super(AuthorizationConfig, self).__init__(**processed_kwargs)
+
+
+class EFSVolumeConfiguration(troposphere.ecs.EFSVolumeConfiguration, Mixin):
+    def __init__(self,
+                 title=None,
+                 FilesystemId=REQUIRED, # type: Union[str, AWSHelperFn]
+                 RootDirectory=NOTHING, # type: Union[str, AWSHelperFn]
+                 TransitEncryption=NOTHING, # type: Any
+                 TransitEncryptionPort=NOTHING, # type: Any
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            FilesystemId=FilesystemId,
+            RootDirectory=RootDirectory,
+            TransitEncryption=TransitEncryption,
+            TransitEncryptionPort=TransitEncryptionPort,
+            **kwargs
+        )
+        super(EFSVolumeConfiguration, self).__init__(**processed_kwargs)
+
+
 class Volume(troposphere.ecs.Volume, Mixin):
     def __init__(self,
                  title=None,
                  Name=REQUIRED, # type: Union[str, AWSHelperFn]
                  DockerVolumeConfiguration=NOTHING, # type: _DockerVolumeConfiguration
                  Host=NOTHING, # type: _Host
+                 EFSVolumeConfiguration=NOTHING, # type: _EFSVolumeConfiguration
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             Name=Name,
             DockerVolumeConfiguration=DockerVolumeConfiguration,
             Host=Host,
+            EFSVolumeConfiguration=EFSVolumeConfiguration,
             **kwargs
         )
         super(Volume, self).__init__(**processed_kwargs)

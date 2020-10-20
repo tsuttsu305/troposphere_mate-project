@@ -45,10 +45,12 @@ class Code(troposphere.codecommit.Code, Mixin):
     def __init__(self,
                  title=None,
                  S3=REQUIRED, # type: _S3
+                 BranchName=NOTHING, # type: Union[str, AWSHelperFn]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             S3=S3,
+            BranchName=BranchName,
             **kwargs
         )
         super(Code, self).__init__(**processed_kwargs)

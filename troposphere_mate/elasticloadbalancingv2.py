@@ -517,7 +517,7 @@ class TargetGroup(troposphere.elasticloadbalancingv2.TargetGroup, Mixin):
                  Tags=NOTHING, # type: Union[_Tags, list]
                  TargetGroupAttributes=NOTHING, # type: List[_TargetGroupAttribute]
                  Targets=NOTHING, # type: List[_TargetDescription]
-                 TargetType=NOTHING, # type: Union[str, AWSHelperFn]
+                 TargetType=NOTHING, # type: Any
                  UnhealthyThresholdCount=NOTHING, # type: int
                  VpcId=NOTHING, # type: Union[str, AWSHelperFn]
                  **kwargs):

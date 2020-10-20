@@ -234,12 +234,12 @@ class ElasticsearchDestinationConfiguration(troposphere.firehose.ElasticsearchDe
                  IndexRotationPeriod=REQUIRED, # type: Any
                  RoleARN=REQUIRED, # type: Union[str, AWSHelperFn]
                  S3BackupMode=REQUIRED, # type: Any
-                 TypeName=REQUIRED, # type: Union[str, AWSHelperFn]
                  CloudWatchLoggingOptions=NOTHING, # type: _CloudWatchLoggingOptions
                  ClusterEndpoint=NOTHING, # type: Union[str, AWSHelperFn]
                  ProcessingConfiguration=NOTHING, # type: _ProcessingConfiguration
                  RetryOptions=NOTHING, # type: _RetryOptions
                  S3Configuration=NOTHING, # type: _S3Configuration
+                 TypeName=NOTHING, # type: Union[str, AWSHelperFn]
                  VpcConfiguration=NOTHING, # type: _VpcConfiguration
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
@@ -250,12 +250,12 @@ class ElasticsearchDestinationConfiguration(troposphere.firehose.ElasticsearchDe
             IndexRotationPeriod=IndexRotationPeriod,
             RoleARN=RoleARN,
             S3BackupMode=S3BackupMode,
-            TypeName=TypeName,
             CloudWatchLoggingOptions=CloudWatchLoggingOptions,
             ClusterEndpoint=ClusterEndpoint,
             ProcessingConfiguration=ProcessingConfiguration,
             RetryOptions=RetryOptions,
             S3Configuration=S3Configuration,
+            TypeName=TypeName,
             VpcConfiguration=VpcConfiguration,
             **kwargs
         )
@@ -293,10 +293,10 @@ class S3DestinationConfiguration(troposphere.firehose.S3DestinationConfiguration
     def __init__(self,
                  title=None,
                  BucketARN=REQUIRED, # type: Union[str, AWSHelperFn]
-                 BufferingHints=REQUIRED, # type: _BufferingHints
-                 CompressionFormat=REQUIRED, # type: Union[str, AWSHelperFn]
                  RoleARN=REQUIRED, # type: Union[str, AWSHelperFn]
+                 BufferingHints=NOTHING, # type: _BufferingHints
                  CloudWatchLoggingOptions=NOTHING, # type: _CloudWatchLoggingOptions
+                 CompressionFormat=NOTHING, # type: Union[str, AWSHelperFn]
                  EncryptionConfiguration=NOTHING, # type: _EncryptionConfiguration
                  ErrorOutputPrefix=NOTHING, # type: Union[str, AWSHelperFn]
                  Prefix=NOTHING, # type: Union[str, AWSHelperFn]
@@ -304,10 +304,10 @@ class S3DestinationConfiguration(troposphere.firehose.S3DestinationConfiguration
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             BucketARN=BucketARN,
-            BufferingHints=BufferingHints,
-            CompressionFormat=CompressionFormat,
             RoleARN=RoleARN,
+            BufferingHints=BufferingHints,
             CloudWatchLoggingOptions=CloudWatchLoggingOptions,
+            CompressionFormat=CompressionFormat,
             EncryptionConfiguration=EncryptionConfiguration,
             ErrorOutputPrefix=ErrorOutputPrefix,
             Prefix=Prefix,
@@ -502,10 +502,10 @@ class ExtendedS3DestinationConfiguration(troposphere.firehose.ExtendedS3Destinat
     def __init__(self,
                  title=None,
                  BucketARN=REQUIRED, # type: Union[str, AWSHelperFn]
-                 BufferingHints=REQUIRED, # type: _BufferingHints
-                 CompressionFormat=REQUIRED, # type: Union[str, AWSHelperFn]
                  RoleARN=REQUIRED, # type: Union[str, AWSHelperFn]
+                 BufferingHints=NOTHING, # type: _BufferingHints
                  CloudWatchLoggingOptions=NOTHING, # type: _CloudWatchLoggingOptions
+                 CompressionFormat=NOTHING, # type: Union[str, AWSHelperFn]
                  DataFormatConversionConfiguration=NOTHING, # type: _DataFormatConversionConfiguration
                  EncryptionConfiguration=NOTHING, # type: _EncryptionConfiguration
                  ErrorOutputPrefix=NOTHING, # type: Union[str, AWSHelperFn]
@@ -517,10 +517,10 @@ class ExtendedS3DestinationConfiguration(troposphere.firehose.ExtendedS3Destinat
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             BucketARN=BucketARN,
-            BufferingHints=BufferingHints,
-            CompressionFormat=CompressionFormat,
             RoleARN=RoleARN,
+            BufferingHints=BufferingHints,
             CloudWatchLoggingOptions=CloudWatchLoggingOptions,
+            CompressionFormat=CompressionFormat,
             DataFormatConversionConfiguration=DataFormatConversionConfiguration,
             EncryptionConfiguration=EncryptionConfiguration,
             ErrorOutputPrefix=ErrorOutputPrefix,

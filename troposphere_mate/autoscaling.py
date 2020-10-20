@@ -197,6 +197,7 @@ class AutoScalingGroup(troposphere.autoscaling.AutoScalingGroup, Mixin):
                  MaxInstanceLifetime=NOTHING, # type: int
                  MetricsCollection=NOTHING, # type: List[_MetricsCollection]
                  MixedInstancesPolicy=NOTHING, # type: _MixedInstancesPolicy
+                 NewInstancesProtectedFromScaleIn=NOTHING, # type: bool
                  NotificationConfigurations=NOTHING, # type: List[_NotificationConfigurations]
                  PlacementGroup=NOTHING, # type: Union[str, AWSHelperFn]
                  ServiceLinkedRoleARN=NOTHING, # type: Union[str, AWSHelperFn]
@@ -225,6 +226,7 @@ class AutoScalingGroup(troposphere.autoscaling.AutoScalingGroup, Mixin):
             MaxInstanceLifetime=MaxInstanceLifetime,
             MetricsCollection=MetricsCollection,
             MixedInstancesPolicy=MixedInstancesPolicy,
+            NewInstancesProtectedFromScaleIn=NewInstancesProtectedFromScaleIn,
             NotificationConfigurations=NotificationConfigurations,
             PlacementGroup=PlacementGroup,
             ServiceLinkedRoleARN=ServiceLinkedRoleARN,

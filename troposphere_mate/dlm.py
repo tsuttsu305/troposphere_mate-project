@@ -12,6 +12,9 @@ import troposphere.dlm
 
 from troposphere.dlm import (
     CreateRule as _CreateRule,
+    CrossRegionCopyRetainRule as _CrossRegionCopyRetainRule,
+    CrossRegionCopyRule as _CrossRegionCopyRule,
+    FastRestoreRule as _FastRestoreRule,
     Parameters as _Parameters,
     PolicyDetails as _PolicyDetails,
     RetainRule as _RetainRule,
@@ -56,6 +59,61 @@ class CreateRule(troposphere.dlm.CreateRule, Mixin):
         super(CreateRule, self).__init__(**processed_kwargs)
 
 
+class CrossRegionCopyRetainRule(troposphere.dlm.CrossRegionCopyRetainRule, Mixin):
+    def __init__(self,
+                 title=None,
+                 Interval=REQUIRED, # type: int
+                 IntervalUnit=REQUIRED, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Interval=Interval,
+            IntervalUnit=IntervalUnit,
+            **kwargs
+        )
+        super(CrossRegionCopyRetainRule, self).__init__(**processed_kwargs)
+
+
+class CrossRegionCopyRule(troposphere.dlm.CrossRegionCopyRule, Mixin):
+    def __init__(self,
+                 title=None,
+                 Encrypted=REQUIRED, # type: bool
+                 TargetRegion=REQUIRED, # type: Union[str, AWSHelperFn]
+                 CmkArn=NOTHING, # type: Union[str, AWSHelperFn]
+                 CopyTags=NOTHING, # type: bool
+                 RetainRule=NOTHING, # type: _CrossRegionCopyRetainRule
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Encrypted=Encrypted,
+            TargetRegion=TargetRegion,
+            CmkArn=CmkArn,
+            CopyTags=CopyTags,
+            RetainRule=RetainRule,
+            **kwargs
+        )
+        super(CrossRegionCopyRule, self).__init__(**processed_kwargs)
+
+
+class FastRestoreRule(troposphere.dlm.FastRestoreRule, Mixin):
+    def __init__(self,
+                 title=None,
+                 AvailabilityZones=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 Count=NOTHING, # type: int
+                 Interval=NOTHING, # type: int
+                 IntervalUnit=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            AvailabilityZones=AvailabilityZones,
+            Count=Count,
+            Interval=Interval,
+            IntervalUnit=IntervalUnit,
+            **kwargs
+        )
+        super(FastRestoreRule, self).__init__(**processed_kwargs)
+
+
 class RetainRule(troposphere.dlm.RetainRule, Mixin):
     def __init__(self,
                  title=None,
@@ -74,6 +132,8 @@ class Schedule(troposphere.dlm.Schedule, Mixin):
                  title=None,
                  CopyTags=NOTHING, # type: bool
                  CreateRule=NOTHING, # type: _CreateRule
+                 CrossRegionCopyRules=NOTHING, # type: List[_CrossRegionCopyRule]
+                 FastRestoreRule=NOTHING, # type: _FastRestoreRule
                  Name=NOTHING, # type: Union[str, AWSHelperFn]
                  RetainRule=NOTHING, # type: _RetainRule
                  TagsToAdd=NOTHING, # type: Union[_Tags, list]
@@ -82,6 +142,8 @@ class Schedule(troposphere.dlm.Schedule, Mixin):
             title=title,
             CopyTags=CopyTags,
             CreateRule=CreateRule,
+            CrossRegionCopyRules=CrossRegionCopyRules,
+            FastRestoreRule=FastRestoreRule,
             Name=Name,
             RetainRule=RetainRule,
             TagsToAdd=TagsToAdd,

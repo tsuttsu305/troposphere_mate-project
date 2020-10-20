@@ -11,6 +11,7 @@ if sys.version_info.major >= 3 and sys.version_info.minor >= 5:  # pragma: no co
 import troposphere.efs
 
 from troposphere.efs import (
+    BackupPolicy as _BackupPolicy,
     CreationInfo as _CreationInfo,
     LifecyclePolicy as _LifecyclePolicy,
     PosixUser as _PosixUser,
@@ -112,11 +113,25 @@ class LifecyclePolicy(troposphere.efs.LifecyclePolicy, Mixin):
         super(LifecyclePolicy, self).__init__(**processed_kwargs)
 
 
+class BackupPolicy(troposphere.efs.BackupPolicy, Mixin):
+    def __init__(self,
+                 title=None,
+                 Status=REQUIRED, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Status=Status,
+            **kwargs
+        )
+        super(BackupPolicy, self).__init__(**processed_kwargs)
+
+
 class FileSystem(troposphere.efs.FileSystem, Mixin):
     def __init__(self,
                  title, # type: str
                  template=None, # type: Template
                  validation=True, # type: bool
+                 BackupPolicy=NOTHING, # type: _BackupPolicy
                  Encrypted=NOTHING, # type: bool
                  FileSystemPolicy=NOTHING, # type: dict
                  FileSystemTags=NOTHING, # type: _Tags
@@ -130,6 +145,7 @@ class FileSystem(troposphere.efs.FileSystem, Mixin):
             title=title,
             template=template,
             validation=validation,
+            BackupPolicy=BackupPolicy,
             Encrypted=Encrypted,
             FileSystemPolicy=FileSystemPolicy,
             FileSystemTags=FileSystemTags,

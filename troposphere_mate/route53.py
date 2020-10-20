@@ -268,6 +268,44 @@ class ResolverEndpoint(troposphere.route53.ResolverEndpoint, Mixin):
         super(ResolverEndpoint, self).__init__(**processed_kwargs)
 
 
+class ResolverQueryLoggingConfig(troposphere.route53.ResolverQueryLoggingConfig, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 DestinationArn=NOTHING, # type: Union[str, AWSHelperFn]
+                 Name=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            DestinationArn=DestinationArn,
+            Name=Name,
+            **kwargs
+        )
+        super(ResolverQueryLoggingConfig, self).__init__(**processed_kwargs)
+
+
+class ResolverQueryLoggingConfigAssociation(troposphere.route53.ResolverQueryLoggingConfigAssociation, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 ResolverQueryLogConfigId=NOTHING, # type: Union[str, AWSHelperFn]
+                 ResourceId=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            ResolverQueryLogConfigId=ResolverQueryLogConfigId,
+            ResourceId=ResourceId,
+            **kwargs
+        )
+        super(ResolverQueryLoggingConfigAssociation, self).__init__(**processed_kwargs)
+
+
 class TargetAddress(troposphere.route53.TargetAddress, Mixin):
     def __init__(self,
                  title=None,

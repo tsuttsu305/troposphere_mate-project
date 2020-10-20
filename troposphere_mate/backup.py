@@ -11,6 +11,7 @@ if sys.version_info.major >= 3 and sys.version_info.minor >= 5:  # pragma: no co
 import troposphere.backup
 
 from troposphere.backup import (
+    AdvancedBackupSettingResourceType as _AdvancedBackupSettingResourceType,
     BackupPlanResourceType as _BackupPlanResourceType,
     BackupRuleResourceType as _BackupRuleResourceType,
     BackupSelectionResourceType as _BackupSelectionResourceType,
@@ -24,6 +25,21 @@ from troposphere import Template, AWSHelperFn
 from troposphere_mate.core.mate import preprocess_init_kwargs, Mixin
 from troposphere_mate.core.sentiel import REQUIRED, NOTHING
 
+
+
+class AdvancedBackupSettingResourceType(troposphere.backup.AdvancedBackupSettingResourceType, Mixin):
+    def __init__(self,
+                 title=None,
+                 BackupOptions=REQUIRED, # type: dict
+                 ResourceType=REQUIRED, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            BackupOptions=BackupOptions,
+            ResourceType=ResourceType,
+            **kwargs
+        )
+        super(AdvancedBackupSettingResourceType, self).__init__(**processed_kwargs)
 
 
 class LifecycleResourceType(troposphere.backup.LifecycleResourceType, Mixin):
@@ -71,11 +87,13 @@ class BackupPlanResourceType(troposphere.backup.BackupPlanResourceType, Mixin):
                  title=None,
                  BackupPlanName=REQUIRED, # type: Union[str, AWSHelperFn]
                  BackupPlanRule=REQUIRED, # type: List[_BackupRuleResourceType]
+                 AdvancedBackupSettings=NOTHING, # type: List[_AdvancedBackupSettingResourceType]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             BackupPlanName=BackupPlanName,
             BackupPlanRule=BackupPlanRule,
+            AdvancedBackupSettings=AdvancedBackupSettings,
             **kwargs
         )
         super(BackupPlanResourceType, self).__init__(**processed_kwargs)

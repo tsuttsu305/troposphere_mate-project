@@ -42,6 +42,8 @@ class Repository(troposphere.ecr.Repository, Mixin):
                  title, # type: str
                  template=None, # type: Template
                  validation=True, # type: bool
+                 ImageScanningConfiguration=NOTHING, # type: dict
+                 ImageTagMutability=NOTHING, # type: Union[str, AWSHelperFn]
                  LifecyclePolicy=NOTHING, # type: _LifecyclePolicy
                  RepositoryName=NOTHING, # type: Union[str, AWSHelperFn]
                  RepositoryPolicyText=NOTHING, # type: Union[dict]
@@ -51,6 +53,8 @@ class Repository(troposphere.ecr.Repository, Mixin):
             title=title,
             template=template,
             validation=validation,
+            ImageScanningConfiguration=ImageScanningConfiguration,
+            ImageTagMutability=ImageTagMutability,
             LifecyclePolicy=LifecyclePolicy,
             RepositoryName=RepositoryName,
             RepositoryPolicyText=RepositoryPolicyText,

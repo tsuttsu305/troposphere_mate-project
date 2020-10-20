@@ -18,10 +18,13 @@ from troposphere.batch import (
     Environment as _Environment,
     LaunchTemplateSpecification as _LaunchTemplateSpecification,
     LinuxParameters as _LinuxParameters,
+    LogConfiguration as _LogConfiguration,
     MountPoints as _MountPoints,
     ResourceRequirement as _ResourceRequirement,
     RetryStrategy as _RetryStrategy,
+    Secret as _Secret,
     Timeout as _Timeout,
+    Tmpfs as _Tmpfs,
     Ulimit as _Ulimit,
     Volumes as _Volumes,
     VolumesHost as _VolumesHost,
@@ -111,17 +114,76 @@ class Device(troposphere.batch.Device, Mixin):
         super(Device, self).__init__(**processed_kwargs)
 
 
+class Tmpfs(troposphere.batch.Tmpfs, Mixin):
+    def __init__(self,
+                 title=None,
+                 ContainerPath=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Size=REQUIRED, # type: int
+                 MountOptions=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            ContainerPath=ContainerPath,
+            Size=Size,
+            MountOptions=MountOptions,
+            **kwargs
+        )
+        super(Tmpfs, self).__init__(**processed_kwargs)
+
+
 class LinuxParameters(troposphere.batch.LinuxParameters, Mixin):
     def __init__(self,
                  title=None,
                  Devices=NOTHING, # type: List[_Device]
+                 InitProcessEnabled=NOTHING, # type: bool
+                 MaxSwap=NOTHING, # type: int
+                 SharedMemorySize=NOTHING, # type: int
+                 Swappiness=NOTHING, # type: int
+                 Tmpfs=NOTHING, # type: List[_Tmpfs]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             Devices=Devices,
+            InitProcessEnabled=InitProcessEnabled,
+            MaxSwap=MaxSwap,
+            SharedMemorySize=SharedMemorySize,
+            Swappiness=Swappiness,
+            Tmpfs=Tmpfs,
             **kwargs
         )
         super(LinuxParameters, self).__init__(**processed_kwargs)
+
+
+class Secret(troposphere.batch.Secret, Mixin):
+    def __init__(self,
+                 title=None,
+                 Name=REQUIRED, # type: Union[str, AWSHelperFn]
+                 ValueFrom=REQUIRED, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Name=Name,
+            ValueFrom=ValueFrom,
+            **kwargs
+        )
+        super(Secret, self).__init__(**processed_kwargs)
+
+
+class LogConfiguration(troposphere.batch.LogConfiguration, Mixin):
+    def __init__(self,
+                 title=None,
+                 LogDriver=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Options=NOTHING, # type: dict
+                 SecretOptions=NOTHING, # type: List[_Secret]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            LogDriver=LogDriver,
+            Options=Options,
+            SecretOptions=SecretOptions,
+            **kwargs
+        )
+        super(LogConfiguration, self).__init__(**processed_kwargs)
 
 
 class MountPoints(troposphere.batch.MountPoints, Mixin):
@@ -224,13 +286,16 @@ class ContainerProperties(troposphere.batch.ContainerProperties, Mixin):
                  Vcpus=REQUIRED, # type: int
                  Command=NOTHING, # type: List[Union[str, AWSHelperFn]]
                  Environment=NOTHING, # type: List[_Environment]
+                 ExecutionRoleArn=NOTHING, # type: Union[str, AWSHelperFn]
                  InstanceType=NOTHING, # type: Union[str, AWSHelperFn]
                  JobRoleArn=NOTHING, # type: Union[str, AWSHelperFn]
                  LinuxParameters=NOTHING, # type: _LinuxParameters
+                 LogConfiguration=NOTHING, # type: _LogConfiguration
                  MountPoints=NOTHING, # type: List[_MountPoints]
                  Privileged=NOTHING, # type: bool
                  ReadonlyRootFilesystem=NOTHING, # type: bool
                  ResourceRequirements=NOTHING, # type: List[_ResourceRequirement]
+                 Secrets=NOTHING, # type: List[_Secret]
                  Ulimits=NOTHING, # type: List[_Ulimit]
                  User=NOTHING, # type: Union[str, AWSHelperFn]
                  Volumes=NOTHING, # type: List[_Volumes]
@@ -242,13 +307,16 @@ class ContainerProperties(troposphere.batch.ContainerProperties, Mixin):
             Vcpus=Vcpus,
             Command=Command,
             Environment=Environment,
+            ExecutionRoleArn=ExecutionRoleArn,
             InstanceType=InstanceType,
             JobRoleArn=JobRoleArn,
             LinuxParameters=LinuxParameters,
+            LogConfiguration=LogConfiguration,
             MountPoints=MountPoints,
             Privileged=Privileged,
             ReadonlyRootFilesystem=ReadonlyRootFilesystem,
             ResourceRequirements=ResourceRequirements,
+            Secrets=Secrets,
             Ulimits=Ulimits,
             User=User,
             Volumes=Volumes,

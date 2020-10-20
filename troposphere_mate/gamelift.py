@@ -11,13 +11,23 @@ if sys.version_info.major >= 3 and sys.version_info.minor >= 5:  # pragma: no co
 import troposphere.gamelift
 
 from troposphere.gamelift import (
+    AutoScalingPolicy as _AutoScalingPolicy,
     CertificateConfiguration as _CertificateConfiguration,
+    Destination as _Destination,
+    GameProperty as _GameProperty,
+    InstanceDefinition as _InstanceDefinition,
+    InstanceDefinitions as _InstanceDefinitions,
     IpPermission as _IpPermission,
+    LaunchTemplate as _LaunchTemplate,
+    PlayerLatencyPolicy as _PlayerLatencyPolicy,
     ResourceCreationLimitPolicy as _ResourceCreationLimitPolicy,
     RoutingStrategy as _RoutingStrategy,
     RuntimeConfiguration as _RuntimeConfiguration,
     S3Location as _S3Location,
     ServerProcess as _ServerProcess,
+    Tags as _Tags,
+    TargetTrackingConfiguration as _TargetTrackingConfiguration,
+    VpcSubnets as _VpcSubnets,
 )
 
 
@@ -30,15 +40,15 @@ from troposphere_mate.core.sentiel import REQUIRED, NOTHING
 class RoutingStrategy(troposphere.gamelift.RoutingStrategy, Mixin):
     def __init__(self,
                  title=None,
-                 Type=REQUIRED, # type: Union[str, AWSHelperFn]
                  FleetId=NOTHING, # type: Union[str, AWSHelperFn]
                  Message=NOTHING, # type: Union[str, AWSHelperFn]
+                 Type=NOTHING, # type: Union[str, AWSHelperFn]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
-            Type=Type,
             FleetId=FleetId,
             Message=Message,
+            Type=Type,
             **kwargs
         )
         super(RoutingStrategy, self).__init__(**processed_kwargs)
@@ -243,3 +253,275 @@ class Fleet(troposphere.gamelift.Fleet, Mixin):
             **kwargs
         )
         super(Fleet, self).__init__(**processed_kwargs)
+
+
+class TargetTrackingConfiguration(troposphere.gamelift.TargetTrackingConfiguration, Mixin):
+    def __init__(self,
+                 title=None,
+                 TargetValue=REQUIRED, # type: float
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            TargetValue=TargetValue,
+            **kwargs
+        )
+        super(TargetTrackingConfiguration, self).__init__(**processed_kwargs)
+
+
+class AutoScalingPolicy(troposphere.gamelift.AutoScalingPolicy, Mixin):
+    def __init__(self,
+                 title=None,
+                 TargetTrackingConfiguration=REQUIRED, # type: _TargetTrackingConfiguration
+                 EstimatedInstanceWarmup=NOTHING, # type: float
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            TargetTrackingConfiguration=TargetTrackingConfiguration,
+            EstimatedInstanceWarmup=EstimatedInstanceWarmup,
+            **kwargs
+        )
+        super(AutoScalingPolicy, self).__init__(**processed_kwargs)
+
+
+class InstanceDefinition(troposphere.gamelift.InstanceDefinition, Mixin):
+    def __init__(self,
+                 title=None,
+                 InstanceType=REQUIRED, # type: Union[str, AWSHelperFn]
+                 WeightedCapacity=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            InstanceType=InstanceType,
+            WeightedCapacity=WeightedCapacity,
+            **kwargs
+        )
+        super(InstanceDefinition, self).__init__(**processed_kwargs)
+
+
+class InstanceDefinitions(troposphere.gamelift.InstanceDefinitions, Mixin):
+    def __init__(self,
+                 title=None,
+                 InstanceDefinitions=NOTHING, # type: List[_InstanceDefinition]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            InstanceDefinitions=InstanceDefinitions,
+            **kwargs
+        )
+        super(InstanceDefinitions, self).__init__(**processed_kwargs)
+
+
+class LaunchTemplate(troposphere.gamelift.LaunchTemplate, Mixin):
+    def __init__(self,
+                 title=None,
+                 LaunchTemplateId=NOTHING, # type: Union[str, AWSHelperFn]
+                 LaunchTemplateName=NOTHING, # type: Union[str, AWSHelperFn]
+                 Version=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            LaunchTemplateId=LaunchTemplateId,
+            LaunchTemplateName=LaunchTemplateName,
+            Version=Version,
+            **kwargs
+        )
+        super(LaunchTemplate, self).__init__(**processed_kwargs)
+
+
+class VpcSubnets(troposphere.gamelift.VpcSubnets, Mixin):
+    def __init__(self,
+                 title=None,
+                 VpcSubnets=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            VpcSubnets=VpcSubnets,
+            **kwargs
+        )
+        super(VpcSubnets, self).__init__(**processed_kwargs)
+
+
+class GameServerGroup(troposphere.gamelift.GameServerGroup, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 GameServerGroupName=REQUIRED, # type: Union[str, AWSHelperFn]
+                 InstanceDefinitions=REQUIRED, # type: _InstanceDefinitions
+                 LaunchTemplate=REQUIRED, # type: _LaunchTemplate
+                 RoleArn=REQUIRED, # type: Union[str, AWSHelperFn]
+                 AutoScalingPolicy=NOTHING, # type: _AutoScalingPolicy
+                 BalancingStrategy=NOTHING, # type: Union[str, AWSHelperFn]
+                 DeleteOption=NOTHING, # type: Union[str, AWSHelperFn]
+                 GameServerProtectionPolicy=NOTHING, # type: Union[str, AWSHelperFn]
+                 MaxSize=NOTHING, # type: float
+                 MinSize=NOTHING, # type: float
+                 Tags=NOTHING, # type: _Tags
+                 VpcSubnets=NOTHING, # type: _VpcSubnets
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            GameServerGroupName=GameServerGroupName,
+            InstanceDefinitions=InstanceDefinitions,
+            LaunchTemplate=LaunchTemplate,
+            RoleArn=RoleArn,
+            AutoScalingPolicy=AutoScalingPolicy,
+            BalancingStrategy=BalancingStrategy,
+            DeleteOption=DeleteOption,
+            GameServerProtectionPolicy=GameServerProtectionPolicy,
+            MaxSize=MaxSize,
+            MinSize=MinSize,
+            Tags=Tags,
+            VpcSubnets=VpcSubnets,
+            **kwargs
+        )
+        super(GameServerGroup, self).__init__(**processed_kwargs)
+
+
+class Destination(troposphere.gamelift.Destination, Mixin):
+    def __init__(self,
+                 title=None,
+                 DestinationArn=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            DestinationArn=DestinationArn,
+            **kwargs
+        )
+        super(Destination, self).__init__(**processed_kwargs)
+
+
+class PlayerLatencyPolicy(troposphere.gamelift.PlayerLatencyPolicy, Mixin):
+    def __init__(self,
+                 title=None,
+                 MaximumIndividualPlayerLatencyMilliseconds=NOTHING, # type: int
+                 PolicyDurationSeconds=NOTHING, # type: int
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            MaximumIndividualPlayerLatencyMilliseconds=MaximumIndividualPlayerLatencyMilliseconds,
+            PolicyDurationSeconds=PolicyDurationSeconds,
+            **kwargs
+        )
+        super(PlayerLatencyPolicy, self).__init__(**processed_kwargs)
+
+
+class GameSessionQueue(troposphere.gamelift.GameSessionQueue, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 Name=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Destinations=NOTHING, # type: List[_Destination]
+                 PlayerLatencyPolicies=NOTHING, # type: List[_PlayerLatencyPolicy]
+                 TimeoutInSeconds=NOTHING, # type: int
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            Name=Name,
+            Destinations=Destinations,
+            PlayerLatencyPolicies=PlayerLatencyPolicies,
+            TimeoutInSeconds=TimeoutInSeconds,
+            **kwargs
+        )
+        super(GameSessionQueue, self).__init__(**processed_kwargs)
+
+
+class GameProperty(troposphere.gamelift.GameProperty, Mixin):
+    def __init__(self,
+                 title=None,
+                 Key=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Value=REQUIRED, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Key=Key,
+            Value=Value,
+            **kwargs
+        )
+        super(GameProperty, self).__init__(**processed_kwargs)
+
+
+class MatchmakingConfiguration(troposphere.gamelift.MatchmakingConfiguration, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 AcceptanceRequired=REQUIRED, # type: bool
+                 GameSessionQueueArns=REQUIRED, # type: List[Union[str, AWSHelperFn]]
+                 Name=REQUIRED, # type: Union[str, AWSHelperFn]
+                 RequestTimeoutSeconds=REQUIRED, # type: int
+                 RuleSetName=REQUIRED, # type: Union[str, AWSHelperFn]
+                 AcceptanceTimeoutSeconds=NOTHING, # type: int
+                 AdditionalPlayerCount=NOTHING, # type: int
+                 BackfillMode=NOTHING, # type: Union[str, AWSHelperFn]
+                 CustomEventData=NOTHING, # type: Union[str, AWSHelperFn]
+                 Description=NOTHING, # type: Union[str, AWSHelperFn]
+                 GameProperties=NOTHING, # type: List[_GameProperty]
+                 GameSessionData=NOTHING, # type: Union[str, AWSHelperFn]
+                 NotificationTarget=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            AcceptanceRequired=AcceptanceRequired,
+            GameSessionQueueArns=GameSessionQueueArns,
+            Name=Name,
+            RequestTimeoutSeconds=RequestTimeoutSeconds,
+            RuleSetName=RuleSetName,
+            AcceptanceTimeoutSeconds=AcceptanceTimeoutSeconds,
+            AdditionalPlayerCount=AdditionalPlayerCount,
+            BackfillMode=BackfillMode,
+            CustomEventData=CustomEventData,
+            Description=Description,
+            GameProperties=GameProperties,
+            GameSessionData=GameSessionData,
+            NotificationTarget=NotificationTarget,
+            **kwargs
+        )
+        super(MatchmakingConfiguration, self).__init__(**processed_kwargs)
+
+
+class MatchmakingRuleSet(troposphere.gamelift.MatchmakingRuleSet, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 Name=REQUIRED, # type: Union[str, AWSHelperFn]
+                 RuleSetBody=REQUIRED, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            Name=Name,
+            RuleSetBody=RuleSetBody,
+            **kwargs
+        )
+        super(MatchmakingRuleSet, self).__init__(**processed_kwargs)
+
+
+class Script(troposphere.gamelift.Script, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 StorageLocation=REQUIRED, # type: _S3Location
+                 Name=NOTHING, # type: Union[str, AWSHelperFn]
+                 Version=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            StorageLocation=StorageLocation,
+            Name=Name,
+            Version=Version,
+            **kwargs
+        )
+        super(Script, self).__init__(**processed_kwargs)

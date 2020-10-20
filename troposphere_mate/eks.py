@@ -12,12 +12,17 @@ import troposphere.eks
 
 from troposphere.eks import (
     EncryptionConfig as _EncryptionConfig,
+    KubernetesNetworkConfig as _KubernetesNetworkConfig,
+    Label as _Label,
+    LaunchTemplateSpecification as _LaunchTemplateSpecification,
     LogSetup as _LogSetup,
     Logging as _Logging,
     Provider as _Provider,
     RemoteAccess as _RemoteAccess,
     ResourcesVpcConfig as _ResourcesVpcConfig,
     ScalingConfig as _ScalingConfig,
+    Selector as _Selector,
+    Tags as _Tags,
 )
 
 
@@ -55,21 +60,6 @@ class Logging(troposphere.eks.Logging, Mixin):
         super(Logging, self).__init__(**processed_kwargs)
 
 
-class ResourcesVpcConfig(troposphere.eks.ResourcesVpcConfig, Mixin):
-    def __init__(self,
-                 title=None,
-                 SubnetIds=REQUIRED, # type: List[Union[str, AWSHelperFn]]
-                 SecurityGroupIds=NOTHING, # type: List[Union[str, AWSHelperFn]]
-                 **kwargs):
-        processed_kwargs = preprocess_init_kwargs(
-            title=title,
-            SubnetIds=SubnetIds,
-            SecurityGroupIds=SecurityGroupIds,
-            **kwargs
-        )
-        super(ResourcesVpcConfig, self).__init__(**processed_kwargs)
-
-
 class Provider(troposphere.eks.Provider, Mixin):
     def __init__(self,
                  title=None,
@@ -98,6 +88,34 @@ class EncryptionConfig(troposphere.eks.EncryptionConfig, Mixin):
         super(EncryptionConfig, self).__init__(**processed_kwargs)
 
 
+class KubernetesNetworkConfig(troposphere.eks.KubernetesNetworkConfig, Mixin):
+    def __init__(self,
+                 title=None,
+                 ServiceIpv4Cidr=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            ServiceIpv4Cidr=ServiceIpv4Cidr,
+            **kwargs
+        )
+        super(KubernetesNetworkConfig, self).__init__(**processed_kwargs)
+
+
+class ResourcesVpcConfig(troposphere.eks.ResourcesVpcConfig, Mixin):
+    def __init__(self,
+                 title=None,
+                 SubnetIds=REQUIRED, # type: List[Union[str, AWSHelperFn]]
+                 SecurityGroupIds=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            SubnetIds=SubnetIds,
+            SecurityGroupIds=SecurityGroupIds,
+            **kwargs
+        )
+        super(ResourcesVpcConfig, self).__init__(**processed_kwargs)
+
+
 class Cluster(troposphere.eks.Cluster, Mixin):
     def __init__(self,
                  title, # type: str
@@ -106,6 +124,7 @@ class Cluster(troposphere.eks.Cluster, Mixin):
                  ResourcesVpcConfig=REQUIRED, # type: _ResourcesVpcConfig
                  RoleArn=REQUIRED, # type: Union[str, AWSHelperFn]
                  EncryptionConfig=NOTHING, # type: List[_EncryptionConfig]
+                 KubernetesNetworkConfig=NOTHING, # type: _KubernetesNetworkConfig
                  Name=NOTHING, # type: Union[str, AWSHelperFn]
                  Logging=NOTHING, # type: _Logging
                  Version=NOTHING, # type: Union[str, AWSHelperFn]
@@ -117,12 +136,70 @@ class Cluster(troposphere.eks.Cluster, Mixin):
             ResourcesVpcConfig=ResourcesVpcConfig,
             RoleArn=RoleArn,
             EncryptionConfig=EncryptionConfig,
+            KubernetesNetworkConfig=KubernetesNetworkConfig,
             Name=Name,
             Logging=Logging,
             Version=Version,
             **kwargs
         )
         super(Cluster, self).__init__(**processed_kwargs)
+
+
+class Label(troposphere.eks.Label, Mixin):
+    def __init__(self,
+                 title=None,
+                 Key=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Value=REQUIRED, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Key=Key,
+            Value=Value,
+            **kwargs
+        )
+        super(Label, self).__init__(**processed_kwargs)
+
+
+class Selector(troposphere.eks.Selector, Mixin):
+    def __init__(self,
+                 title=None,
+                 Namespace=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Labels=NOTHING, # type: List[_Label]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Namespace=Namespace,
+            Labels=Labels,
+            **kwargs
+        )
+        super(Selector, self).__init__(**processed_kwargs)
+
+
+class FargateProfile(troposphere.eks.FargateProfile, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 ClusterName=REQUIRED, # type: Union[str, AWSHelperFn]
+                 PodExecutionRoleArn=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Selectors=REQUIRED, # type: List[_Selector]
+                 FargateProfileName=NOTHING, # type: Union[str, AWSHelperFn]
+                 Subnets=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 Tags=NOTHING, # type: _Tags
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            ClusterName=ClusterName,
+            PodExecutionRoleArn=PodExecutionRoleArn,
+            Selectors=Selectors,
+            FargateProfileName=FargateProfileName,
+            Subnets=Subnets,
+            Tags=Tags,
+            **kwargs
+        )
+        super(FargateProfile, self).__init__(**processed_kwargs)
 
 
 class RemoteAccess(troposphere.eks.RemoteAccess, Mixin):
@@ -157,6 +234,23 @@ class ScalingConfig(troposphere.eks.ScalingConfig, Mixin):
         super(ScalingConfig, self).__init__(**processed_kwargs)
 
 
+class LaunchTemplateSpecification(troposphere.eks.LaunchTemplateSpecification, Mixin):
+    def __init__(self,
+                 title=None,
+                 Id=NOTHING, # type: Union[str, AWSHelperFn]
+                 Name=NOTHING, # type: Union[str, AWSHelperFn]
+                 Version=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Id=Id,
+            Name=Name,
+            Version=Version,
+            **kwargs
+        )
+        super(LaunchTemplateSpecification, self).__init__(**processed_kwargs)
+
+
 class Nodegroup(troposphere.eks.Nodegroup, Mixin):
     def __init__(self,
                  title, # type: str
@@ -169,6 +263,7 @@ class Nodegroup(troposphere.eks.Nodegroup, Mixin):
                  ForceUpdateEnabled=NOTHING, # type: bool
                  InstanceTypes=NOTHING, # type: List[Union[str, AWSHelperFn]]
                  Labels=NOTHING, # type: dict
+                 LaunchTemplate=NOTHING, # type: _LaunchTemplateSpecification
                  NodegroupName=NOTHING, # type: Union[str, AWSHelperFn]
                  ReleaseVersion=NOTHING, # type: Union[str, AWSHelperFn]
                  RemoteAccess=NOTHING, # type: _RemoteAccess
@@ -188,6 +283,7 @@ class Nodegroup(troposphere.eks.Nodegroup, Mixin):
             ForceUpdateEnabled=ForceUpdateEnabled,
             InstanceTypes=InstanceTypes,
             Labels=Labels,
+            LaunchTemplate=LaunchTemplate,
             NodegroupName=NodegroupName,
             ReleaseVersion=ReleaseVersion,
             RemoteAccess=RemoteAccess,

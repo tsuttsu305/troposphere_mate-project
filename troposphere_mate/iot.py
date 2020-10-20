@@ -48,6 +48,33 @@ from troposphere_mate.core.sentiel import REQUIRED, NOTHING
 
 
 
+class Authorizer(troposphere.iot.Authorizer, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 AuthorizerFunctionArn=REQUIRED, # type: Union[str, AWSHelperFn]
+                 AuthorizerName=NOTHING, # type: Union[str, AWSHelperFn]
+                 SigningDisabled=NOTHING, # type: bool
+                 Status=NOTHING, # type: Union[str, AWSHelperFn]
+                 Tags=NOTHING, # type: dict
+                 TokenKeyName=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            AuthorizerFunctionArn=AuthorizerFunctionArn,
+            AuthorizerName=AuthorizerName,
+            SigningDisabled=SigningDisabled,
+            Status=Status,
+            Tags=Tags,
+            TokenKeyName=TokenKeyName,
+            **kwargs
+        )
+        super(Authorizer, self).__init__(**processed_kwargs)
+
+
 class CloudwatchAlarmAction(troposphere.iot.CloudwatchAlarmAction, Mixin):
     def __init__(self,
                  title=None,

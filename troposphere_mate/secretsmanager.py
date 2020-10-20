@@ -12,6 +12,7 @@ import troposphere.secretsmanager
 
 from troposphere.secretsmanager import (
     GenerateSecretString as _GenerateSecretString,
+    HostedRotationLambda as _HostedRotationLambda,
     RotationRules as _RotationRules,
     Tags as _Tags,
 )
@@ -42,6 +43,31 @@ class ResourcePolicy(troposphere.secretsmanager.ResourcePolicy, Mixin):
         super(ResourcePolicy, self).__init__(**processed_kwargs)
 
 
+class HostedRotationLambda(troposphere.secretsmanager.HostedRotationLambda, Mixin):
+    def __init__(self,
+                 title=None,
+                 RotationType=REQUIRED, # type: Union[str, AWSHelperFn]
+                 KmsKeyArn=NOTHING, # type: Union[str, AWSHelperFn]
+                 MasterSecretArn=NOTHING, # type: Union[str, AWSHelperFn]
+                 MasterSecretKmsKeyArn=NOTHING, # type: Union[str, AWSHelperFn]
+                 RotationLambdaName=NOTHING, # type: Union[str, AWSHelperFn]
+                 VpcSecurityGroupIds=NOTHING, # type: Union[str, AWSHelperFn]
+                 VpcSubnetIds=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            RotationType=RotationType,
+            KmsKeyArn=KmsKeyArn,
+            MasterSecretArn=MasterSecretArn,
+            MasterSecretKmsKeyArn=MasterSecretKmsKeyArn,
+            RotationLambdaName=RotationLambdaName,
+            VpcSecurityGroupIds=VpcSecurityGroupIds,
+            VpcSubnetIds=VpcSubnetIds,
+            **kwargs
+        )
+        super(HostedRotationLambda, self).__init__(**processed_kwargs)
+
+
 class RotationRules(troposphere.secretsmanager.RotationRules, Mixin):
     def __init__(self,
                  title=None,
@@ -61,7 +87,8 @@ class RotationSchedule(troposphere.secretsmanager.RotationSchedule, Mixin):
                  template=None, # type: Template
                  validation=True, # type: bool
                  SecretId=REQUIRED, # type: Union[str, AWSHelperFn]
-                 RotationLambdaARN=REQUIRED, # type: Union[str, AWSHelperFn]
+                 HostedRotationLambda=NOTHING, # type: _HostedRotationLambda
+                 RotationLambdaARN=NOTHING, # type: Union[str, AWSHelperFn]
                  RotationRules=NOTHING, # type: _RotationRules
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
@@ -69,11 +96,70 @@ class RotationSchedule(troposphere.secretsmanager.RotationSchedule, Mixin):
             template=template,
             validation=validation,
             SecretId=SecretId,
+            HostedRotationLambda=HostedRotationLambda,
             RotationLambdaARN=RotationLambdaARN,
             RotationRules=RotationRules,
             **kwargs
         )
         super(RotationSchedule, self).__init__(**processed_kwargs)
+
+
+class GenerateSecretString(troposphere.secretsmanager.GenerateSecretString, Mixin):
+    def __init__(self,
+                 title=None,
+                 ExcludeCharacters=NOTHING, # type: Union[str, AWSHelperFn]
+                 ExcludeLowercase=NOTHING, # type: bool
+                 ExcludeNumbers=NOTHING, # type: bool
+                 ExcludePunctuation=NOTHING, # type: bool
+                 ExcludeUppercase=NOTHING, # type: bool
+                 GenerateStringKey=NOTHING, # type: Union[str, AWSHelperFn]
+                 IncludeSpace=NOTHING, # type: bool
+                 PasswordLength=NOTHING, # type: int
+                 RequireEachIncludedType=NOTHING, # type: bool
+                 SecretStringTemplate=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            ExcludeCharacters=ExcludeCharacters,
+            ExcludeLowercase=ExcludeLowercase,
+            ExcludeNumbers=ExcludeNumbers,
+            ExcludePunctuation=ExcludePunctuation,
+            ExcludeUppercase=ExcludeUppercase,
+            GenerateStringKey=GenerateStringKey,
+            IncludeSpace=IncludeSpace,
+            PasswordLength=PasswordLength,
+            RequireEachIncludedType=RequireEachIncludedType,
+            SecretStringTemplate=SecretStringTemplate,
+            **kwargs
+        )
+        super(GenerateSecretString, self).__init__(**processed_kwargs)
+
+
+class Secret(troposphere.secretsmanager.Secret, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 Description=NOTHING, # type: Union[str, AWSHelperFn]
+                 GenerateSecretString=NOTHING, # type: _GenerateSecretString
+                 KmsKeyId=NOTHING, # type: Union[str, AWSHelperFn]
+                 Name=NOTHING, # type: Union[str, AWSHelperFn]
+                 SecretString=NOTHING, # type: Union[str, AWSHelperFn]
+                 Tags=NOTHING, # type: Union[_Tags, list]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            Description=Description,
+            GenerateSecretString=GenerateSecretString,
+            KmsKeyId=KmsKeyId,
+            Name=Name,
+            SecretString=SecretString,
+            Tags=Tags,
+            **kwargs
+        )
+        super(Secret, self).__init__(**processed_kwargs)
 
 
 class SecretTargetAttachment(troposphere.secretsmanager.SecretTargetAttachment, Mixin):
@@ -95,61 +181,3 @@ class SecretTargetAttachment(troposphere.secretsmanager.SecretTargetAttachment, 
             **kwargs
         )
         super(SecretTargetAttachment, self).__init__(**processed_kwargs)
-
-
-class GenerateSecretString(troposphere.secretsmanager.GenerateSecretString, Mixin):
-    def __init__(self,
-                 title=None,
-                 ExcludeUppercase=NOTHING, # type: bool
-                 RequireEachIncludedType=NOTHING, # type: bool
-                 IncludeSpace=NOTHING, # type: bool
-                 ExcludeCharacters=NOTHING, # type: Union[str, AWSHelperFn]
-                 GenerateStringKey=NOTHING, # type: Union[str, AWSHelperFn]
-                 PasswordLength=NOTHING, # type: int
-                 ExcludePunctuation=NOTHING, # type: bool
-                 ExcludeLowercase=NOTHING, # type: bool
-                 SecretStringTemplate=NOTHING, # type: Union[str, AWSHelperFn]
-                 ExcludeNumbers=NOTHING, # type: bool
-                 **kwargs):
-        processed_kwargs = preprocess_init_kwargs(
-            title=title,
-            ExcludeUppercase=ExcludeUppercase,
-            RequireEachIncludedType=RequireEachIncludedType,
-            IncludeSpace=IncludeSpace,
-            ExcludeCharacters=ExcludeCharacters,
-            GenerateStringKey=GenerateStringKey,
-            PasswordLength=PasswordLength,
-            ExcludePunctuation=ExcludePunctuation,
-            ExcludeLowercase=ExcludeLowercase,
-            SecretStringTemplate=SecretStringTemplate,
-            ExcludeNumbers=ExcludeNumbers,
-            **kwargs
-        )
-        super(GenerateSecretString, self).__init__(**processed_kwargs)
-
-
-class Secret(troposphere.secretsmanager.Secret, Mixin):
-    def __init__(self,
-                 title, # type: str
-                 template=None, # type: Template
-                 validation=True, # type: bool
-                 Description=NOTHING, # type: Union[str, AWSHelperFn]
-                 KmsKeyId=NOTHING, # type: Union[str, AWSHelperFn]
-                 SecretString=NOTHING, # type: Union[str, AWSHelperFn]
-                 GenerateSecretString=NOTHING, # type: _GenerateSecretString
-                 Name=NOTHING, # type: Union[str, AWSHelperFn]
-                 Tags=NOTHING, # type: Union[_Tags, list]
-                 **kwargs):
-        processed_kwargs = preprocess_init_kwargs(
-            title=title,
-            template=template,
-            validation=validation,
-            Description=Description,
-            KmsKeyId=KmsKeyId,
-            SecretString=SecretString,
-            GenerateSecretString=GenerateSecretString,
-            Name=Name,
-            Tags=Tags,
-            **kwargs
-        )
-        super(Secret, self).__init__(**processed_kwargs)

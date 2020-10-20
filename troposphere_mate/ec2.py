@@ -89,6 +89,25 @@ class Tag(troposphere.ec2.Tag, Mixin):
         super(Tag, self).__init__(**processed_kwargs)
 
 
+class CarrierGateway(troposphere.ec2.CarrierGateway, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 VpcId=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Tags=NOTHING, # type: _Tags
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            VpcId=VpcId,
+            Tags=Tags,
+            **kwargs
+        )
+        super(CarrierGateway, self).__init__(**processed_kwargs)
+
+
 class CustomerGateway(troposphere.ec2.CustomerGateway, Mixin):
     def __init__(self,
                  title, # type: str
@@ -215,7 +234,10 @@ class FlowLog(troposphere.ec2.FlowLog, Mixin):
                  DeliverLogsPermissionArn=NOTHING, # type: Union[str, AWSHelperFn]
                  LogDestination=NOTHING, # type: Union[str, AWSHelperFn]
                  LogDestinationType=NOTHING, # type: Union[str, AWSHelperFn]
+                 LogFormat=NOTHING, # type: Union[str, AWSHelperFn]
                  LogGroupName=NOTHING, # type: Union[str, AWSHelperFn]
+                 MaxAggregationInterval=NOTHING, # type: int
+                 Tags=NOTHING, # type: _Tags
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
@@ -227,7 +249,10 @@ class FlowLog(troposphere.ec2.FlowLog, Mixin):
             DeliverLogsPermissionArn=DeliverLogsPermissionArn,
             LogDestination=LogDestination,
             LogDestinationType=LogDestinationType,
+            LogFormat=LogFormat,
             LogGroupName=LogGroupName,
+            MaxAggregationInterval=MaxAggregationInterval,
+            Tags=Tags,
             **kwargs
         )
         super(FlowLog, self).__init__(**processed_kwargs)
@@ -1021,6 +1046,7 @@ class SecurityGroupRule(troposphere.ec2.SecurityGroupRule, Mixin):
                  DestinationPrefixListId=NOTHING, # type: Union[str, AWSHelperFn]
                  DestinationSecurityGroupId=NOTHING, # type: Union[str, AWSHelperFn]
                  FromPort=NOTHING, # type: int
+                 SourcePrefixListId=NOTHING, # type: Union[str, AWSHelperFn]
                  SourceSecurityGroupId=NOTHING, # type: Union[str, AWSHelperFn]
                  SourceSecurityGroupName=NOTHING, # type: Union[str, AWSHelperFn]
                  SourceSecurityGroupOwnerId=NOTHING, # type: Union[str, AWSHelperFn]
@@ -1035,6 +1061,7 @@ class SecurityGroupRule(troposphere.ec2.SecurityGroupRule, Mixin):
             DestinationPrefixListId=DestinationPrefixListId,
             DestinationSecurityGroupId=DestinationSecurityGroupId,
             FromPort=FromPort,
+            SourcePrefixListId=SourcePrefixListId,
             SourceSecurityGroupId=SourceSecurityGroupId,
             SourceSecurityGroupName=SourceSecurityGroupName,
             SourceSecurityGroupOwnerId=SourceSecurityGroupOwnerId,

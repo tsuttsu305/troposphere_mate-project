@@ -16,6 +16,7 @@ from troposphere.stepfunctions import (
     LoggingConfiguration as _LoggingConfiguration,
     S3Location as _S3Location,
     Tags as _Tags,
+    TracingConfiguration as _TracingConfiguration,
 )
 
 
@@ -92,7 +93,7 @@ class S3Location(troposphere.stepfunctions.S3Location, Mixin):
                  title=None,
                  Bucket=REQUIRED, # type: Union[str, AWSHelperFn]
                  Key=REQUIRED, # type: Union[str, AWSHelperFn]
-                 Version=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Version=NOTHING, # type: Union[str, AWSHelperFn]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
@@ -104,32 +105,47 @@ class S3Location(troposphere.stepfunctions.S3Location, Mixin):
         super(S3Location, self).__init__(**processed_kwargs)
 
 
+class TracingConfiguration(troposphere.stepfunctions.TracingConfiguration, Mixin):
+    def __init__(self,
+                 title=None,
+                 Enabled=NOTHING, # type: bool
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Enabled=Enabled,
+            **kwargs
+        )
+        super(TracingConfiguration, self).__init__(**processed_kwargs)
+
+
 class StateMachine(troposphere.stepfunctions.StateMachine, Mixin):
     def __init__(self,
                  title, # type: str
                  template=None, # type: Template
                  validation=True, # type: bool
-                 DefinitionString=REQUIRED, # type: Union[str, AWSHelperFn]
                  RoleArn=REQUIRED, # type: Union[str, AWSHelperFn]
                  DefinitionS3Location=NOTHING, # type: _S3Location
+                 DefinitionString=NOTHING, # type: Union[str, AWSHelperFn]
                  DefinitionSubstitutions=NOTHING, # type: dict
                  LoggingConfiguration=NOTHING, # type: _LoggingConfiguration
                  StateMachineName=NOTHING, # type: Union[str, AWSHelperFn]
                  StateMachineType=NOTHING, # type: Union[str, AWSHelperFn]
                  Tags=NOTHING, # type: _Tags
+                 TracingConfiguration=NOTHING, # type: _TracingConfiguration
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             template=template,
             validation=validation,
-            DefinitionString=DefinitionString,
             RoleArn=RoleArn,
             DefinitionS3Location=DefinitionS3Location,
+            DefinitionString=DefinitionString,
             DefinitionSubstitutions=DefinitionSubstitutions,
             LoggingConfiguration=LoggingConfiguration,
             StateMachineName=StateMachineName,
             StateMachineType=StateMachineType,
             Tags=Tags,
+            TracingConfiguration=TracingConfiguration,
             **kwargs
         )
         super(StateMachine, self).__init__(**processed_kwargs)

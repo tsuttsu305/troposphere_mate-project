@@ -22,6 +22,25 @@ from troposphere_mate.core.sentiel import REQUIRED, NOTHING
 
 
 
+class ConnectionAlias(troposphere.workspaces.ConnectionAlias, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 ConnectionString=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Tags=NOTHING, # type: _Tags
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            ConnectionString=ConnectionString,
+            Tags=Tags,
+            **kwargs
+        )
+        super(ConnectionAlias, self).__init__(**processed_kwargs)
+
+
 class WorkspaceProperties(troposphere.workspaces.WorkspaceProperties, Mixin):
     def __init__(self,
                  title=None,

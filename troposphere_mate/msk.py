@@ -27,6 +27,8 @@ from troposphere.msk import (
     OpenMonitoring as _OpenMonitoring,
     Prometheus as _Prometheus,
     S3 as _S3,
+    Sasl as _Sasl,
+    Scram as _Scram,
     StorageInfo as _StorageInfo,
     Tls as _Tls,
 )
@@ -85,6 +87,32 @@ class BrokerNodeGroupInfo(troposphere.msk.BrokerNodeGroupInfo, Mixin):
         super(BrokerNodeGroupInfo, self).__init__(**processed_kwargs)
 
 
+class Scram(troposphere.msk.Scram, Mixin):
+    def __init__(self,
+                 title=None,
+                 Enabled=REQUIRED, # type: bool
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Enabled=Enabled,
+            **kwargs
+        )
+        super(Scram, self).__init__(**processed_kwargs)
+
+
+class Sasl(troposphere.msk.Sasl, Mixin):
+    def __init__(self,
+                 title=None,
+                 Scram=REQUIRED, # type: _Scram
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Scram=Scram,
+            **kwargs
+        )
+        super(Sasl, self).__init__(**processed_kwargs)
+
+
 class Tls(troposphere.msk.Tls, Mixin):
     def __init__(self,
                  title=None,
@@ -101,10 +129,12 @@ class Tls(troposphere.msk.Tls, Mixin):
 class ClientAuthentication(troposphere.msk.ClientAuthentication, Mixin):
     def __init__(self,
                  title=None,
+                 Sasl=NOTHING, # type: _Sasl
                  Tls=NOTHING, # type: _Tls
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
+            Sasl=Sasl,
             Tls=Tls,
             **kwargs
         )

@@ -147,6 +147,7 @@ class CloudFormationProvisionedProduct(troposphere.servicecatalog.CloudFormation
                  AcceptLanguage=NOTHING, # type: Union[str, AWSHelperFn]
                  NotificationArns=NOTHING, # type: List[Union[str, AWSHelperFn]]
                  PathId=NOTHING, # type: Union[str, AWSHelperFn]
+                 PathName=NOTHING, # type: Union[str, AWSHelperFn]
                  ProductId=NOTHING, # type: Union[str, AWSHelperFn]
                  ProductName=NOTHING, # type: Union[str, AWSHelperFn]
                  ProvisionedProductName=NOTHING, # type: Union[str, AWSHelperFn]
@@ -163,6 +164,7 @@ class CloudFormationProvisionedProduct(troposphere.servicecatalog.CloudFormation
             AcceptLanguage=AcceptLanguage,
             NotificationArns=NotificationArns,
             PathId=PathId,
+            PathName=PathName,
             ProductId=ProductId,
             ProductName=ProductName,
             ProvisionedProductName=ProvisionedProductName,
@@ -208,10 +210,10 @@ class LaunchRoleConstraint(troposphere.servicecatalog.LaunchRoleConstraint, Mixi
                  validation=True, # type: bool
                  PortfolioId=REQUIRED, # type: Union[str, AWSHelperFn]
                  ProductId=REQUIRED, # type: Union[str, AWSHelperFn]
-                 RoleArn=REQUIRED, # type: Union[str, AWSHelperFn]
                  AcceptLanguage=NOTHING, # type: Union[str, AWSHelperFn]
                  Description=NOTHING, # type: Union[str, AWSHelperFn]
                  LocalRoleName=NOTHING, # type: Union[str, AWSHelperFn]
+                 RoleArn=NOTHING, # type: Union[str, AWSHelperFn]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
@@ -219,10 +221,10 @@ class LaunchRoleConstraint(troposphere.servicecatalog.LaunchRoleConstraint, Mixi
             validation=validation,
             PortfolioId=PortfolioId,
             ProductId=ProductId,
-            RoleArn=RoleArn,
             AcceptLanguage=AcceptLanguage,
             Description=Description,
             LocalRoleName=LocalRoleName,
+            RoleArn=RoleArn,
             **kwargs
         )
         super(LaunchRoleConstraint, self).__init__(**processed_kwargs)

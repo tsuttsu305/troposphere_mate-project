@@ -13,8 +13,12 @@ import troposphere.amazonmq
 from troposphere.amazonmq import (
     ConfigurationId as _ConfigurationId,
     EncryptionOptions as _EncryptionOptions,
+    InterBrokerCred as _InterBrokerCred,
+    LdapMetadata as _LdapMetadata,
+    LdapServerMetadata as _LdapServerMetadata,
     LogsConfiguration as _LogsConfiguration,
     MaintenanceWindow as _MaintenanceWindow,
+    ServerMetadata as _ServerMetadata,
     Tags as _Tags,
     User as _User,
 )
@@ -56,6 +60,117 @@ class EncryptionOptions(troposphere.amazonmq.EncryptionOptions, Mixin):
         super(EncryptionOptions, self).__init__(**processed_kwargs)
 
 
+class InterBrokerCred(troposphere.amazonmq.InterBrokerCred, Mixin):
+    def __init__(self,
+                 title=None,
+                 Password=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Username=REQUIRED, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Password=Password,
+            Username=Username,
+            **kwargs
+        )
+        super(InterBrokerCred, self).__init__(**processed_kwargs)
+
+
+class ServerMetadata(troposphere.amazonmq.ServerMetadata, Mixin):
+    def __init__(self,
+                 title=None,
+                 Hosts=REQUIRED, # type: List[Union[str, AWSHelperFn]]
+                 RoleBase=REQUIRED, # type: Union[str, AWSHelperFn]
+                 RoleSearchMatching=REQUIRED, # type: Union[str, AWSHelperFn]
+                 ServiceAccountPassword=REQUIRED, # type: Union[str, AWSHelperFn]
+                 ServiceAccountUsername=REQUIRED, # type: Union[str, AWSHelperFn]
+                 UserBase=REQUIRED, # type: Union[str, AWSHelperFn]
+                 UserSearchMatching=REQUIRED, # type: Union[str, AWSHelperFn]
+                 RoleName=NOTHING, # type: Union[str, AWSHelperFn]
+                 RoleSearchSubtree=NOTHING, # type: bool
+                 UserRoleName=NOTHING, # type: Union[str, AWSHelperFn]
+                 UserSearchSubtree=NOTHING, # type: bool
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Hosts=Hosts,
+            RoleBase=RoleBase,
+            RoleSearchMatching=RoleSearchMatching,
+            ServiceAccountPassword=ServiceAccountPassword,
+            ServiceAccountUsername=ServiceAccountUsername,
+            UserBase=UserBase,
+            UserSearchMatching=UserSearchMatching,
+            RoleName=RoleName,
+            RoleSearchSubtree=RoleSearchSubtree,
+            UserRoleName=UserRoleName,
+            UserSearchSubtree=UserSearchSubtree,
+            **kwargs
+        )
+        super(ServerMetadata, self).__init__(**processed_kwargs)
+
+
+class LdapMetadata(troposphere.amazonmq.LdapMetadata, Mixin):
+    def __init__(self,
+                 title=None,
+                 ServerMetadata=REQUIRED, # type: _ServerMetadata
+                 InterBrokerCreds=NOTHING, # type: List[_InterBrokerCred]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            ServerMetadata=ServerMetadata,
+            InterBrokerCreds=InterBrokerCreds,
+            **kwargs
+        )
+        super(LdapMetadata, self).__init__(**processed_kwargs)
+
+
+class LdapServerMetadata(troposphere.amazonmq.LdapServerMetadata, Mixin):
+    def __init__(self,
+                 title=None,
+                 Hosts=REQUIRED, # type: List[Union[str, AWSHelperFn]]
+                 RoleBase=REQUIRED, # type: Union[str, AWSHelperFn]
+                 RoleSearchMatching=REQUIRED, # type: Union[str, AWSHelperFn]
+                 ServiceAccountPassword=REQUIRED, # type: Union[str, AWSHelperFn]
+                 ServiceAccountUsername=REQUIRED, # type: Union[str, AWSHelperFn]
+                 UserBase=REQUIRED, # type: Union[str, AWSHelperFn]
+                 UserSearchMatching=REQUIRED, # type: Union[str, AWSHelperFn]
+                 RoleName=NOTHING, # type: Union[str, AWSHelperFn]
+                 RoleSearchSubtree=NOTHING, # type: bool
+                 UserRoleName=NOTHING, # type: Union[str, AWSHelperFn]
+                 UserSearchSubtree=NOTHING, # type: bool
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Hosts=Hosts,
+            RoleBase=RoleBase,
+            RoleSearchMatching=RoleSearchMatching,
+            ServiceAccountPassword=ServiceAccountPassword,
+            ServiceAccountUsername=ServiceAccountUsername,
+            UserBase=UserBase,
+            UserSearchMatching=UserSearchMatching,
+            RoleName=RoleName,
+            RoleSearchSubtree=RoleSearchSubtree,
+            UserRoleName=UserRoleName,
+            UserSearchSubtree=UserSearchSubtree,
+            **kwargs
+        )
+        super(LdapServerMetadata, self).__init__(**processed_kwargs)
+
+
+class LogsConfiguration(troposphere.amazonmq.LogsConfiguration, Mixin):
+    def __init__(self,
+                 title=None,
+                 Audit=NOTHING, # type: bool
+                 General=NOTHING, # type: bool
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Audit=Audit,
+            General=General,
+            **kwargs
+        )
+        super(LogsConfiguration, self).__init__(**processed_kwargs)
+
+
 class MaintenanceWindow(troposphere.amazonmq.MaintenanceWindow, Mixin):
     def __init__(self,
                  title=None,
@@ -92,21 +207,6 @@ class User(troposphere.amazonmq.User, Mixin):
         super(User, self).__init__(**processed_kwargs)
 
 
-class LogsConfiguration(troposphere.amazonmq.LogsConfiguration, Mixin):
-    def __init__(self,
-                 title=None,
-                 Audit=NOTHING, # type: bool
-                 General=NOTHING, # type: bool
-                 **kwargs):
-        processed_kwargs = preprocess_init_kwargs(
-            title=title,
-            Audit=Audit,
-            General=General,
-            **kwargs
-        )
-        super(LogsConfiguration, self).__init__(**processed_kwargs)
-
-
 class Broker(troposphere.amazonmq.Broker, Mixin):
     def __init__(self,
                  title, # type: str
@@ -114,17 +214,21 @@ class Broker(troposphere.amazonmq.Broker, Mixin):
                  validation=True, # type: bool
                  AutoMinorVersionUpgrade=REQUIRED, # type: bool
                  BrokerName=REQUIRED, # type: Union[str, AWSHelperFn]
-                 Users=REQUIRED, # type: List[_User]
                  DeploymentMode=REQUIRED, # type: Union[str, AWSHelperFn]
                  EngineType=REQUIRED, # type: Union[str, AWSHelperFn]
                  EngineVersion=REQUIRED, # type: Union[str, AWSHelperFn]
                  HostInstanceType=REQUIRED, # type: Union[str, AWSHelperFn]
                  PubliclyAccessible=REQUIRED, # type: bool
+                 Users=REQUIRED, # type: List[_User]
+                 AuthenticationStrategy=NOTHING, # type: Union[str, AWSHelperFn]
                  Configuration=NOTHING, # type: _ConfigurationId
                  EncryptionOptions=NOTHING, # type: _EncryptionOptions
+                 LdapMetadata=NOTHING, # type: _LdapMetadata
+                 LdapServerMetadata=NOTHING, # type: _LdapServerMetadata
                  Logs=NOTHING, # type: _LogsConfiguration
                  MaintenanceWindowStartTime=NOTHING, # type: _MaintenanceWindow
                  SecurityGroups=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 StorageType=NOTHING, # type: Union[str, AWSHelperFn]
                  SubnetIds=NOTHING, # type: List[Union[str, AWSHelperFn]]
                  Tags=NOTHING, # type: Union[_Tags, list]
                  **kwargs):
@@ -134,17 +238,21 @@ class Broker(troposphere.amazonmq.Broker, Mixin):
             validation=validation,
             AutoMinorVersionUpgrade=AutoMinorVersionUpgrade,
             BrokerName=BrokerName,
-            Users=Users,
             DeploymentMode=DeploymentMode,
             EngineType=EngineType,
             EngineVersion=EngineVersion,
             HostInstanceType=HostInstanceType,
             PubliclyAccessible=PubliclyAccessible,
+            Users=Users,
+            AuthenticationStrategy=AuthenticationStrategy,
             Configuration=Configuration,
             EncryptionOptions=EncryptionOptions,
+            LdapMetadata=LdapMetadata,
+            LdapServerMetadata=LdapServerMetadata,
             Logs=Logs,
             MaintenanceWindowStartTime=MaintenanceWindowStartTime,
             SecurityGroups=SecurityGroups,
+            StorageType=StorageType,
             SubnetIds=SubnetIds,
             Tags=Tags,
             **kwargs
@@ -162,6 +270,7 @@ class Configuration(troposphere.amazonmq.Configuration, Mixin):
                  EngineVersion=REQUIRED, # type: Union[str, AWSHelperFn]
                  Name=REQUIRED, # type: Union[str, AWSHelperFn]
                  Description=NOTHING, # type: Union[str, AWSHelperFn]
+                 Tags=NOTHING, # type: _Tags
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
@@ -172,6 +281,7 @@ class Configuration(troposphere.amazonmq.Configuration, Mixin):
             EngineVersion=EngineVersion,
             Name=Name,
             Description=Description,
+            Tags=Tags,
             **kwargs
         )
         super(Configuration, self).__init__(**processed_kwargs)

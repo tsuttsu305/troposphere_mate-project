@@ -11,7 +11,12 @@ if sys.version_info.major >= 3 and sys.version_info.minor >= 5:  # pragma: no co
 import troposphere.cloudformation
 
 from troposphere.cloudformation import (
+    AutoDeployment as _AutoDeployment,
+    DeploymentTargets as _DeploymentTargets,
     InitFileContext as _InitFileContext,
+    OperationPreferences as _OperationPreferences,
+    Parameter as _Parameter,
+    StackInstances as _StackInstances,
     Tags as _Tags,
 )
 
@@ -45,6 +50,130 @@ class Stack(troposphere.cloudformation.Stack, Mixin):
             **kwargs
         )
         super(Stack, self).__init__(**processed_kwargs)
+
+
+class AutoDeployment(troposphere.cloudformation.AutoDeployment, Mixin):
+    def __init__(self,
+                 title=None,
+                 Enabled=NOTHING, # type: bool
+                 RetainStacksOnAccountRemoval=NOTHING, # type: bool
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Enabled=Enabled,
+            RetainStacksOnAccountRemoval=RetainStacksOnAccountRemoval,
+            **kwargs
+        )
+        super(AutoDeployment, self).__init__(**processed_kwargs)
+
+
+class OperationPreferences(troposphere.cloudformation.OperationPreferences, Mixin):
+    def __init__(self,
+                 title=None,
+                 FailureToleranceCount=NOTHING, # type: int
+                 FailureTolerancePercentage=NOTHING, # type: int
+                 MaxConcurrentCount=NOTHING, # type: int
+                 MaxConcurrentPercentage=NOTHING, # type: int
+                 RegionOrder=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            FailureToleranceCount=FailureToleranceCount,
+            FailureTolerancePercentage=FailureTolerancePercentage,
+            MaxConcurrentCount=MaxConcurrentCount,
+            MaxConcurrentPercentage=MaxConcurrentPercentage,
+            RegionOrder=RegionOrder,
+            **kwargs
+        )
+        super(OperationPreferences, self).__init__(**processed_kwargs)
+
+
+class Parameter(troposphere.cloudformation.Parameter, Mixin):
+    def __init__(self,
+                 title=None,
+                 ParameterKey=REQUIRED, # type: Union[str, AWSHelperFn]
+                 ParameterValue=REQUIRED, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            ParameterKey=ParameterKey,
+            ParameterValue=ParameterValue,
+            **kwargs
+        )
+        super(Parameter, self).__init__(**processed_kwargs)
+
+
+class DeploymentTargets(troposphere.cloudformation.DeploymentTargets, Mixin):
+    def __init__(self,
+                 title=None,
+                 Accounts=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 OrganizationalUnitIds=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Accounts=Accounts,
+            OrganizationalUnitIds=OrganizationalUnitIds,
+            **kwargs
+        )
+        super(DeploymentTargets, self).__init__(**processed_kwargs)
+
+
+class StackInstances(troposphere.cloudformation.StackInstances, Mixin):
+    def __init__(self,
+                 title=None,
+                 DeploymentTargets=REQUIRED, # type: _DeploymentTargets
+                 Regions=REQUIRED, # type: List[Union[str, AWSHelperFn]]
+                 ParameterOverrides=NOTHING, # type: List[_Parameter]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            DeploymentTargets=DeploymentTargets,
+            Regions=Regions,
+            ParameterOverrides=ParameterOverrides,
+            **kwargs
+        )
+        super(StackInstances, self).__init__(**processed_kwargs)
+
+
+class StackSet(troposphere.cloudformation.StackSet, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 AdministrationRoleARN=NOTHING, # type: Union[str, AWSHelperFn]
+                 AutoDeployment=NOTHING, # type: _AutoDeployment
+                 Capabilities=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 Description=NOTHING, # type: Union[str, AWSHelperFn]
+                 ExecutionRoleName=NOTHING, # type: Union[str, AWSHelperFn]
+                 OperationPreferences=NOTHING, # type: _OperationPreferences
+                 Parameters=NOTHING, # type: List[_Parameter]
+                 PermissionModel=NOTHING, # type: Union[str, AWSHelperFn]
+                 StackInstancesGroup=NOTHING, # type: List[_StackInstances]
+                 StackSetName=NOTHING, # type: Union[str, AWSHelperFn]
+                 Tags=NOTHING, # type: _Tags
+                 TemplateBody=NOTHING, # type: Union[str, AWSHelperFn]
+                 TemplateURL=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            AdministrationRoleARN=AdministrationRoleARN,
+            AutoDeployment=AutoDeployment,
+            Capabilities=Capabilities,
+            Description=Description,
+            ExecutionRoleName=ExecutionRoleName,
+            OperationPreferences=OperationPreferences,
+            Parameters=Parameters,
+            PermissionModel=PermissionModel,
+            StackInstancesGroup=StackInstancesGroup,
+            StackSetName=StackSetName,
+            Tags=Tags,
+            TemplateBody=TemplateBody,
+            TemplateURL=TemplateURL,
+            **kwargs
+        )
+        super(StackSet, self).__init__(**processed_kwargs)
 
 
 class WaitCondition(troposphere.cloudformation.WaitCondition, Mixin):

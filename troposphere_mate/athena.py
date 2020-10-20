@@ -176,7 +176,7 @@ class WorkGroup(troposphere.athena.WorkGroup, Mixin):
                  Description=NOTHING, # type: Union[str, AWSHelperFn]
                  RecursiveDeleteOption=NOTHING, # type: bool
                  State=NOTHING, # type: Any
-                 Tags=NOTHING, # type: dict
+                 Tags=NOTHING, # type: _Tags
                  WorkGroupConfiguration=NOTHING, # type: _WorkGroupConfiguration
                  WorkGroupConfigurationUpdates=NOTHING, # type: _WorkGroupConfigurationUpdates
                  **kwargs):

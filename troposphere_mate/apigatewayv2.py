@@ -16,6 +16,7 @@ from troposphere.apigatewayv2 import (
     Cors as _Cors,
     DomainNameConfiguration as _DomainNameConfiguration,
     JWTConfiguration as _JWTConfiguration,
+    MutualTlsAuthentication as _MutualTlsAuthentication,
     RouteSettings as _RouteSettings,
     TlsConfig as _TlsConfig,
 )
@@ -81,6 +82,7 @@ class Api(troposphere.apigatewayv2.Api, Mixin):
                  CorsConfiguration=NOTHING, # type: _Cors
                  CredentialsArn=NOTHING, # type: Union[str, AWSHelperFn]
                  Description=NOTHING, # type: Union[str, AWSHelperFn]
+                 DisableExecuteApiEndpoint=NOTHING, # type: bool
                  DisableSchemaValidation=NOTHING, # type: bool
                  FailOnWarnings=NOTHING, # type: bool
                  Name=NOTHING, # type: Union[str, AWSHelperFn]
@@ -102,6 +104,7 @@ class Api(troposphere.apigatewayv2.Api, Mixin):
             CorsConfiguration=CorsConfiguration,
             CredentialsArn=CredentialsArn,
             Description=Description,
+            DisableExecuteApiEndpoint=DisableExecuteApiEndpoint,
             DisableSchemaValidation=DisableSchemaValidation,
             FailOnWarnings=FailOnWarnings,
             Name=Name,
@@ -164,8 +167,10 @@ class Authorizer(troposphere.apigatewayv2.Authorizer, Mixin):
                  IdentitySource=REQUIRED, # type: List[Union[str, AWSHelperFn]]
                  Name=REQUIRED, # type: Union[str, AWSHelperFn]
                  AuthorizerCredentialsArn=NOTHING, # type: Union[str, AWSHelperFn]
+                 AuthorizerPayloadFormatVersion=NOTHING, # type: Union[str, AWSHelperFn]
                  AuthorizerResultTtlInSeconds=NOTHING, # type: Any
                  AuthorizerUri=NOTHING, # type: Union[str, AWSHelperFn]
+                 EnableSimpleResponses=NOTHING, # type: bool
                  IdentityValidationExpression=NOTHING, # type: Union[str, AWSHelperFn]
                  JwtConfiguration=NOTHING, # type: _JWTConfiguration
                  **kwargs):
@@ -178,8 +183,10 @@ class Authorizer(troposphere.apigatewayv2.Authorizer, Mixin):
             IdentitySource=IdentitySource,
             Name=Name,
             AuthorizerCredentialsArn=AuthorizerCredentialsArn,
+            AuthorizerPayloadFormatVersion=AuthorizerPayloadFormatVersion,
             AuthorizerResultTtlInSeconds=AuthorizerResultTtlInSeconds,
             AuthorizerUri=AuthorizerUri,
+            EnableSimpleResponses=EnableSimpleResponses,
             IdentityValidationExpression=IdentityValidationExpression,
             JwtConfiguration=JwtConfiguration,
             **kwargs
@@ -225,6 +232,21 @@ class DomainNameConfiguration(troposphere.apigatewayv2.DomainNameConfiguration, 
         super(DomainNameConfiguration, self).__init__(**processed_kwargs)
 
 
+class MutualTlsAuthentication(troposphere.apigatewayv2.MutualTlsAuthentication, Mixin):
+    def __init__(self,
+                 title=None,
+                 TruststoreUri=NOTHING, # type: Union[str, AWSHelperFn]
+                 TruststoreVersion=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            TruststoreUri=TruststoreUri,
+            TruststoreVersion=TruststoreVersion,
+            **kwargs
+        )
+        super(MutualTlsAuthentication, self).__init__(**processed_kwargs)
+
+
 class DomainName(troposphere.apigatewayv2.DomainName, Mixin):
     def __init__(self,
                  title, # type: str
@@ -232,6 +254,7 @@ class DomainName(troposphere.apigatewayv2.DomainName, Mixin):
                  validation=True, # type: bool
                  DomainName=REQUIRED, # type: Union[str, AWSHelperFn]
                  DomainNameConfigurations=NOTHING, # type: List[_DomainNameConfiguration]
+                 MutualTlsAuthentication=NOTHING, # type: _MutualTlsAuthentication
                  Tags=NOTHING, # type: dict
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
@@ -240,6 +263,7 @@ class DomainName(troposphere.apigatewayv2.DomainName, Mixin):
             validation=validation,
             DomainName=DomainName,
             DomainNameConfigurations=DomainNameConfigurations,
+            MutualTlsAuthentication=MutualTlsAuthentication,
             Tags=Tags,
             **kwargs
         )

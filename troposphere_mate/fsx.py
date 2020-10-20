@@ -27,10 +27,12 @@ from troposphere_mate.core.sentiel import REQUIRED, NOTHING
 class LustreConfiguration(troposphere.fsx.LustreConfiguration, Mixin):
     def __init__(self,
                  title=None,
+                 AutoImportPolicy=NOTHING, # type: Union[str, AWSHelperFn]
                  AutomaticBackupRetentionDays=NOTHING, # type: int
                  CopyTagsToBackups=NOTHING, # type: bool
                  DailyAutomaticBackupStartTime=NOTHING, # type: Union[str, AWSHelperFn]
                  DeploymentType=NOTHING, # type: Any
+                 DriveCacheType=NOTHING, # type: Union[str, AWSHelperFn]
                  ExportPath=NOTHING, # type: Union[str, AWSHelperFn]
                  ImportedFileChunkSize=NOTHING, # type: int
                  ImportPath=NOTHING, # type: Union[str, AWSHelperFn]
@@ -39,10 +41,12 @@ class LustreConfiguration(troposphere.fsx.LustreConfiguration, Mixin):
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
+            AutoImportPolicy=AutoImportPolicy,
             AutomaticBackupRetentionDays=AutomaticBackupRetentionDays,
             CopyTagsToBackups=CopyTagsToBackups,
             DailyAutomaticBackupStartTime=DailyAutomaticBackupStartTime,
             DeploymentType=DeploymentType,
+            DriveCacheType=DriveCacheType,
             ExportPath=ExportPath,
             ImportedFileChunkSize=ImportedFileChunkSize,
             ImportPath=ImportPath,

@@ -8,11 +8,7 @@ import sys
 if sys.version_info.major >= 3 and sys.version_info.minor >= 5:  # pragma: no cover
     from typing import Union, List, Any
 
-import troposphere.codestarconnections
-
-from troposphere.codestarconnections import (
-    Tags as _Tags,
-)
+import troposphere.codegurureviewer
 
 
 from troposphere import Template, AWSHelperFn
@@ -21,24 +17,24 @@ from troposphere_mate.core.sentiel import REQUIRED, NOTHING
 
 
 
-class Connection(troposphere.codestarconnections.Connection, Mixin):
+class RepositoryAssociation(troposphere.codegurureviewer.RepositoryAssociation, Mixin):
     def __init__(self,
                  title, # type: str
                  template=None, # type: Template
                  validation=True, # type: bool
-                 ConnectionName=REQUIRED, # type: Union[str, AWSHelperFn]
-                 ProviderType=REQUIRED, # type: Any
-                 HostArn=NOTHING, # type: Union[str, AWSHelperFn]
-                 Tags=NOTHING, # type: _Tags
+                 Name=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Type=REQUIRED, # type: Union[str, AWSHelperFn]
+                 ConnectionArn=NOTHING, # type: Union[str, AWSHelperFn]
+                 Owner=NOTHING, # type: Union[str, AWSHelperFn]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             template=template,
             validation=validation,
-            ConnectionName=ConnectionName,
-            ProviderType=ProviderType,
-            HostArn=HostArn,
-            Tags=Tags,
+            Name=Name,
+            Type=Type,
+            ConnectionArn=ConnectionArn,
+            Owner=Owner,
             **kwargs
         )
-        super(Connection, self).__init__(**processed_kwargs)
+        super(RepositoryAssociation, self).__init__(**processed_kwargs)

@@ -12,14 +12,20 @@ import troposphere.cloudfront
 
 from troposphere.cloudfront import (
     CacheBehavior as _CacheBehavior,
+    CacheCookiesConfig as _CacheCookiesConfig,
+    CacheHeadersConfig as _CacheHeadersConfig,
+    CachePolicyConfig as _CachePolicyConfig,
+    CacheQueryStringsConfig as _CacheQueryStringsConfig,
     CloudFrontOriginAccessIdentityConfig as _CloudFrontOriginAccessIdentityConfig,
     Cookies as _Cookies,
     CustomErrorResponse as _CustomErrorResponse,
     CustomOriginConfig as _CustomOriginConfig,
     DefaultCacheBehavior as _DefaultCacheBehavior,
     DistributionConfig as _DistributionConfig,
+    EndPoint as _EndPoint,
     ForwardedValues as _ForwardedValues,
     GeoRestriction as _GeoRestriction,
+    KinesisStreamConfig as _KinesisStreamConfig,
     LambdaFunctionAssociation as _LambdaFunctionAssociation,
     Logging as _Logging,
     Origin as _Origin,
@@ -29,6 +35,11 @@ from troposphere.cloudfront import (
     OriginGroupMember as _OriginGroupMember,
     OriginGroupMembers as _OriginGroupMembers,
     OriginGroups as _OriginGroups,
+    OriginRequestCookiesConfig as _OriginRequestCookiesConfig,
+    OriginRequestHeadersConfig as _OriginRequestHeadersConfig,
+    OriginRequestPolicyConfig as _OriginRequestPolicyConfig,
+    OriginRequestQueryStringsConfig as _OriginRequestQueryStringsConfig,
+    ParametersInCacheKeyAndForwardedToOrigin as _ParametersInCacheKeyAndForwardedToOrigin,
     Restrictions as _Restrictions,
     S3Origin as _S3Origin,
     S3OriginConfig as _S3OriginConfig,
@@ -99,35 +110,41 @@ class LambdaFunctionAssociation(troposphere.cloudfront.LambdaFunctionAssociation
 class CacheBehavior(troposphere.cloudfront.CacheBehavior, Mixin):
     def __init__(self,
                  title=None,
-                 ForwardedValues=REQUIRED, # type: _ForwardedValues
                  PathPattern=REQUIRED, # type: Union[str, AWSHelperFn]
                  TargetOriginId=REQUIRED, # type: Union[str, AWSHelperFn]
                  ViewerProtocolPolicy=REQUIRED, # type: str
                  AllowedMethods=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 CachePolicyId=NOTHING, # type: Union[str, AWSHelperFn]
                  CachedMethods=NOTHING, # type: List[Union[str, AWSHelperFn]]
                  Compress=NOTHING, # type: bool
                  DefaultTTL=NOTHING, # type: int
                  FieldLevelEncryptionId=NOTHING, # type: Union[str, AWSHelperFn]
+                 ForwardedValues=NOTHING, # type: _ForwardedValues
                  LambdaFunctionAssociations=NOTHING, # type: List[_LambdaFunctionAssociation]
                  MaxTTL=NOTHING, # type: int
                  MinTTL=NOTHING, # type: int
+                 OriginRequestPolicyId=NOTHING, # type: Union[str, AWSHelperFn]
+                 RealtimeLogConfigArn=NOTHING, # type: Union[str, AWSHelperFn]
                  SmoothStreaming=NOTHING, # type: bool
                  TrustedSigners=NOTHING, # type: List[Union[str, AWSHelperFn]]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
-            ForwardedValues=ForwardedValues,
             PathPattern=PathPattern,
             TargetOriginId=TargetOriginId,
             ViewerProtocolPolicy=ViewerProtocolPolicy,
             AllowedMethods=AllowedMethods,
+            CachePolicyId=CachePolicyId,
             CachedMethods=CachedMethods,
             Compress=Compress,
             DefaultTTL=DefaultTTL,
             FieldLevelEncryptionId=FieldLevelEncryptionId,
+            ForwardedValues=ForwardedValues,
             LambdaFunctionAssociations=LambdaFunctionAssociations,
             MaxTTL=MaxTTL,
             MinTTL=MinTTL,
+            OriginRequestPolicyId=OriginRequestPolicyId,
+            RealtimeLogConfigArn=RealtimeLogConfigArn,
             SmoothStreaming=SmoothStreaming,
             TrustedSigners=TrustedSigners,
             **kwargs
@@ -138,33 +155,39 @@ class CacheBehavior(troposphere.cloudfront.CacheBehavior, Mixin):
 class DefaultCacheBehavior(troposphere.cloudfront.DefaultCacheBehavior, Mixin):
     def __init__(self,
                  title=None,
-                 ForwardedValues=REQUIRED, # type: _ForwardedValues
                  TargetOriginId=REQUIRED, # type: Union[str, AWSHelperFn]
                  ViewerProtocolPolicy=REQUIRED, # type: str
                  AllowedMethods=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 CachePolicyId=NOTHING, # type: Union[str, AWSHelperFn]
                  CachedMethods=NOTHING, # type: List[Union[str, AWSHelperFn]]
                  Compress=NOTHING, # type: bool
                  DefaultTTL=NOTHING, # type: int
                  FieldLevelEncryptionId=NOTHING, # type: Union[str, AWSHelperFn]
+                 ForwardedValues=NOTHING, # type: _ForwardedValues
                  LambdaFunctionAssociations=NOTHING, # type: List[_LambdaFunctionAssociation]
                  MaxTTL=NOTHING, # type: int
                  MinTTL=NOTHING, # type: int
+                 OriginRequestPolicyId=NOTHING, # type: Union[str, AWSHelperFn]
+                 RealtimeLogConfigArn=NOTHING, # type: Union[str, AWSHelperFn]
                  SmoothStreaming=NOTHING, # type: bool
                  TrustedSigners=NOTHING, # type: list
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
-            ForwardedValues=ForwardedValues,
             TargetOriginId=TargetOriginId,
             ViewerProtocolPolicy=ViewerProtocolPolicy,
             AllowedMethods=AllowedMethods,
+            CachePolicyId=CachePolicyId,
             CachedMethods=CachedMethods,
             Compress=Compress,
             DefaultTTL=DefaultTTL,
             FieldLevelEncryptionId=FieldLevelEncryptionId,
+            ForwardedValues=ForwardedValues,
             LambdaFunctionAssociations=LambdaFunctionAssociations,
             MaxTTL=MaxTTL,
             MinTTL=MinTTL,
+            OriginRequestPolicyId=OriginRequestPolicyId,
+            RealtimeLogConfigArn=RealtimeLogConfigArn,
             SmoothStreaming=SmoothStreaming,
             TrustedSigners=TrustedSigners,
             **kwargs
@@ -587,3 +610,245 @@ class StreamingDistribution(troposphere.cloudfront.StreamingDistribution, Mixin)
             **kwargs
         )
         super(StreamingDistribution, self).__init__(**processed_kwargs)
+
+
+class CacheCookiesConfig(troposphere.cloudfront.CacheCookiesConfig, Mixin):
+    def __init__(self,
+                 title=None,
+                 CookieBehavior=REQUIRED, # type: Any
+                 Cookies=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            CookieBehavior=CookieBehavior,
+            Cookies=Cookies,
+            **kwargs
+        )
+        super(CacheCookiesConfig, self).__init__(**processed_kwargs)
+
+
+class CacheHeadersConfig(troposphere.cloudfront.CacheHeadersConfig, Mixin):
+    def __init__(self,
+                 title=None,
+                 HeaderBehavior=REQUIRED, # type: Any
+                 Headers=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            HeaderBehavior=HeaderBehavior,
+            Headers=Headers,
+            **kwargs
+        )
+        super(CacheHeadersConfig, self).__init__(**processed_kwargs)
+
+
+class CacheQueryStringsConfig(troposphere.cloudfront.CacheQueryStringsConfig, Mixin):
+    def __init__(self,
+                 title=None,
+                 QueryStringBehavior=REQUIRED, # type: Any
+                 QueryStrings=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            QueryStringBehavior=QueryStringBehavior,
+            QueryStrings=QueryStrings,
+            **kwargs
+        )
+        super(CacheQueryStringsConfig, self).__init__(**processed_kwargs)
+
+
+class ParametersInCacheKeyAndForwardedToOrigin(troposphere.cloudfront.ParametersInCacheKeyAndForwardedToOrigin, Mixin):
+    def __init__(self,
+                 title=None,
+                 CookiesConfig=REQUIRED, # type: _CacheCookiesConfig
+                 EnableAcceptEncodingGzip=REQUIRED, # type: bool
+                 HeadersConfig=REQUIRED, # type: _CacheHeadersConfig
+                 QueryStringsConfig=REQUIRED, # type: _CacheQueryStringsConfig
+                 EnableAcceptEncodingBrotli=NOTHING, # type: bool
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            CookiesConfig=CookiesConfig,
+            EnableAcceptEncodingGzip=EnableAcceptEncodingGzip,
+            HeadersConfig=HeadersConfig,
+            QueryStringsConfig=QueryStringsConfig,
+            EnableAcceptEncodingBrotli=EnableAcceptEncodingBrotli,
+            **kwargs
+        )
+        super(ParametersInCacheKeyAndForwardedToOrigin, self).__init__(**processed_kwargs)
+
+
+class CachePolicyConfig(troposphere.cloudfront.CachePolicyConfig, Mixin):
+    def __init__(self,
+                 title=None,
+                 DefaultTTL=REQUIRED, # type: int
+                 MaxTTL=REQUIRED, # type: int
+                 MinTTL=REQUIRED, # type: int
+                 Name=REQUIRED, # type: Union[str, AWSHelperFn]
+                 ParametersInCacheKeyAndForwardedToOrigin=REQUIRED, # type: _ParametersInCacheKeyAndForwardedToOrigin
+                 Comment=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            DefaultTTL=DefaultTTL,
+            MaxTTL=MaxTTL,
+            MinTTL=MinTTL,
+            Name=Name,
+            ParametersInCacheKeyAndForwardedToOrigin=ParametersInCacheKeyAndForwardedToOrigin,
+            Comment=Comment,
+            **kwargs
+        )
+        super(CachePolicyConfig, self).__init__(**processed_kwargs)
+
+
+class CachePolicy(troposphere.cloudfront.CachePolicy, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 CachePolicyConfig=REQUIRED, # type: _CachePolicyConfig
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            CachePolicyConfig=CachePolicyConfig,
+            **kwargs
+        )
+        super(CachePolicy, self).__init__(**processed_kwargs)
+
+
+class OriginRequestCookiesConfig(troposphere.cloudfront.OriginRequestCookiesConfig, Mixin):
+    def __init__(self,
+                 title=None,
+                 CookieBehavior=REQUIRED, # type: Any
+                 Cookies=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            CookieBehavior=CookieBehavior,
+            Cookies=Cookies,
+            **kwargs
+        )
+        super(OriginRequestCookiesConfig, self).__init__(**processed_kwargs)
+
+
+class OriginRequestHeadersConfig(troposphere.cloudfront.OriginRequestHeadersConfig, Mixin):
+    def __init__(self,
+                 title=None,
+                 HeaderBehavior=REQUIRED, # type: Any
+                 Headers=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            HeaderBehavior=HeaderBehavior,
+            Headers=Headers,
+            **kwargs
+        )
+        super(OriginRequestHeadersConfig, self).__init__(**processed_kwargs)
+
+
+class OriginRequestQueryStringsConfig(troposphere.cloudfront.OriginRequestQueryStringsConfig, Mixin):
+    def __init__(self,
+                 title=None,
+                 QueryStringBehavior=REQUIRED, # type: Any
+                 QueryStrings=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            QueryStringBehavior=QueryStringBehavior,
+            QueryStrings=QueryStrings,
+            **kwargs
+        )
+        super(OriginRequestQueryStringsConfig, self).__init__(**processed_kwargs)
+
+
+class OriginRequestPolicyConfig(troposphere.cloudfront.OriginRequestPolicyConfig, Mixin):
+    def __init__(self,
+                 title=None,
+                 CookiesConfig=REQUIRED, # type: _OriginRequestCookiesConfig
+                 HeadersConfig=REQUIRED, # type: _OriginRequestHeadersConfig
+                 Name=REQUIRED, # type: Union[str, AWSHelperFn]
+                 QueryStringsConfig=REQUIRED, # type: _OriginRequestQueryStringsConfig
+                 Comment=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            CookiesConfig=CookiesConfig,
+            HeadersConfig=HeadersConfig,
+            Name=Name,
+            QueryStringsConfig=QueryStringsConfig,
+            Comment=Comment,
+            **kwargs
+        )
+        super(OriginRequestPolicyConfig, self).__init__(**processed_kwargs)
+
+
+class OriginRequestPolicy(troposphere.cloudfront.OriginRequestPolicy, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 OriginRequestPolicyConfig=REQUIRED, # type: _OriginRequestPolicyConfig
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            OriginRequestPolicyConfig=OriginRequestPolicyConfig,
+            **kwargs
+        )
+        super(OriginRequestPolicy, self).__init__(**processed_kwargs)
+
+
+class KinesisStreamConfig(troposphere.cloudfront.KinesisStreamConfig, Mixin):
+    def __init__(self,
+                 title=None,
+                 RoleArn=REQUIRED, # type: Union[str, AWSHelperFn]
+                 StreamArn=REQUIRED, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            RoleArn=RoleArn,
+            StreamArn=StreamArn,
+            **kwargs
+        )
+        super(KinesisStreamConfig, self).__init__(**processed_kwargs)
+
+
+class EndPoint(troposphere.cloudfront.EndPoint, Mixin):
+    def __init__(self,
+                 title=None,
+                 KinesisStreamConfig=REQUIRED, # type: _KinesisStreamConfig
+                 StreamType=REQUIRED, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            KinesisStreamConfig=KinesisStreamConfig,
+            StreamType=StreamType,
+            **kwargs
+        )
+        super(EndPoint, self).__init__(**processed_kwargs)
+
+
+class RealtimeLogConfig(troposphere.cloudfront.RealtimeLogConfig, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 EndPoints=REQUIRED, # type: List[_EndPoint]
+                 Fields=REQUIRED, # type: List[Union[str, AWSHelperFn]]
+                 Name=REQUIRED, # type: Union[str, AWSHelperFn]
+                 SamplingRate=REQUIRED, # type: float
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            EndPoints=EndPoints,
+            Fields=Fields,
+            Name=Name,
+            SamplingRate=SamplingRate,
+            **kwargs
+        )
+        super(RealtimeLogConfig, self).__init__(**processed_kwargs)

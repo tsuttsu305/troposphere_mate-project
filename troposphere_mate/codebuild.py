@@ -12,11 +12,13 @@ import troposphere.codebuild
 
 from troposphere.codebuild import (
     Artifacts as _Artifacts,
+    BatchRestrictions as _BatchRestrictions,
     BuildStatusConfig as _BuildStatusConfig,
     CloudWatchLogs as _CloudWatchLogs,
     Environment as _Environment,
     GitSubmodulesConfig as _GitSubmodulesConfig,
     LogsConfig as _LogsConfig,
+    ProjectBuildBatchConfig as _ProjectBuildBatchConfig,
     ProjectCache as _ProjectCache,
     ProjectFileSystemLocation as _ProjectFileSystemLocation,
     ProjectSourceVersion as _ProjectSourceVersion,
@@ -137,6 +139,40 @@ class Environment(troposphere.codebuild.Environment, Mixin):
             **kwargs
         )
         super(Environment, self).__init__(**processed_kwargs)
+
+
+class BatchRestrictions(troposphere.codebuild.BatchRestrictions, Mixin):
+    def __init__(self,
+                 title=None,
+                 ComputeTypesAllowed=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 MaximumBuildsAllowed=NOTHING, # type: int
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            ComputeTypesAllowed=ComputeTypesAllowed,
+            MaximumBuildsAllowed=MaximumBuildsAllowed,
+            **kwargs
+        )
+        super(BatchRestrictions, self).__init__(**processed_kwargs)
+
+
+class ProjectBuildBatchConfig(troposphere.codebuild.ProjectBuildBatchConfig, Mixin):
+    def __init__(self,
+                 title=None,
+                 CombineArtifacts=NOTHING, # type: bool
+                 Restrictions=NOTHING, # type: _BatchRestrictions
+                 ServiceRole=NOTHING, # type: Union[str, AWSHelperFn]
+                 TimeoutInMins=NOTHING, # type: int
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            CombineArtifacts=CombineArtifacts,
+            Restrictions=Restrictions,
+            ServiceRole=ServiceRole,
+            TimeoutInMins=TimeoutInMins,
+            **kwargs
+        )
+        super(ProjectBuildBatchConfig, self).__init__(**processed_kwargs)
 
 
 class ProjectCache(troposphere.codebuild.ProjectCache, Mixin):
@@ -359,6 +395,7 @@ class Project(troposphere.codebuild.Project, Mixin):
                  ServiceRole=REQUIRED, # type: Union[str, AWSHelperFn]
                  Source=REQUIRED, # type: _Source
                  BadgeEnabled=NOTHING, # type: bool
+                 BuildBatchConfig=NOTHING, # type: _ProjectBuildBatchConfig
                  Cache=NOTHING, # type: _ProjectCache
                  Description=NOTHING, # type: Union[str, AWSHelperFn]
                  EncryptionKey=NOTHING, # type: Union[str, AWSHelperFn]
@@ -384,6 +421,7 @@ class Project(troposphere.codebuild.Project, Mixin):
             ServiceRole=ServiceRole,
             Source=Source,
             BadgeEnabled=BadgeEnabled,
+            BuildBatchConfig=BuildBatchConfig,
             Cache=Cache,
             Description=Description,
             EncryptionKey=EncryptionKey,
@@ -447,6 +485,7 @@ class ReportGroup(troposphere.codebuild.ReportGroup, Mixin):
                  validation=True, # type: bool
                  ExportConfig=REQUIRED, # type: _ReportExportConfig
                  Type=REQUIRED, # type: Union[str, AWSHelperFn]
+                 DeleteReports=NOTHING, # type: bool
                  Name=NOTHING, # type: Union[str, AWSHelperFn]
                  Tags=NOTHING, # type: _Tags
                  **kwargs):
@@ -456,6 +495,7 @@ class ReportGroup(troposphere.codebuild.ReportGroup, Mixin):
             validation=validation,
             ExportConfig=ExportConfig,
             Type=Type,
+            DeleteReports=DeleteReports,
             Name=Name,
             Tags=Tags,
             **kwargs

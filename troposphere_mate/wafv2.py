@@ -22,7 +22,9 @@ from troposphere.wafv2 import (
     DefaultAction as _DefaultAction,
     ExcludedRule as _ExcludedRule,
     FieldToMatch as _FieldToMatch,
+    ForwardedIPConfiguration as _ForwardedIPConfiguration,
     GeoMatchStatement as _GeoMatchStatement,
+    IPSetForwardedIPConfiguration as _IPSetForwardedIPConfiguration,
     IPSetReferenceStatement as _IPSetReferenceStatement,
     ManagedRuleGroupStatement as _ManagedRuleGroupStatement,
     Method as _Method,
@@ -297,27 +299,63 @@ class ByteMatchStatement(troposphere.wafv2.ByteMatchStatement, Mixin):
         super(ByteMatchStatement, self).__init__(**processed_kwargs)
 
 
+class ForwardedIPConfiguration(troposphere.wafv2.ForwardedIPConfiguration, Mixin):
+    def __init__(self,
+                 title=None,
+                 FallbackBehavior=REQUIRED, # type: Union[str, AWSHelperFn]
+                 HeaderName=REQUIRED, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            FallbackBehavior=FallbackBehavior,
+            HeaderName=HeaderName,
+            **kwargs
+        )
+        super(ForwardedIPConfiguration, self).__init__(**processed_kwargs)
+
+
 class GeoMatchStatement(troposphere.wafv2.GeoMatchStatement, Mixin):
     def __init__(self,
                  title=None,
                  CountryCodes=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 ForwardedIPConfig=NOTHING, # type: _ForwardedIPConfiguration
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             CountryCodes=CountryCodes,
+            ForwardedIPConfig=ForwardedIPConfig,
             **kwargs
         )
         super(GeoMatchStatement, self).__init__(**processed_kwargs)
+
+
+class IPSetForwardedIPConfiguration(troposphere.wafv2.IPSetForwardedIPConfiguration, Mixin):
+    def __init__(self,
+                 title=None,
+                 FallbackBehavior=REQUIRED, # type: Union[str, AWSHelperFn]
+                 HeaderName=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Position=REQUIRED, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            FallbackBehavior=FallbackBehavior,
+            HeaderName=HeaderName,
+            Position=Position,
+            **kwargs
+        )
+        super(IPSetForwardedIPConfiguration, self).__init__(**processed_kwargs)
 
 
 class IPSetReferenceStatement(troposphere.wafv2.IPSetReferenceStatement, Mixin):
     def __init__(self,
                  title=None,
                  Arn=NOTHING, # type: Union[str, AWSHelperFn]
+                 IPSetForwardedIPConfig=NOTHING, # type: _IPSetForwardedIPConfiguration
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             Arn=Arn,
+            IPSetForwardedIPConfig=IPSetForwardedIPConfig,
             **kwargs
         )
         super(IPSetReferenceStatement, self).__init__(**processed_kwargs)
@@ -412,11 +450,13 @@ class RateBasedStatementTwo(troposphere.wafv2.RateBasedStatementTwo, Mixin):
     def __init__(self,
                  title=None,
                  AggregateKeyType=NOTHING, # type: Union[str, AWSHelperFn]
+                 ForwardedIPConfig=NOTHING, # type: _ForwardedIPConfiguration
                  Limit=NOTHING, # type: int
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             AggregateKeyType=AggregateKeyType,
+            ForwardedIPConfig=ForwardedIPConfig,
             Limit=Limit,
             **kwargs
         )
@@ -503,12 +543,14 @@ class RateBasedStatementOne(troposphere.wafv2.RateBasedStatementOne, Mixin):
     def __init__(self,
                  title=None,
                  AggregateKeyType=NOTHING, # type: Union[str, AWSHelperFn]
+                 ForwardedIPConfig=NOTHING, # type: _ForwardedIPConfiguration
                  Limit=NOTHING, # type: int
                  ScopeDownStatement=NOTHING, # type: _StatementTwo
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             AggregateKeyType=AggregateKeyType,
+            ForwardedIPConfig=ForwardedIPConfig,
             Limit=Limit,
             ScopeDownStatement=ScopeDownStatement,
             **kwargs
@@ -631,7 +673,7 @@ class RuleAction(troposphere.wafv2.RuleAction, Mixin):
         super(RuleAction, self).__init__(**processed_kwargs)
 
 
-# TODO: Key name `None` Error
+# FIXME: Key name `None` Error
 # class OverrideAction(troposphere.wafv2.OverrideAction, Mixin):
 #     def __init__(self,
 #                  title=None,

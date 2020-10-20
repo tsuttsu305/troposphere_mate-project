@@ -97,8 +97,8 @@ class OnSuccess(troposphere.awslambda.OnSuccess, Mixin):
 class DestinationConfig(troposphere.awslambda.DestinationConfig, Mixin):
     def __init__(self,
                  title=None,
-                 OnFailure=REQUIRED, # type: _OnFailure
-                 OnSuccess=REQUIRED, # type: _OnSuccess
+                 OnFailure=NOTHING, # type: _OnFailure
+                 OnSuccess=NOTHING, # type: _OnSuccess
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
@@ -150,6 +150,7 @@ class EventSourceMapping(troposphere.awslambda.EventSourceMapping, Mixin):
                  MaximumRetryAttempts=NOTHING, # type: int
                  ParallelizationFactor=NOTHING, # type: int
                  StartingPosition=NOTHING, # type: Union[str, AWSHelperFn]
+                 Topics=NOTHING, # type: List[Union[str, AWSHelperFn]]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
@@ -166,6 +167,7 @@ class EventSourceMapping(troposphere.awslambda.EventSourceMapping, Mixin):
             MaximumRetryAttempts=MaximumRetryAttempts,
             ParallelizationFactor=ParallelizationFactor,
             StartingPosition=StartingPosition,
+            Topics=Topics,
             **kwargs
         )
         super(EventSourceMapping, self).__init__(**processed_kwargs)

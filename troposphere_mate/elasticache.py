@@ -255,24 +255,3 @@ class ReplicationGroup(troposphere.elasticache.ReplicationGroup, Mixin):
             **kwargs
         )
         super(ReplicationGroup, self).__init__(**processed_kwargs)
-
-
-class NodeGroupConfiguration(troposphere.elasticache.NodeGroupConfiguration, Mixin):
-    def __init__(self,
-                 title=None,
-                 NodeGroupId=NOTHING, # type: Any
-                 PrimaryAvailabilityZone=NOTHING, # type: Union[str, AWSHelperFn]
-                 ReplicaAvailabilityZones=NOTHING, # type: List[Union[str, AWSHelperFn]]
-                 ReplicaCount=NOTHING, # type: int
-                 Slots=NOTHING, # type: Union[str, AWSHelperFn]
-                 **kwargs):
-        processed_kwargs = preprocess_init_kwargs(
-            title=title,
-            NodeGroupId=NodeGroupId,
-            PrimaryAvailabilityZone=PrimaryAvailabilityZone,
-            ReplicaAvailabilityZones=ReplicaAvailabilityZones,
-            ReplicaCount=ReplicaCount,
-            Slots=Slots,
-            **kwargs
-        )
-        super(NodeGroupConfiguration, self).__init__(**processed_kwargs)

@@ -70,6 +70,7 @@ class Server(troposphere.transfer.Server, Mixin):
                  IdentityProviderType=NOTHING, # type: Union[str, AWSHelperFn]
                  LoggingRole=NOTHING, # type: Union[str, AWSHelperFn]
                  Protocols=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 SecurityPolicyName=NOTHING, # type: Union[str, AWSHelperFn]
                  Tags=NOTHING, # type: _Tags
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
@@ -83,6 +84,7 @@ class Server(troposphere.transfer.Server, Mixin):
             IdentityProviderType=IdentityProviderType,
             LoggingRole=LoggingRole,
             Protocols=Protocols,
+            SecurityPolicyName=SecurityPolicyName,
             Tags=Tags,
             **kwargs
         )

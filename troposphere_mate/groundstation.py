@@ -102,11 +102,13 @@ class DataflowEndpoint(troposphere.groundstation.DataflowEndpoint, Mixin):
     def __init__(self,
                  title=None,
                  Address=NOTHING, # type: _SocketAddress
+                 Mtu=NOTHING, # type: int
                  Name=NOTHING, # type: Union[str, AWSHelperFn]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             Address=Address,
+            Mtu=Mtu,
             Name=Name,
             **kwargs
         )

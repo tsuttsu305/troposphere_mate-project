@@ -11,10 +11,12 @@ if sys.version_info.major >= 3 and sys.version_info.minor >= 5:  # pragma: no co
 import troposphere.elasticsearch
 
 from troposphere.elasticsearch import (
+    AdvancedSecurityOptionsInput as _AdvancedSecurityOptionsInput,
     CognitoOptions as _CognitoOptions,
     EBSOptions as _EBSOptions,
     ElasticsearchClusterConfig as _ElasticsearchClusterConfig,
     EncryptionAtRestOptions as _EncryptionAtRestOptions,
+    MasterUserOptions as _MasterUserOptions,
     NodeToNodeEncryptionOptions as _NodeToNodeEncryptionOptions,
     SnapshotOptions as _SnapshotOptions,
     Tags as _Tags,
@@ -161,6 +163,40 @@ class VPCOptions(troposphere.elasticsearch.VPCOptions, Mixin):
         super(VPCOptions, self).__init__(**processed_kwargs)
 
 
+class MasterUserOptions(troposphere.elasticsearch.MasterUserOptions, Mixin):
+    def __init__(self,
+                 title=None,
+                 MasterUserARN=NOTHING, # type: Union[str, AWSHelperFn]
+                 MasterUserName=NOTHING, # type: Union[str, AWSHelperFn]
+                 MasterUserPassword=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            MasterUserARN=MasterUserARN,
+            MasterUserName=MasterUserName,
+            MasterUserPassword=MasterUserPassword,
+            **kwargs
+        )
+        super(MasterUserOptions, self).__init__(**processed_kwargs)
+
+
+class AdvancedSecurityOptionsInput(troposphere.elasticsearch.AdvancedSecurityOptionsInput, Mixin):
+    def __init__(self,
+                 title=None,
+                 Enabled=NOTHING, # type: bool
+                 InternalUserDatabaseEnabled=NOTHING, # type: bool
+                 MasterUserOptions=NOTHING, # type: _MasterUserOptions
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Enabled=Enabled,
+            InternalUserDatabaseEnabled=InternalUserDatabaseEnabled,
+            MasterUserOptions=MasterUserOptions,
+            **kwargs
+        )
+        super(AdvancedSecurityOptionsInput, self).__init__(**processed_kwargs)
+
+
 class Domain(troposphere.elasticsearch.Domain, Mixin):
     def __init__(self,
                  title, # type: str
@@ -168,6 +204,7 @@ class Domain(troposphere.elasticsearch.Domain, Mixin):
                  validation=True, # type: bool
                  AccessPolicies=NOTHING, # type: Union[dict]
                  AdvancedOptions=NOTHING, # type: dict
+                 AdvancedSecurityOptions=NOTHING, # type: _AdvancedSecurityOptionsInput
                  CognitoOptions=NOTHING, # type: _CognitoOptions
                  DomainName=NOTHING, # type: Union[str, AWSHelperFn]
                  EBSOptions=NOTHING, # type: _EBSOptions
@@ -186,6 +223,7 @@ class Domain(troposphere.elasticsearch.Domain, Mixin):
             validation=validation,
             AccessPolicies=AccessPolicies,
             AdvancedOptions=AdvancedOptions,
+            AdvancedSecurityOptions=AdvancedSecurityOptions,
             CognitoOptions=CognitoOptions,
             DomainName=DomainName,
             EBSOptions=EBSOptions,
