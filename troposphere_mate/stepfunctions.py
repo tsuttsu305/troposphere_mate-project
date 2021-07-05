@@ -48,7 +48,7 @@ class Activity(troposphere.stepfunctions.Activity, Mixin):
 class CloudWatchLogsLogGroup(troposphere.stepfunctions.CloudWatchLogsLogGroup, Mixin):
     def __init__(self,
                  title=None,
-                 LogGroupArn=REQUIRED, # type: Union[str, AWSHelperFn]
+                 LogGroupArn=NOTHING, # type: Union[str, AWSHelperFn]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
@@ -124,6 +124,7 @@ class StateMachine(troposphere.stepfunctions.StateMachine, Mixin):
                  template=None, # type: Template
                  validation=True, # type: bool
                  RoleArn=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Definition=NOTHING, # type: dict
                  DefinitionS3Location=NOTHING, # type: _S3Location
                  DefinitionString=NOTHING, # type: Union[str, AWSHelperFn]
                  DefinitionSubstitutions=NOTHING, # type: dict
@@ -138,6 +139,7 @@ class StateMachine(troposphere.stepfunctions.StateMachine, Mixin):
             template=template,
             validation=validation,
             RoleArn=RoleArn,
+            Definition=Definition,
             DefinitionS3Location=DefinitionS3Location,
             DefinitionString=DefinitionString,
             DefinitionSubstitutions=DefinitionSubstitutions,

@@ -92,7 +92,9 @@ class Topic(troposphere.sns.Topic, Mixin):
                  title, # type: str
                  template=None, # type: Template
                  validation=True, # type: bool
+                 ContentBasedDeduplication=NOTHING, # type: bool
                  DisplayName=NOTHING, # type: Union[str, AWSHelperFn]
+                 FifoTopic=NOTHING, # type: bool
                  KmsMasterKeyId=NOTHING, # type: Union[str, AWSHelperFn]
                  Subscription=NOTHING, # type: List[_Subscription]
                  Tags=NOTHING, # type: _Tags
@@ -102,7 +104,9 @@ class Topic(troposphere.sns.Topic, Mixin):
             title=title,
             template=template,
             validation=validation,
+            ContentBasedDeduplication=ContentBasedDeduplication,
             DisplayName=DisplayName,
+            FifoTopic=FifoTopic,
             KmsMasterKeyId=KmsMasterKeyId,
             Subscription=Subscription,
             Tags=Tags,

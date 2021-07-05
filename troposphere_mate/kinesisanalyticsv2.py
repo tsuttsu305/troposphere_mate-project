@@ -106,7 +106,7 @@ class PropertyGroup(troposphere.kinesisanalyticsv2.PropertyGroup, Mixin):
     def __init__(self,
                  title=None,
                  PropertyGroupId=NOTHING, # type: Union[str, AWSHelperFn]
-                 PropertyMap=NOTHING, # type: json_checker
+                 PropertyMap=NOTHING, # type: dict
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,

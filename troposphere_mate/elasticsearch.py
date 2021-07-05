@@ -13,6 +13,7 @@ import troposphere.elasticsearch
 from troposphere.elasticsearch import (
     AdvancedSecurityOptionsInput as _AdvancedSecurityOptionsInput,
     CognitoOptions as _CognitoOptions,
+    DomainEndpointOptions as _DomainEndpointOptions,
     EBSOptions as _EBSOptions,
     ElasticsearchClusterConfig as _ElasticsearchClusterConfig,
     EncryptionAtRestOptions as _EncryptionAtRestOptions,
@@ -48,6 +49,27 @@ class CognitoOptions(troposphere.elasticsearch.CognitoOptions, Mixin):
             **kwargs
         )
         super(CognitoOptions, self).__init__(**processed_kwargs)
+
+
+class DomainEndpointOptions(troposphere.elasticsearch.DomainEndpointOptions, Mixin):
+    def __init__(self,
+                 title=None,
+                 CustomEndpoint=NOTHING, # type: Union[str, AWSHelperFn]
+                 CustomEndpointCertificateArn=NOTHING, # type: Union[str, AWSHelperFn]
+                 CustomEndpointEnabled=NOTHING, # type: bool
+                 EnforceHTTPS=NOTHING, # type: bool
+                 TLSSecurityPolicy=NOTHING, # type: Any
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            CustomEndpoint=CustomEndpoint,
+            CustomEndpointCertificateArn=CustomEndpointCertificateArn,
+            CustomEndpointEnabled=CustomEndpointEnabled,
+            EnforceHTTPS=EnforceHTTPS,
+            TLSSecurityPolicy=TLSSecurityPolicy,
+            **kwargs
+        )
+        super(DomainEndpointOptions, self).__init__(**processed_kwargs)
 
 
 class EBSOptions(troposphere.elasticsearch.EBSOptions, Mixin):
@@ -90,6 +112,9 @@ class ElasticsearchClusterConfig(troposphere.elasticsearch.ElasticsearchClusterC
                  DedicatedMasterType=NOTHING, # type: Union[str, AWSHelperFn]
                  InstanceCount=NOTHING, # type: int
                  InstanceType=NOTHING, # type: Union[str, AWSHelperFn]
+                 WarmCount=NOTHING, # type: int
+                 WarmEnabled=NOTHING, # type: bool
+                 WarmType=NOTHING, # type: Union[str, AWSHelperFn]
                  ZoneAwarenessConfig=NOTHING, # type: _ZoneAwarenessConfig
                  ZoneAwarenessEnabled=NOTHING, # type: bool
                  **kwargs):
@@ -100,6 +125,9 @@ class ElasticsearchClusterConfig(troposphere.elasticsearch.ElasticsearchClusterC
             DedicatedMasterType=DedicatedMasterType,
             InstanceCount=InstanceCount,
             InstanceType=InstanceType,
+            WarmCount=WarmCount,
+            WarmEnabled=WarmEnabled,
+            WarmType=WarmType,
             ZoneAwarenessConfig=ZoneAwarenessConfig,
             ZoneAwarenessEnabled=ZoneAwarenessEnabled,
             **kwargs
@@ -207,6 +235,7 @@ class Domain(troposphere.elasticsearch.Domain, Mixin):
                  AdvancedSecurityOptions=NOTHING, # type: _AdvancedSecurityOptionsInput
                  CognitoOptions=NOTHING, # type: _CognitoOptions
                  DomainName=NOTHING, # type: Union[str, AWSHelperFn]
+                 DomainEndpointOptions=NOTHING, # type: _DomainEndpointOptions
                  EBSOptions=NOTHING, # type: _EBSOptions
                  ElasticsearchClusterConfig=NOTHING, # type: _ElasticsearchClusterConfig
                  ElasticsearchVersion=NOTHING, # type: Union[str, AWSHelperFn]
@@ -226,6 +255,7 @@ class Domain(troposphere.elasticsearch.Domain, Mixin):
             AdvancedSecurityOptions=AdvancedSecurityOptions,
             CognitoOptions=CognitoOptions,
             DomainName=DomainName,
+            DomainEndpointOptions=DomainEndpointOptions,
             EBSOptions=EBSOptions,
             ElasticsearchClusterConfig=ElasticsearchClusterConfig,
             ElasticsearchVersion=ElasticsearchVersion,

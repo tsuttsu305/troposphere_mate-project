@@ -15,6 +15,7 @@ from troposphere.firehose import (
     CloudWatchLoggingOptions as _CloudWatchLoggingOptions,
     CopyCommand as _CopyCommand,
     DataFormatConversionConfiguration as _DataFormatConversionConfiguration,
+    DeliveryStreamEncryptionConfigurationInput as _DeliveryStreamEncryptionConfigurationInput,
     Deserializer as _Deserializer,
     ElasticsearchDestinationConfiguration as _ElasticsearchDestinationConfiguration,
     EncryptionConfiguration as _EncryptionConfiguration,
@@ -38,6 +39,7 @@ from troposphere.firehose import (
     Serializer as _Serializer,
     SplunkDestinationConfiguration as _SplunkDestinationConfiguration,
     SplunkRetryOptions as _SplunkRetryOptions,
+    Tags as _Tags,
     VpcConfiguration as _VpcConfiguration,
 )
 
@@ -61,6 +63,21 @@ class BufferingHints(troposphere.firehose.BufferingHints, Mixin):
             **kwargs
         )
         super(BufferingHints, self).__init__(**processed_kwargs)
+
+
+class DeliveryStreamEncryptionConfigurationInput(troposphere.firehose.DeliveryStreamEncryptionConfigurationInput, Mixin):
+    def __init__(self,
+                 title=None,
+                 KeyType=REQUIRED, # type: Union[str, AWSHelperFn]
+                 KeyARN=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            KeyType=KeyType,
+            KeyARN=KeyARN,
+            **kwargs
+        )
+        super(DeliveryStreamEncryptionConfigurationInput, self).__init__(**processed_kwargs)
 
 
 class CloudWatchLoggingOptions(troposphere.firehose.CloudWatchLoggingOptions, Mixin):
@@ -595,6 +612,7 @@ class DeliveryStream(troposphere.firehose.DeliveryStream, Mixin):
                  title, # type: str
                  template=None, # type: Template
                  validation=True, # type: bool
+                 DeliveryStreamEncryptionConfigurationInput=NOTHING, # type: _DeliveryStreamEncryptionConfigurationInput
                  DeliveryStreamName=NOTHING, # type: Union[str, AWSHelperFn]
                  DeliveryStreamType=NOTHING, # type: Any
                  ElasticsearchDestinationConfiguration=NOTHING, # type: _ElasticsearchDestinationConfiguration
@@ -603,11 +621,13 @@ class DeliveryStream(troposphere.firehose.DeliveryStream, Mixin):
                  RedshiftDestinationConfiguration=NOTHING, # type: _RedshiftDestinationConfiguration
                  S3DestinationConfiguration=NOTHING, # type: _S3DestinationConfiguration
                  SplunkDestinationConfiguration=NOTHING, # type: _SplunkDestinationConfiguration
+                 Tags=NOTHING, # type: _Tags
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             template=template,
             validation=validation,
+            DeliveryStreamEncryptionConfigurationInput=DeliveryStreamEncryptionConfigurationInput,
             DeliveryStreamName=DeliveryStreamName,
             DeliveryStreamType=DeliveryStreamType,
             ElasticsearchDestinationConfiguration=ElasticsearchDestinationConfiguration,
@@ -616,6 +636,7 @@ class DeliveryStream(troposphere.firehose.DeliveryStream, Mixin):
             RedshiftDestinationConfiguration=RedshiftDestinationConfiguration,
             S3DestinationConfiguration=S3DestinationConfiguration,
             SplunkDestinationConfiguration=SplunkDestinationConfiguration,
+            Tags=Tags,
             **kwargs
         )
         super(DeliveryStream, self).__init__(**processed_kwargs)

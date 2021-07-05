@@ -11,7 +11,10 @@ if sys.version_info.major >= 3 and sys.version_info.minor >= 5:  # pragma: no co
 import troposphere.elasticache
 
 from troposphere.elasticache import (
+    GlobalReplicationGroupMember as _GlobalReplicationGroupMember,
     NodeGroupConfiguration as _NodeGroupConfiguration,
+    RegionalConfiguration as _RegionalConfiguration,
+    ReshardingConfiguration as _ReshardingConfiguration,
     Tags as _Tags,
 )
 
@@ -77,6 +80,88 @@ class CacheCluster(troposphere.elasticache.CacheCluster, Mixin):
             **kwargs
         )
         super(CacheCluster, self).__init__(**processed_kwargs)
+
+
+class GlobalReplicationGroupMember(troposphere.elasticache.GlobalReplicationGroupMember, Mixin):
+    def __init__(self,
+                 title=None,
+                 ReplicationGroupId=NOTHING, # type: Union[str, AWSHelperFn]
+                 ReplicationGroupRegion=NOTHING, # type: Union[str, AWSHelperFn]
+                 Role=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            ReplicationGroupId=ReplicationGroupId,
+            ReplicationGroupRegion=ReplicationGroupRegion,
+            Role=Role,
+            **kwargs
+        )
+        super(GlobalReplicationGroupMember, self).__init__(**processed_kwargs)
+
+
+class ReshardingConfiguration(troposphere.elasticache.ReshardingConfiguration, Mixin):
+    def __init__(self,
+                 title=None,
+                 NodeGroupId=NOTHING, # type: Union[str, AWSHelperFn]
+                 PreferredAvailabilityZones=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            NodeGroupId=NodeGroupId,
+            PreferredAvailabilityZones=PreferredAvailabilityZones,
+            **kwargs
+        )
+        super(ReshardingConfiguration, self).__init__(**processed_kwargs)
+
+
+class RegionalConfiguration(troposphere.elasticache.RegionalConfiguration, Mixin):
+    def __init__(self,
+                 title=None,
+                 ReplicationGroupId=NOTHING, # type: Union[str, AWSHelperFn]
+                 ReplicationGroupRegion=NOTHING, # type: Union[str, AWSHelperFn]
+                 ReshardingConfigurations=NOTHING, # type: List[_ReshardingConfiguration]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            ReplicationGroupId=ReplicationGroupId,
+            ReplicationGroupRegion=ReplicationGroupRegion,
+            ReshardingConfigurations=ReshardingConfigurations,
+            **kwargs
+        )
+        super(RegionalConfiguration, self).__init__(**processed_kwargs)
+
+
+class GlobalReplicationGroup(troposphere.elasticache.GlobalReplicationGroup, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 Members=REQUIRED, # type: List[_GlobalReplicationGroupMember]
+                 AutomaticFailoverEnabled=NOTHING, # type: bool
+                 CacheNodeType=NOTHING, # type: Union[str, AWSHelperFn]
+                 CacheParameterGroupName=NOTHING, # type: Union[str, AWSHelperFn]
+                 EngineVersion=NOTHING, # type: Union[str, AWSHelperFn]
+                 GlobalNodeGroupCount=NOTHING, # type: int
+                 GlobalReplicationGroupDescription=NOTHING, # type: Union[str, AWSHelperFn]
+                 GlobalReplicationGroupIdSuffix=NOTHING, # type: Union[str, AWSHelperFn]
+                 RegionalConfigurations=NOTHING, # type: List[_RegionalConfiguration]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            Members=Members,
+            AutomaticFailoverEnabled=AutomaticFailoverEnabled,
+            CacheNodeType=CacheNodeType,
+            CacheParameterGroupName=CacheParameterGroupName,
+            EngineVersion=EngineVersion,
+            GlobalNodeGroupCount=GlobalNodeGroupCount,
+            GlobalReplicationGroupDescription=GlobalReplicationGroupDescription,
+            GlobalReplicationGroupIdSuffix=GlobalReplicationGroupIdSuffix,
+            RegionalConfigurations=RegionalConfigurations,
+            **kwargs
+        )
+        super(GlobalReplicationGroup, self).__init__(**processed_kwargs)
 
 
 class ParameterGroup(troposphere.elasticache.ParameterGroup, Mixin):
@@ -216,6 +301,7 @@ class ReplicationGroup(troposphere.elasticache.ReplicationGroup, Mixin):
                  SnapshottingClusterId=NOTHING, # type: Union[str, AWSHelperFn]
                  Tags=NOTHING, # type: _Tags
                  TransitEncryptionEnabled=NOTHING, # type: bool
+                 UserGroupIds=NOTHING, # type: List[Union[str, AWSHelperFn]]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
@@ -252,6 +338,7 @@ class ReplicationGroup(troposphere.elasticache.ReplicationGroup, Mixin):
             SnapshottingClusterId=SnapshottingClusterId,
             Tags=Tags,
             TransitEncryptionEnabled=TransitEncryptionEnabled,
+            UserGroupIds=UserGroupIds,
             **kwargs
         )
         super(ReplicationGroup, self).__init__(**processed_kwargs)

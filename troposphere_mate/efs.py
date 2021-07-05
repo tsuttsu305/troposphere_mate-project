@@ -131,6 +131,7 @@ class FileSystem(troposphere.efs.FileSystem, Mixin):
                  title, # type: str
                  template=None, # type: Template
                  validation=True, # type: bool
+                 AvailabilityZoneName=NOTHING, # type: Union[str, AWSHelperFn]
                  BackupPolicy=NOTHING, # type: _BackupPolicy
                  Encrypted=NOTHING, # type: bool
                  FileSystemPolicy=NOTHING, # type: dict
@@ -145,6 +146,7 @@ class FileSystem(troposphere.efs.FileSystem, Mixin):
             title=title,
             template=template,
             validation=validation,
+            AvailabilityZoneName=AvailabilityZoneName,
             BackupPolicy=BackupPolicy,
             Encrypted=Encrypted,
             FileSystemPolicy=FileSystemPolicy,

@@ -32,6 +32,33 @@ from troposphere_mate.core.sentiel import REQUIRED, NOTHING
 
 
 
+class Addon(troposphere.eks.Addon, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 AddonName=REQUIRED, # type: Union[str, AWSHelperFn]
+                 ClusterName=REQUIRED, # type: Union[str, AWSHelperFn]
+                 AddonVersion=NOTHING, # type: Union[str, AWSHelperFn]
+                 ResolveConflicts=NOTHING, # type: Union[str, AWSHelperFn]
+                 ServiceAccountRoleArn=NOTHING, # type: Union[str, AWSHelperFn]
+                 Tags=NOTHING, # type: _Tags
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            AddonName=AddonName,
+            ClusterName=ClusterName,
+            AddonVersion=AddonVersion,
+            ResolveConflicts=ResolveConflicts,
+            ServiceAccountRoleArn=ServiceAccountRoleArn,
+            Tags=Tags,
+            **kwargs
+        )
+        super(Addon, self).__init__(**processed_kwargs)
+
+
 class LogSetup(troposphere.eks.LogSetup, Mixin):
     def __init__(self,
                  title=None,
@@ -259,6 +286,7 @@ class Nodegroup(troposphere.eks.Nodegroup, Mixin):
                  ClusterName=REQUIRED, # type: Union[str, AWSHelperFn]
                  NodeRole=REQUIRED, # type: Union[str, AWSHelperFn]
                  AmiType=NOTHING, # type: Union[str, AWSHelperFn]
+                 CapacityType=NOTHING, # type: Union[str, AWSHelperFn]
                  DiskSize=NOTHING, # type: float
                  ForceUpdateEnabled=NOTHING, # type: bool
                  InstanceTypes=NOTHING, # type: List[Union[str, AWSHelperFn]]
@@ -279,6 +307,7 @@ class Nodegroup(troposphere.eks.Nodegroup, Mixin):
             ClusterName=ClusterName,
             NodeRole=NodeRole,
             AmiType=AmiType,
+            CapacityType=CapacityType,
             DiskSize=DiskSize,
             ForceUpdateEnabled=ForceUpdateEnabled,
             InstanceTypes=InstanceTypes,

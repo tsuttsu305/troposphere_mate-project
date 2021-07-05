@@ -14,12 +14,18 @@ from troposphere.s3 import (
     AbortIncompleteMultipartUpload as _AbortIncompleteMultipartUpload,
     AccelerateConfiguration as _AccelerateConfiguration,
     AccessControlTranslation as _AccessControlTranslation,
+    AccountLevel as _AccountLevel,
+    ActivityMetrics as _ActivityMetrics,
     AnalyticsConfiguration as _AnalyticsConfiguration,
+    AwsOrg as _AwsOrg,
     BucketEncryption as _BucketEncryption,
+    BucketLevel as _BucketLevel,
+    BucketsAndRegions as _BucketsAndRegions,
     CorsConfiguration as _CorsConfiguration,
     CorsRules as _CorsRules,
     DataExport as _DataExport,
     DefaultRetention as _DefaultRetention,
+    DeleteMarkerReplication as _DeleteMarkerReplication,
     Destination as _Destination,
     EncryptionConfiguration as _EncryptionConfiguration,
     Filter as _Filter,
@@ -29,27 +35,39 @@ from troposphere.s3 import (
     LifecycleRule as _LifecycleRule,
     LifecycleRuleTransition as _LifecycleRuleTransition,
     LoggingConfiguration as _LoggingConfiguration,
+    Metrics as _Metrics,
     MetricsConfiguration as _MetricsConfiguration,
     NoncurrentVersionTransition as _NoncurrentVersionTransition,
     NotificationConfiguration as _NotificationConfiguration,
     ObjectLockConfiguration as _ObjectLockConfiguration,
     ObjectLockRule as _ObjectLockRule,
+    OwnershipControls as _OwnershipControls,
+    OwnershipControlsRule as _OwnershipControlsRule,
+    PrefixLevel as _PrefixLevel,
+    PrefixLevelStorageMetrics as _PrefixLevelStorageMetrics,
     PublicAccessBlockConfiguration as _PublicAccessBlockConfiguration,
     QueueConfigurations as _QueueConfigurations,
     RedirectAllRequestsTo as _RedirectAllRequestsTo,
     RedirectRule as _RedirectRule,
+    ReplicaModifications as _ReplicaModifications,
     ReplicationConfiguration as _ReplicationConfiguration,
     ReplicationConfigurationRules as _ReplicationConfigurationRules,
     ReplicationConfigurationRulesDestination as _ReplicationConfigurationRulesDestination,
+    ReplicationRuleAndOperator as _ReplicationRuleAndOperator,
+    ReplicationRuleFilter as _ReplicationRuleFilter,
+    ReplicationTime as _ReplicationTime,
+    ReplicationTimeValue as _ReplicationTimeValue,
     RoutingRule as _RoutingRule,
     RoutingRuleCondition as _RoutingRuleCondition,
     Rules as _Rules,
     S3Key as _S3Key,
+    SelectionCriteria as _SelectionCriteria,
     ServerSideEncryptionByDefault as _ServerSideEncryptionByDefault,
     ServerSideEncryptionRule as _ServerSideEncryptionRule,
     SourceSelectionCriteria as _SourceSelectionCriteria,
     SseKmsEncryptedObjects as _SseKmsEncryptedObjects,
     StorageClassAnalysis as _StorageClassAnalysis,
+    StorageLensConfiguration as _StorageLensConfiguration,
     TagFilter as _TagFilter,
     Tags as _Tags,
     TopicConfigurations as _TopicConfigurations,
@@ -524,6 +542,45 @@ class NotificationConfiguration(troposphere.s3.NotificationConfiguration, Mixin)
         super(NotificationConfiguration, self).__init__(**processed_kwargs)
 
 
+class OwnershipControlsRule(troposphere.s3.OwnershipControlsRule, Mixin):
+    def __init__(self,
+                 title=None,
+                 ObjectOwnership=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            ObjectOwnership=ObjectOwnership,
+            **kwargs
+        )
+        super(OwnershipControlsRule, self).__init__(**processed_kwargs)
+
+
+class OwnershipControls(troposphere.s3.OwnershipControls, Mixin):
+    def __init__(self,
+                 title=None,
+                 Rules=REQUIRED, # type: List[_OwnershipControlsRule]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Rules=Rules,
+            **kwargs
+        )
+        super(OwnershipControls, self).__init__(**processed_kwargs)
+
+
+class DeleteMarkerReplication(troposphere.s3.DeleteMarkerReplication, Mixin):
+    def __init__(self,
+                 title=None,
+                 Status=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Status=Status,
+            **kwargs
+        )
+        super(DeleteMarkerReplication, self).__init__(**processed_kwargs)
+
+
 class AccessControlTranslation(troposphere.s3.AccessControlTranslation, Mixin):
     def __init__(self,
                  title=None,
@@ -550,6 +607,49 @@ class EncryptionConfiguration(troposphere.s3.EncryptionConfiguration, Mixin):
         super(EncryptionConfiguration, self).__init__(**processed_kwargs)
 
 
+class ReplicationTimeValue(troposphere.s3.ReplicationTimeValue, Mixin):
+    def __init__(self,
+                 title=None,
+                 Minutes=REQUIRED, # type: int
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Minutes=Minutes,
+            **kwargs
+        )
+        super(ReplicationTimeValue, self).__init__(**processed_kwargs)
+
+
+class Metrics(troposphere.s3.Metrics, Mixin):
+    def __init__(self,
+                 title=None,
+                 Status=REQUIRED, # type: Union[str, AWSHelperFn]
+                 EventThreshold=NOTHING, # type: _ReplicationTimeValue
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Status=Status,
+            EventThreshold=EventThreshold,
+            **kwargs
+        )
+        super(Metrics, self).__init__(**processed_kwargs)
+
+
+class ReplicationTime(troposphere.s3.ReplicationTime, Mixin):
+    def __init__(self,
+                 title=None,
+                 Status=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Time=REQUIRED, # type: _ReplicationTimeValue
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Status=Status,
+            Time=Time,
+            **kwargs
+        )
+        super(ReplicationTime, self).__init__(**processed_kwargs)
+
+
 class ReplicationConfigurationRulesDestination(troposphere.s3.ReplicationConfigurationRulesDestination, Mixin):
     def __init__(self,
                  title=None,
@@ -557,6 +657,8 @@ class ReplicationConfigurationRulesDestination(troposphere.s3.ReplicationConfigu
                  AccessControlTranslation=NOTHING, # type: _AccessControlTranslation
                  Account=NOTHING, # type: Union[str, AWSHelperFn]
                  EncryptionConfiguration=NOTHING, # type: _EncryptionConfiguration
+                 Metrics=NOTHING, # type: _Metrics
+                 ReplicationTime=NOTHING, # type: _ReplicationTime
                  StorageClass=NOTHING, # type: Union[str, AWSHelperFn]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
@@ -565,10 +667,57 @@ class ReplicationConfigurationRulesDestination(troposphere.s3.ReplicationConfigu
             AccessControlTranslation=AccessControlTranslation,
             Account=Account,
             EncryptionConfiguration=EncryptionConfiguration,
+            Metrics=Metrics,
+            ReplicationTime=ReplicationTime,
             StorageClass=StorageClass,
             **kwargs
         )
         super(ReplicationConfigurationRulesDestination, self).__init__(**processed_kwargs)
+
+
+class ReplicationRuleAndOperator(troposphere.s3.ReplicationRuleAndOperator, Mixin):
+    def __init__(self,
+                 title=None,
+                 Prefix=NOTHING, # type: Union[str, AWSHelperFn]
+                 TagFilters=NOTHING, # type: List[_TagFilter]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Prefix=Prefix,
+            TagFilters=TagFilters,
+            **kwargs
+        )
+        super(ReplicationRuleAndOperator, self).__init__(**processed_kwargs)
+
+
+class ReplicationRuleFilter(troposphere.s3.ReplicationRuleFilter, Mixin):
+    def __init__(self,
+                 title=None,
+                 And=NOTHING, # type: _ReplicationRuleAndOperator
+                 Prefix=NOTHING, # type: Union[str, AWSHelperFn]
+                 TagFilter=NOTHING, # type: _TagFilter
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            And=And,
+            Prefix=Prefix,
+            TagFilter=TagFilter,
+            **kwargs
+        )
+        super(ReplicationRuleFilter, self).__init__(**processed_kwargs)
+
+
+class ReplicaModifications(troposphere.s3.ReplicaModifications, Mixin):
+    def __init__(self,
+                 title=None,
+                 Status=REQUIRED, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Status=Status,
+            **kwargs
+        )
+        super(ReplicaModifications, self).__init__(**processed_kwargs)
 
 
 class SseKmsEncryptedObjects(troposphere.s3.SseKmsEncryptedObjects, Mixin):
@@ -587,10 +736,12 @@ class SseKmsEncryptedObjects(troposphere.s3.SseKmsEncryptedObjects, Mixin):
 class SourceSelectionCriteria(troposphere.s3.SourceSelectionCriteria, Mixin):
     def __init__(self,
                  title=None,
-                 SseKmsEncryptedObjects=REQUIRED, # type: _SseKmsEncryptedObjects
+                 ReplicaModifications=NOTHING, # type: _ReplicaModifications
+                 SseKmsEncryptedObjects=NOTHING, # type: _SseKmsEncryptedObjects
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
+            ReplicaModifications=ReplicaModifications,
             SseKmsEncryptedObjects=SseKmsEncryptedObjects,
             **kwargs
         )
@@ -603,7 +754,10 @@ class ReplicationConfigurationRules(troposphere.s3.ReplicationConfigurationRules
                  Destination=REQUIRED, # type: _ReplicationConfigurationRulesDestination
                  Prefix=REQUIRED, # type: Union[str, AWSHelperFn]
                  Status=REQUIRED, # type: Union[str, AWSHelperFn]
+                 DeleteMarkerReplication=NOTHING, # type: _DeleteMarkerReplication
+                 Filter=NOTHING, # type: _ReplicationRuleFilter
                  Id=NOTHING, # type: Union[str, AWSHelperFn]
+                 Priority=NOTHING, # type: int
                  SourceSelectionCriteria=NOTHING, # type: _SourceSelectionCriteria
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
@@ -611,7 +765,10 @@ class ReplicationConfigurationRules(troposphere.s3.ReplicationConfigurationRules
             Destination=Destination,
             Prefix=Prefix,
             Status=Status,
+            DeleteMarkerReplication=DeleteMarkerReplication,
+            Filter=Filter,
             Id=Id,
+            Priority=Priority,
             SourceSelectionCriteria=SourceSelectionCriteria,
             **kwargs
         )
@@ -717,10 +874,12 @@ class ServerSideEncryptionByDefault(troposphere.s3.ServerSideEncryptionByDefault
 class ServerSideEncryptionRule(troposphere.s3.ServerSideEncryptionRule, Mixin):
     def __init__(self,
                  title=None,
+                 BucketKeyEnabled=NOTHING, # type: bool
                  ServerSideEncryptionByDefault=NOTHING, # type: _ServerSideEncryptionByDefault
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
+            BucketKeyEnabled=BucketKeyEnabled,
             ServerSideEncryptionByDefault=ServerSideEncryptionByDefault,
             **kwargs
         )
@@ -815,8 +974,8 @@ class Bucket(troposphere.s3.Bucket, Mixin):
                  title, # type: str
                  template=None, # type: Template
                  validation=True, # type: bool
-                 AccessControl=NOTHING, # type: Union[str, AWSHelperFn]
                  AccelerateConfiguration=NOTHING, # type: _AccelerateConfiguration
+                 AccessControl=NOTHING, # type: Union[str, AWSHelperFn]
                  AnalyticsConfigurations=NOTHING, # type: List[_AnalyticsConfiguration]
                  BucketEncryption=NOTHING, # type: _BucketEncryption
                  BucketName=NOTHING, # type: str
@@ -828,18 +987,19 @@ class Bucket(troposphere.s3.Bucket, Mixin):
                  NotificationConfiguration=NOTHING, # type: _NotificationConfiguration
                  ObjectLockConfiguration=NOTHING, # type: _ObjectLockConfiguration
                  ObjectLockEnabled=NOTHING, # type: bool
+                 OwnershipControls=NOTHING, # type: _OwnershipControls
                  PublicAccessBlockConfiguration=NOTHING, # type: _PublicAccessBlockConfiguration
                  ReplicationConfiguration=NOTHING, # type: _ReplicationConfiguration
                  Tags=NOTHING, # type: _Tags
-                 WebsiteConfiguration=NOTHING, # type: _WebsiteConfiguration
                  VersioningConfiguration=NOTHING, # type: _VersioningConfiguration
+                 WebsiteConfiguration=NOTHING, # type: _WebsiteConfiguration
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             template=template,
             validation=validation,
-            AccessControl=AccessControl,
             AccelerateConfiguration=AccelerateConfiguration,
+            AccessControl=AccessControl,
             AnalyticsConfigurations=AnalyticsConfigurations,
             BucketEncryption=BucketEncryption,
             BucketName=BucketName,
@@ -851,11 +1011,12 @@ class Bucket(troposphere.s3.Bucket, Mixin):
             NotificationConfiguration=NotificationConfiguration,
             ObjectLockConfiguration=ObjectLockConfiguration,
             ObjectLockEnabled=ObjectLockEnabled,
+            OwnershipControls=OwnershipControls,
             PublicAccessBlockConfiguration=PublicAccessBlockConfiguration,
             ReplicationConfiguration=ReplicationConfiguration,
             Tags=Tags,
-            WebsiteConfiguration=WebsiteConfiguration,
             VersioningConfiguration=VersioningConfiguration,
+            WebsiteConfiguration=WebsiteConfiguration,
             **kwargs
         )
         super(Bucket, self).__init__(**processed_kwargs)
@@ -878,3 +1039,165 @@ class BucketPolicy(troposphere.s3.BucketPolicy, Mixin):
             **kwargs
         )
         super(BucketPolicy, self).__init__(**processed_kwargs)
+
+
+class ActivityMetrics(troposphere.s3.ActivityMetrics, Mixin):
+    def __init__(self,
+                 title=None,
+                 IsEnabled=NOTHING, # type: bool
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            IsEnabled=IsEnabled,
+            **kwargs
+        )
+        super(ActivityMetrics, self).__init__(**processed_kwargs)
+
+
+class SelectionCriteria(troposphere.s3.SelectionCriteria, Mixin):
+    def __init__(self,
+                 title=None,
+                 Delimiter=NOTHING, # type: Union[str, AWSHelperFn]
+                 MaxDepth=NOTHING, # type: int
+                 MinStorageBytesPercentage=NOTHING, # type: float
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Delimiter=Delimiter,
+            MaxDepth=MaxDepth,
+            MinStorageBytesPercentage=MinStorageBytesPercentage,
+            **kwargs
+        )
+        super(SelectionCriteria, self).__init__(**processed_kwargs)
+
+
+class PrefixLevelStorageMetrics(troposphere.s3.PrefixLevelStorageMetrics, Mixin):
+    def __init__(self,
+                 title=None,
+                 IsEnabled=NOTHING, # type: bool
+                 SelectionCriteria=NOTHING, # type: _SelectionCriteria
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            IsEnabled=IsEnabled,
+            SelectionCriteria=SelectionCriteria,
+            **kwargs
+        )
+        super(PrefixLevelStorageMetrics, self).__init__(**processed_kwargs)
+
+
+class PrefixLevel(troposphere.s3.PrefixLevel, Mixin):
+    def __init__(self,
+                 title=None,
+                 StorageMetrics=REQUIRED, # type: _PrefixLevelStorageMetrics
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            StorageMetrics=StorageMetrics,
+            **kwargs
+        )
+        super(PrefixLevel, self).__init__(**processed_kwargs)
+
+
+class BucketLevel(troposphere.s3.BucketLevel, Mixin):
+    def __init__(self,
+                 title=None,
+                 ActivityMetrics=NOTHING, # type: _ActivityMetrics
+                 PrefixLevel=NOTHING, # type: _PrefixLevel
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            ActivityMetrics=ActivityMetrics,
+            PrefixLevel=PrefixLevel,
+            **kwargs
+        )
+        super(BucketLevel, self).__init__(**processed_kwargs)
+
+
+class AccountLevel(troposphere.s3.AccountLevel, Mixin):
+    def __init__(self,
+                 title=None,
+                 BucketLevel=REQUIRED, # type: _BucketLevel
+                 ActivityMetrics=NOTHING, # type: _ActivityMetrics
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            BucketLevel=BucketLevel,
+            ActivityMetrics=ActivityMetrics,
+            **kwargs
+        )
+        super(AccountLevel, self).__init__(**processed_kwargs)
+
+
+class AwsOrg(troposphere.s3.AwsOrg, Mixin):
+    def __init__(self,
+                 title=None,
+                 Arn=REQUIRED, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Arn=Arn,
+            **kwargs
+        )
+        super(AwsOrg, self).__init__(**processed_kwargs)
+
+
+class BucketsAndRegions(troposphere.s3.BucketsAndRegions, Mixin):
+    def __init__(self,
+                 title=None,
+                 Buckets=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 Regions=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Buckets=Buckets,
+            Regions=Regions,
+            **kwargs
+        )
+        super(BucketsAndRegions, self).__init__(**processed_kwargs)
+
+
+class StorageLensConfiguration(troposphere.s3.StorageLensConfiguration, Mixin):
+    def __init__(self,
+                 title=None,
+                 AccountLevel=REQUIRED, # type: _AccountLevel
+                 Id=REQUIRED, # type: Union[str, AWSHelperFn]
+                 IsEnabled=REQUIRED, # type: bool
+                 AwsOrg=NOTHING, # type: _AwsOrg
+                 DataExport=NOTHING, # type: _DataExport
+                 Exclude=NOTHING, # type: _BucketsAndRegions
+                 Include=NOTHING, # type: _BucketsAndRegions
+                 StorageLensArn=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            AccountLevel=AccountLevel,
+            Id=Id,
+            IsEnabled=IsEnabled,
+            AwsOrg=AwsOrg,
+            DataExport=DataExport,
+            Exclude=Exclude,
+            Include=Include,
+            StorageLensArn=StorageLensArn,
+            **kwargs
+        )
+        super(StorageLensConfiguration, self).__init__(**processed_kwargs)
+
+
+class StorageLens(troposphere.s3.StorageLens, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 StorageLensConfiguration=REQUIRED, # type: _StorageLensConfiguration
+                 Tags=NOTHING, # type: _Tags
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            StorageLensConfiguration=StorageLensConfiguration,
+            Tags=Tags,
+            **kwargs
+        )
+        super(StorageLens, self).__init__(**processed_kwargs)

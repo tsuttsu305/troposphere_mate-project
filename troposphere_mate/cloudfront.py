@@ -25,6 +25,7 @@ from troposphere.cloudfront import (
     EndPoint as _EndPoint,
     ForwardedValues as _ForwardedValues,
     GeoRestriction as _GeoRestriction,
+    KeyGroupConfig as _KeyGroupConfig,
     KinesisStreamConfig as _KinesisStreamConfig,
     LambdaFunctionAssociation as _LambdaFunctionAssociation,
     Logging as _Logging,
@@ -39,7 +40,9 @@ from troposphere.cloudfront import (
     OriginRequestHeadersConfig as _OriginRequestHeadersConfig,
     OriginRequestPolicyConfig as _OriginRequestPolicyConfig,
     OriginRequestQueryStringsConfig as _OriginRequestQueryStringsConfig,
+    OriginShield as _OriginShield,
     ParametersInCacheKeyAndForwardedToOrigin as _ParametersInCacheKeyAndForwardedToOrigin,
+    PublicKeyConfig as _PublicKeyConfig,
     Restrictions as _Restrictions,
     S3Origin as _S3Origin,
     S3OriginConfig as _S3OriginConfig,
@@ -96,11 +99,13 @@ class LambdaFunctionAssociation(troposphere.cloudfront.LambdaFunctionAssociation
     def __init__(self,
                  title=None,
                  EventType=NOTHING, # type: str
+                 IncludeBody=NOTHING, # type: bool
                  LambdaFunctionARN=NOTHING, # type: Union[str, AWSHelperFn]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             EventType=EventType,
+            IncludeBody=IncludeBody,
             LambdaFunctionARN=LambdaFunctionARN,
             **kwargs
         )
@@ -126,6 +131,7 @@ class CacheBehavior(troposphere.cloudfront.CacheBehavior, Mixin):
                  OriginRequestPolicyId=NOTHING, # type: Union[str, AWSHelperFn]
                  RealtimeLogConfigArn=NOTHING, # type: Union[str, AWSHelperFn]
                  SmoothStreaming=NOTHING, # type: bool
+                 TrustedKeyGroups=NOTHING, # type: List[Union[str, AWSHelperFn]]
                  TrustedSigners=NOTHING, # type: List[Union[str, AWSHelperFn]]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
@@ -146,6 +152,7 @@ class CacheBehavior(troposphere.cloudfront.CacheBehavior, Mixin):
             OriginRequestPolicyId=OriginRequestPolicyId,
             RealtimeLogConfigArn=RealtimeLogConfigArn,
             SmoothStreaming=SmoothStreaming,
+            TrustedKeyGroups=TrustedKeyGroups,
             TrustedSigners=TrustedSigners,
             **kwargs
         )
@@ -170,6 +177,7 @@ class DefaultCacheBehavior(troposphere.cloudfront.DefaultCacheBehavior, Mixin):
                  OriginRequestPolicyId=NOTHING, # type: Union[str, AWSHelperFn]
                  RealtimeLogConfigArn=NOTHING, # type: Union[str, AWSHelperFn]
                  SmoothStreaming=NOTHING, # type: bool
+                 TrustedKeyGroups=NOTHING, # type: List[Union[str, AWSHelperFn]]
                  TrustedSigners=NOTHING, # type: list
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
@@ -189,6 +197,7 @@ class DefaultCacheBehavior(troposphere.cloudfront.DefaultCacheBehavior, Mixin):
             OriginRequestPolicyId=OriginRequestPolicyId,
             RealtimeLogConfigArn=RealtimeLogConfigArn,
             SmoothStreaming=SmoothStreaming,
+            TrustedKeyGroups=TrustedKeyGroups,
             TrustedSigners=TrustedSigners,
             **kwargs
         )
@@ -261,6 +270,21 @@ class S3OriginConfig(troposphere.cloudfront.S3OriginConfig, Mixin):
         super(S3OriginConfig, self).__init__(**processed_kwargs)
 
 
+class OriginShield(troposphere.cloudfront.OriginShield, Mixin):
+    def __init__(self,
+                 title=None,
+                 Enabled=REQUIRED, # type: bool
+                 OriginShieldRegion=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Enabled=Enabled,
+            OriginShieldRegion=OriginShieldRegion,
+            **kwargs
+        )
+        super(OriginShield, self).__init__(**processed_kwargs)
+
+
 class Origin(troposphere.cloudfront.Origin, Mixin):
     def __init__(self,
                  title=None,
@@ -271,6 +295,7 @@ class Origin(troposphere.cloudfront.Origin, Mixin):
                  CustomOriginConfig=NOTHING, # type: _CustomOriginConfig
                  OriginCustomHeaders=NOTHING, # type: List[_OriginCustomHeader]
                  OriginPath=NOTHING, # type: Union[str, AWSHelperFn]
+                 OriginShield=NOTHING, # type: _OriginShield
                  S3OriginConfig=NOTHING, # type: _S3OriginConfig
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
@@ -282,6 +307,7 @@ class Origin(troposphere.cloudfront.Origin, Mixin):
             CustomOriginConfig=CustomOriginConfig,
             OriginCustomHeaders=OriginCustomHeaders,
             OriginPath=OriginPath,
+            OriginShield=OriginShield,
             S3OriginConfig=S3OriginConfig,
             **kwargs
         )
@@ -799,6 +825,76 @@ class OriginRequestPolicy(troposphere.cloudfront.OriginRequestPolicy, Mixin):
             **kwargs
         )
         super(OriginRequestPolicy, self).__init__(**processed_kwargs)
+
+
+class KeyGroupConfig(troposphere.cloudfront.KeyGroupConfig, Mixin):
+    def __init__(self,
+                 title=None,
+                 Items=REQUIRED, # type: List[Union[str, AWSHelperFn]]
+                 Name=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Comment=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Items=Items,
+            Name=Name,
+            Comment=Comment,
+            **kwargs
+        )
+        super(KeyGroupConfig, self).__init__(**processed_kwargs)
+
+
+class KeyGroup(troposphere.cloudfront.KeyGroup, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 KeyGroupConfig=REQUIRED, # type: _KeyGroupConfig
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            KeyGroupConfig=KeyGroupConfig,
+            **kwargs
+        )
+        super(KeyGroup, self).__init__(**processed_kwargs)
+
+
+class PublicKeyConfig(troposphere.cloudfront.PublicKeyConfig, Mixin):
+    def __init__(self,
+                 title=None,
+                 CallerReference=REQUIRED, # type: Union[str, AWSHelperFn]
+                 EncodedKey=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Name=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Comment=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            CallerReference=CallerReference,
+            EncodedKey=EncodedKey,
+            Name=Name,
+            Comment=Comment,
+            **kwargs
+        )
+        super(PublicKeyConfig, self).__init__(**processed_kwargs)
+
+
+class PublicKey(troposphere.cloudfront.PublicKey, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 PublicKeyConfig=REQUIRED, # type: _PublicKeyConfig
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            PublicKeyConfig=PublicKeyConfig,
+            **kwargs
+        )
+        super(PublicKey, self).__init__(**processed_kwargs)
 
 
 class KinesisStreamConfig(troposphere.cloudfront.KinesisStreamConfig, Mixin):

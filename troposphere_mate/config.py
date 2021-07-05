@@ -23,6 +23,7 @@ from troposphere.config import (
     Source as _Source,
     SourceDetails as _SourceDetails,
     SsmControls as _SsmControls,
+    Tags as _Tags,
 )
 
 
@@ -473,3 +474,26 @@ class OrganizationConformancePack(troposphere.config.OrganizationConformancePack
             **kwargs
         )
         super(OrganizationConformancePack, self).__init__(**processed_kwargs)
+
+
+class StoredQuery(troposphere.config.StoredQuery, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 QueryExpression=REQUIRED, # type: Union[str, AWSHelperFn]
+                 QueryName=REQUIRED, # type: Union[str, AWSHelperFn]
+                 QueryDescription=NOTHING, # type: Union[str, AWSHelperFn]
+                 Tags=NOTHING, # type: _Tags
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            QueryExpression=QueryExpression,
+            QueryName=QueryName,
+            QueryDescription=QueryDescription,
+            Tags=Tags,
+            **kwargs
+        )
+        super(StoredQuery, self).__init__(**processed_kwargs)

@@ -11,12 +11,16 @@ if sys.version_info.major >= 3 and sys.version_info.minor >= 5:  # pragma: no co
 import troposphere.ecs
 
 from troposphere.ecs import (
+    AuthorizationConfig as _AuthorizationConfig,
     AutoScalingGroupProvider as _AutoScalingGroupProvider,
     AwsvpcConfiguration as _AwsvpcConfiguration,
+    CapacityProviderStrategy as _CapacityProviderStrategy,
     CapacityProviderStrategyItem as _CapacityProviderStrategyItem,
+    ClusterConfiguration as _ClusterConfiguration,
     ClusterSetting as _ClusterSetting,
     ContainerDefinition as _ContainerDefinition,
     ContainerDependency as _ContainerDependency,
+    DeploymentCircuitBreaker as _DeploymentCircuitBreaker,
     DeploymentConfiguration as _DeploymentConfiguration,
     DeploymentController as _DeploymentController,
     Device as _Device,
@@ -24,6 +28,8 @@ from troposphere.ecs import (
     EFSVolumeConfiguration as _EFSVolumeConfiguration,
     Environment as _Environment,
     EnvironmentFile as _EnvironmentFile,
+    ExecuteCommandConfiguration as _ExecuteCommandConfiguration,
+    ExecuteCommandLogConfiguration as _ExecuteCommandLogConfiguration,
     FirelensConfiguration as _FirelensConfiguration,
     HealthCheck as _HealthCheck,
     Host as _Host,
@@ -134,6 +140,57 @@ class CapacityProviderStrategyItem(troposphere.ecs.CapacityProviderStrategyItem,
         super(CapacityProviderStrategyItem, self).__init__(**processed_kwargs)
 
 
+class ExecuteCommandLogConfiguration(troposphere.ecs.ExecuteCommandLogConfiguration, Mixin):
+    def __init__(self,
+                 title=None,
+                 CloudWatchEncryptionEnabled=NOTHING, # type: bool
+                 CloudWatchLogGroupName=NOTHING, # type: Union[str, AWSHelperFn]
+                 S3BucketName=NOTHING, # type: Union[str, AWSHelperFn]
+                 S3EncryptionEnabled=NOTHING, # type: bool
+                 S3KeyPrefix=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            CloudWatchEncryptionEnabled=CloudWatchEncryptionEnabled,
+            CloudWatchLogGroupName=CloudWatchLogGroupName,
+            S3BucketName=S3BucketName,
+            S3EncryptionEnabled=S3EncryptionEnabled,
+            S3KeyPrefix=S3KeyPrefix,
+            **kwargs
+        )
+        super(ExecuteCommandLogConfiguration, self).__init__(**processed_kwargs)
+
+
+class ExecuteCommandConfiguration(troposphere.ecs.ExecuteCommandConfiguration, Mixin):
+    def __init__(self,
+                 title=None,
+                 KmsKeyId=NOTHING, # type: Union[str, AWSHelperFn]
+                 LogConfiguration=NOTHING, # type: _ExecuteCommandLogConfiguration
+                 Logging=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            KmsKeyId=KmsKeyId,
+            LogConfiguration=LogConfiguration,
+            Logging=Logging,
+            **kwargs
+        )
+        super(ExecuteCommandConfiguration, self).__init__(**processed_kwargs)
+
+
+class ClusterConfiguration(troposphere.ecs.ClusterConfiguration, Mixin):
+    def __init__(self,
+                 title=None,
+                 ExecuteCommandConfiguration=NOTHING, # type: _ExecuteCommandConfiguration
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            ExecuteCommandConfiguration=ExecuteCommandConfiguration,
+            **kwargs
+        )
+        super(ClusterConfiguration, self).__init__(**processed_kwargs)
+
+
 class ClusterSetting(troposphere.ecs.ClusterSetting, Mixin):
     def __init__(self,
                  title=None,
@@ -157,6 +214,7 @@ class Cluster(troposphere.ecs.Cluster, Mixin):
                  CapacityProviders=NOTHING, # type: List[Union[str, AWSHelperFn]]
                  ClusterName=NOTHING, # type: Union[str, AWSHelperFn]
                  ClusterSettings=NOTHING, # type: List[_ClusterSetting]
+                 Configuration=NOTHING, # type: _ClusterConfiguration
                  DefaultCapacityProviderStrategy=NOTHING, # type: List[_CapacityProviderStrategyItem]
                  Tags=NOTHING, # type: _Tags
                  **kwargs):
@@ -167,11 +225,50 @@ class Cluster(troposphere.ecs.Cluster, Mixin):
             CapacityProviders=CapacityProviders,
             ClusterName=ClusterName,
             ClusterSettings=ClusterSettings,
+            Configuration=Configuration,
             DefaultCapacityProviderStrategy=DefaultCapacityProviderStrategy,
             Tags=Tags,
             **kwargs
         )
         super(Cluster, self).__init__(**processed_kwargs)
+
+
+class CapacityProviderStrategy(troposphere.ecs.CapacityProviderStrategy, Mixin):
+    def __init__(self,
+                 title=None,
+                 CapacityProvider=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Base=NOTHING, # type: int
+                 Weight=NOTHING, # type: int
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            CapacityProvider=CapacityProvider,
+            Base=Base,
+            Weight=Weight,
+            **kwargs
+        )
+        super(CapacityProviderStrategy, self).__init__(**processed_kwargs)
+
+
+class ClusterCapacityProviderAssociations(troposphere.ecs.ClusterCapacityProviderAssociations, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 CapacityProviders=REQUIRED, # type: List[Union[str, AWSHelperFn]]
+                 Cluster=REQUIRED, # type: Union[str, AWSHelperFn]
+                 DefaultCapacityProviderStrategy=REQUIRED, # type: List[_CapacityProviderStrategy]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            CapacityProviders=CapacityProviders,
+            Cluster=Cluster,
+            DefaultCapacityProviderStrategy=DefaultCapacityProviderStrategy,
+            **kwargs
+        )
+        super(ClusterCapacityProviderAssociations, self).__init__(**processed_kwargs)
 
 
 class PrimaryTaskSet(troposphere.ecs.PrimaryTaskSet, Mixin):
@@ -214,14 +311,31 @@ class LoadBalancer(troposphere.ecs.LoadBalancer, Mixin):
         super(LoadBalancer, self).__init__(**processed_kwargs)
 
 
+class DeploymentCircuitBreaker(troposphere.ecs.DeploymentCircuitBreaker, Mixin):
+    def __init__(self,
+                 title=None,
+                 Enable=REQUIRED, # type: bool
+                 Rollback=REQUIRED, # type: bool
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Enable=Enable,
+            Rollback=Rollback,
+            **kwargs
+        )
+        super(DeploymentCircuitBreaker, self).__init__(**processed_kwargs)
+
+
 class DeploymentConfiguration(troposphere.ecs.DeploymentConfiguration, Mixin):
     def __init__(self,
                  title=None,
+                 DeploymentCircuitBreaker=NOTHING, # type: _DeploymentCircuitBreaker
                  MaximumPercent=NOTHING, # type: int
                  MinimumHealthyPercent=NOTHING, # type: int
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
+            DeploymentCircuitBreaker=DeploymentCircuitBreaker,
             MaximumPercent=MaximumPercent,
             MinimumHealthyPercent=MinimumHealthyPercent,
             **kwargs
@@ -333,6 +447,7 @@ class Service(troposphere.ecs.Service, Mixin):
                  DeploymentController=NOTHING, # type: _DeploymentController
                  DesiredCount=NOTHING, # type: int
                  EnableECSManagedTags=NOTHING, # type: bool
+                 EnableExecuteCommand=NOTHING, # type: bool
                  HealthCheckGracePeriodSeconds=NOTHING, # type: int
                  LaunchType=NOTHING, # type: Any
                  LoadBalancers=NOTHING, # type: List[_LoadBalancer]
@@ -358,6 +473,7 @@ class Service(troposphere.ecs.Service, Mixin):
             DeploymentController=DeploymentController,
             DesiredCount=DesiredCount,
             EnableECSManagedTags=EnableECSManagedTags,
+            EnableExecuteCommand=EnableExecuteCommand,
             HealthCheckGracePeriodSeconds=HealthCheckGracePeriodSeconds,
             LaunchType=LaunchType,
             LoadBalancers=LoadBalancers,
@@ -825,6 +941,7 @@ class EFSVolumeConfiguration(troposphere.ecs.EFSVolumeConfiguration, Mixin):
     def __init__(self,
                  title=None,
                  FilesystemId=REQUIRED, # type: Union[str, AWSHelperFn]
+                 AuthorizationConfig=NOTHING, # type: _AuthorizationConfig
                  RootDirectory=NOTHING, # type: Union[str, AWSHelperFn]
                  TransitEncryption=NOTHING, # type: Any
                  TransitEncryptionPort=NOTHING, # type: Any
@@ -832,6 +949,7 @@ class EFSVolumeConfiguration(troposphere.ecs.EFSVolumeConfiguration, Mixin):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             FilesystemId=FilesystemId,
+            AuthorizationConfig=AuthorizationConfig,
             RootDirectory=RootDirectory,
             TransitEncryption=TransitEncryption,
             TransitEncryptionPort=TransitEncryptionPort,

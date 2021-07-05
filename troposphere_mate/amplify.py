@@ -66,6 +66,7 @@ class AutoBranchCreationConfig(troposphere.amplify.AutoBranchCreationConfig, Mix
                  BuildSpec=NOTHING, # type: Union[str, AWSHelperFn]
                  EnableAutoBranchCreation=NOTHING, # type: bool
                  EnableAutoBuild=NOTHING, # type: bool
+                 EnablePerformanceMode=NOTHING, # type: bool
                  EnablePullRequestPreview=NOTHING, # type: bool
                  EnvironmentVariables=NOTHING, # type: List[_EnvironmentVariable]
                  PullRequestEnvironmentName=NOTHING, # type: Union[str, AWSHelperFn]
@@ -78,6 +79,7 @@ class AutoBranchCreationConfig(troposphere.amplify.AutoBranchCreationConfig, Mix
             BuildSpec=BuildSpec,
             EnableAutoBranchCreation=EnableAutoBranchCreation,
             EnableAutoBuild=EnableAutoBuild,
+            EnablePerformanceMode=EnablePerformanceMode,
             EnablePullRequestPreview=EnablePullRequestPreview,
             EnvironmentVariables=EnvironmentVariables,
             PullRequestEnvironmentName=PullRequestEnvironmentName,
@@ -116,6 +118,7 @@ class App(troposphere.amplify.App, Mixin):
                  AutoBranchCreationConfig=NOTHING, # type: _AutoBranchCreationConfig
                  BasicAuthConfig=NOTHING, # type: _BasicAuthConfig
                  BuildSpec=NOTHING, # type: Union[str, AWSHelperFn]
+                 CustomHeaders=NOTHING, # type: Union[str, AWSHelperFn]
                  CustomRules=NOTHING, # type: List[_CustomRule]
                  Description=NOTHING, # type: Union[str, AWSHelperFn]
                  EnableBranchAutoDeletion=NOTHING, # type: bool
@@ -134,6 +137,7 @@ class App(troposphere.amplify.App, Mixin):
             AutoBranchCreationConfig=AutoBranchCreationConfig,
             BasicAuthConfig=BasicAuthConfig,
             BuildSpec=BuildSpec,
+            CustomHeaders=CustomHeaders,
             CustomRules=CustomRules,
             Description=Description,
             EnableBranchAutoDeletion=EnableBranchAutoDeletion,
@@ -158,6 +162,7 @@ class Branch(troposphere.amplify.Branch, Mixin):
                  BuildSpec=NOTHING, # type: Union[str, AWSHelperFn]
                  Description=NOTHING, # type: Union[str, AWSHelperFn]
                  EnableAutoBuild=NOTHING, # type: bool
+                 EnablePerformanceMode=NOTHING, # type: bool
                  EnablePullRequestPreview=NOTHING, # type: bool
                  EnvironmentVariables=NOTHING, # type: List[_EnvironmentVariable]
                  PullRequestEnvironmentName=NOTHING, # type: Union[str, AWSHelperFn]
@@ -174,6 +179,7 @@ class Branch(troposphere.amplify.Branch, Mixin):
             BuildSpec=BuildSpec,
             Description=Description,
             EnableAutoBuild=EnableAutoBuild,
+            EnablePerformanceMode=EnablePerformanceMode,
             EnablePullRequestPreview=EnablePullRequestPreview,
             EnvironmentVariables=EnvironmentVariables,
             PullRequestEnvironmentName=PullRequestEnvironmentName,

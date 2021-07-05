@@ -16,6 +16,7 @@ from troposphere.backup import (
     BackupRuleResourceType as _BackupRuleResourceType,
     BackupSelectionResourceType as _BackupSelectionResourceType,
     ConditionResourceType as _ConditionResourceType,
+    CopyActionResourceType as _CopyActionResourceType,
     LifecycleResourceType as _LifecycleResourceType,
     NotificationObjectType as _NotificationObjectType,
 )
@@ -57,12 +58,28 @@ class LifecycleResourceType(troposphere.backup.LifecycleResourceType, Mixin):
         super(LifecycleResourceType, self).__init__(**processed_kwargs)
 
 
+class CopyActionResourceType(troposphere.backup.CopyActionResourceType, Mixin):
+    def __init__(self,
+                 title=None,
+                 DestinationBackupVaultArn=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Lifecycle=NOTHING, # type: _LifecycleResourceType
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            DestinationBackupVaultArn=DestinationBackupVaultArn,
+            Lifecycle=Lifecycle,
+            **kwargs
+        )
+        super(CopyActionResourceType, self).__init__(**processed_kwargs)
+
+
 class BackupRuleResourceType(troposphere.backup.BackupRuleResourceType, Mixin):
     def __init__(self,
                  title=None,
                  RuleName=REQUIRED, # type: Union[str, AWSHelperFn]
                  TargetBackupVault=REQUIRED, # type: Union[str, AWSHelperFn]
                  CompletionWindowMinutes=NOTHING, # type: float
+                 CopyActions=NOTHING, # type: List[_CopyActionResourceType]
                  Lifecycle=NOTHING, # type: _LifecycleResourceType
                  RecoveryPointTags=NOTHING, # type: dict
                  ScheduleExpression=NOTHING, # type: Union[str, AWSHelperFn]
@@ -73,6 +90,7 @@ class BackupRuleResourceType(troposphere.backup.BackupRuleResourceType, Mixin):
             RuleName=RuleName,
             TargetBackupVault=TargetBackupVault,
             CompletionWindowMinutes=CompletionWindowMinutes,
+            CopyActions=CopyActions,
             Lifecycle=Lifecycle,
             RecoveryPointTags=RecoveryPointTags,
             ScheduleExpression=ScheduleExpression,

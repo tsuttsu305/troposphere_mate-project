@@ -15,6 +15,7 @@ from troposphere.emr import (
     AutoScalingPolicy as _AutoScalingPolicy,
     BootstrapActionConfig as _BootstrapActionConfig,
     CloudWatchAlarmDefinition as _CloudWatchAlarmDefinition,
+    ComputeLimits as _ComputeLimits,
     Configuration as _Configuration,
     EbsBlockDeviceConfigs as _EbsBlockDeviceConfigs,
     EbsConfiguration as _EbsConfiguration,
@@ -26,6 +27,8 @@ from troposphere.emr import (
     JobFlowInstancesConfig as _JobFlowInstancesConfig,
     KerberosAttributes as _KerberosAttributes,
     KeyValue as _KeyValue,
+    ManagedScalingPolicy as _ManagedScalingPolicy,
+    OnDemandProvisioningSpecification as _OnDemandProvisioningSpecification,
     PlacementType as _PlacementType,
     ScalingAction as _ScalingAction,
     ScalingConstraints as _ScalingConstraints,
@@ -343,17 +346,32 @@ class InstanceGroupConfigProperty(troposphere.emr.InstanceGroupConfigProperty, M
         super(InstanceGroupConfigProperty, self).__init__(**processed_kwargs)
 
 
+class OnDemandProvisioningSpecification(troposphere.emr.OnDemandProvisioningSpecification, Mixin):
+    def __init__(self,
+                 title=None,
+                 AllocationStrategy=REQUIRED, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            AllocationStrategy=AllocationStrategy,
+            **kwargs
+        )
+        super(OnDemandProvisioningSpecification, self).__init__(**processed_kwargs)
+
+
 class SpotProvisioningSpecification(troposphere.emr.SpotProvisioningSpecification, Mixin):
     def __init__(self,
                  title=None,
                  TimeoutAction=REQUIRED, # type: Union[str, AWSHelperFn]
                  TimeoutDurationMinutes=REQUIRED, # type: int
+                 AllocationStrategy=NOTHING, # type: Union[str, AWSHelperFn]
                  BlockDurationMinutes=NOTHING, # type: int
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             TimeoutAction=TimeoutAction,
             TimeoutDurationMinutes=TimeoutDurationMinutes,
+            AllocationStrategy=AllocationStrategy,
             BlockDurationMinutes=BlockDurationMinutes,
             **kwargs
         )
@@ -363,10 +381,12 @@ class SpotProvisioningSpecification(troposphere.emr.SpotProvisioningSpecificatio
 class InstanceFleetProvisioningSpecifications(troposphere.emr.InstanceFleetProvisioningSpecifications, Mixin):
     def __init__(self,
                  title=None,
-                 SpotSpecification=REQUIRED, # type: _SpotProvisioningSpecification
+                 OnDemandSpecification=NOTHING, # type: _OnDemandProvisioningSpecification
+                 SpotSpecification=NOTHING, # type: _SpotProvisioningSpecification
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
+            OnDemandSpecification=OnDemandSpecification,
             SpotSpecification=SpotSpecification,
             **kwargs
         )
@@ -494,6 +514,40 @@ class KerberosAttributes(troposphere.emr.KerberosAttributes, Mixin):
         super(KerberosAttributes, self).__init__(**processed_kwargs)
 
 
+class ComputeLimits(troposphere.emr.ComputeLimits, Mixin):
+    def __init__(self,
+                 title=None,
+                 MaximumCapacityUnits=REQUIRED, # type: int
+                 MinimumCapacityUnits=REQUIRED, # type: int
+                 UnitType=REQUIRED, # type: Union[str, AWSHelperFn]
+                 MaximumCoreCapacityUnits=NOTHING, # type: int
+                 MaximumOnDemandCapacityUnits=NOTHING, # type: int
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            MaximumCapacityUnits=MaximumCapacityUnits,
+            MinimumCapacityUnits=MinimumCapacityUnits,
+            UnitType=UnitType,
+            MaximumCoreCapacityUnits=MaximumCoreCapacityUnits,
+            MaximumOnDemandCapacityUnits=MaximumOnDemandCapacityUnits,
+            **kwargs
+        )
+        super(ComputeLimits, self).__init__(**processed_kwargs)
+
+
+class ManagedScalingPolicy(troposphere.emr.ManagedScalingPolicy, Mixin):
+    def __init__(self,
+                 title=None,
+                 ComputeLimits=NOTHING, # type: _ComputeLimits
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            ComputeLimits=ComputeLimits,
+            **kwargs
+        )
+        super(ManagedScalingPolicy, self).__init__(**processed_kwargs)
+
+
 class HadoopJarStepConfig(troposphere.emr.HadoopJarStepConfig, Mixin):
     def __init__(self,
                  title=None,
@@ -547,10 +601,13 @@ class Cluster(troposphere.emr.Cluster, Mixin):
                  CustomAmiId=NOTHING, # type: Union[str, AWSHelperFn]
                  EbsRootVolumeSize=NOTHING, # type: int
                  KerberosAttributes=NOTHING, # type: _KerberosAttributes
+                 LogEncryptionKmsKeyId=NOTHING, # type: Union[str, AWSHelperFn]
                  LogUri=NOTHING, # type: Union[str, AWSHelperFn]
+                 ManagedScalingPolicy=NOTHING, # type: _ManagedScalingPolicy
                  ReleaseLabel=NOTHING, # type: Union[str, AWSHelperFn]
                  ScaleDownBehavior=NOTHING, # type: Union[str, AWSHelperFn]
                  SecurityConfiguration=NOTHING, # type: Union[str, AWSHelperFn]
+                 StepConcurrencyLevel=NOTHING, # type: int
                  Steps=NOTHING, # type: List[_StepConfig]
                  Tags=NOTHING, # type: Union[_Tags, list]
                  VisibleToAllUsers=NOTHING, # type: bool
@@ -571,10 +628,13 @@ class Cluster(troposphere.emr.Cluster, Mixin):
             CustomAmiId=CustomAmiId,
             EbsRootVolumeSize=EbsRootVolumeSize,
             KerberosAttributes=KerberosAttributes,
+            LogEncryptionKmsKeyId=LogEncryptionKmsKeyId,
             LogUri=LogUri,
+            ManagedScalingPolicy=ManagedScalingPolicy,
             ReleaseLabel=ReleaseLabel,
             ScaleDownBehavior=ScaleDownBehavior,
             SecurityConfiguration=SecurityConfiguration,
+            StepConcurrencyLevel=StepConcurrencyLevel,
             Steps=Steps,
             Tags=Tags,
             VisibleToAllUsers=VisibleToAllUsers,
@@ -668,3 +728,63 @@ class Step(troposphere.emr.Step, Mixin):
             **kwargs
         )
         super(Step, self).__init__(**processed_kwargs)
+
+
+class Studio(troposphere.emr.Studio, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 AuthMode=REQUIRED, # type: Union[str, AWSHelperFn]
+                 DefaultS3Location=REQUIRED, # type: Union[str, AWSHelperFn]
+                 EngineSecurityGroupId=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Name=REQUIRED, # type: Union[str, AWSHelperFn]
+                 ServiceRole=REQUIRED, # type: Union[str, AWSHelperFn]
+                 SubnetIds=REQUIRED, # type: List[Union[str, AWSHelperFn]]
+                 UserRole=REQUIRED, # type: Union[str, AWSHelperFn]
+                 VpcId=REQUIRED, # type: Union[str, AWSHelperFn]
+                 WorkspaceSecurityGroupId=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Description=NOTHING, # type: Union[str, AWSHelperFn]
+                 Tags=NOTHING, # type: _Tags
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            AuthMode=AuthMode,
+            DefaultS3Location=DefaultS3Location,
+            EngineSecurityGroupId=EngineSecurityGroupId,
+            Name=Name,
+            ServiceRole=ServiceRole,
+            SubnetIds=SubnetIds,
+            UserRole=UserRole,
+            VpcId=VpcId,
+            WorkspaceSecurityGroupId=WorkspaceSecurityGroupId,
+            Description=Description,
+            Tags=Tags,
+            **kwargs
+        )
+        super(Studio, self).__init__(**processed_kwargs)
+
+
+class StudioSessionMapping(troposphere.emr.StudioSessionMapping, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 IdentityName=REQUIRED, # type: Union[str, AWSHelperFn]
+                 IdentityType=REQUIRED, # type: Union[str, AWSHelperFn]
+                 SessionPolicyArn=REQUIRED, # type: Union[str, AWSHelperFn]
+                 StudioId=REQUIRED, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            IdentityName=IdentityName,
+            IdentityType=IdentityType,
+            SessionPolicyArn=SessionPolicyArn,
+            StudioId=StudioId,
+            **kwargs
+        )
+        super(StudioSessionMapping, self).__init__(**processed_kwargs)

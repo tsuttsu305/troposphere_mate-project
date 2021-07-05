@@ -12,15 +12,21 @@ import troposphere.awslambda
 
 from troposphere.awslambda import (
     AliasRoutingConfiguration as _AliasRoutingConfiguration,
+    AllowedPublishers as _AllowedPublishers,
     Code as _Code,
+    CodeSigningPolicies as _CodeSigningPolicies,
     Content as _Content,
     DeadLetterConfig as _DeadLetterConfig,
     DestinationConfig as _DestinationConfig,
+    Endpoints as _Endpoints,
     Environment as _Environment,
     FileSystemConfig as _FileSystemConfig,
+    ImageConfig as _ImageConfig,
     OnFailure as _OnFailure,
     OnSuccess as _OnSuccess,
     ProvisionedConcurrencyConfiguration as _ProvisionedConcurrencyConfiguration,
+    SelfManagedEventSource as _SelfManagedEventSource,
+    SourceAccessConfiguration as _SourceAccessConfiguration,
     Tags as _Tags,
     TracingConfig as _TracingConfig,
     VPCConfig as _VPCConfig,
@@ -37,6 +43,7 @@ from troposphere_mate.core.sentiel import REQUIRED, NOTHING
 class Code(troposphere.awslambda.Code, Mixin):
     def __init__(self,
                  title=None,
+                 ImageUri=NOTHING, # type: Union[str, AWSHelperFn]
                  S3Bucket=NOTHING, # type: Union[str, AWSHelperFn]
                  S3Key=NOTHING, # type: Union[str, AWSHelperFn]
                  S3ObjectVersion=NOTHING, # type: Union[str, AWSHelperFn]
@@ -44,6 +51,7 @@ class Code(troposphere.awslambda.Code, Mixin):
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
+            ImageUri=ImageUri,
             S3Bucket=S3Bucket,
             S3Key=S3Key,
             S3ObjectVersion=S3ObjectVersion,
@@ -51,6 +59,23 @@ class Code(troposphere.awslambda.Code, Mixin):
             **kwargs
         )
         super(Code, self).__init__(**processed_kwargs)
+
+
+class ImageConfig(troposphere.awslambda.ImageConfig, Mixin):
+    def __init__(self,
+                 title=None,
+                 Command=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 EntryPoint=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 WorkingDirectory=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Command=Command,
+            EntryPoint=EntryPoint,
+            WorkingDirectory=WorkingDirectory,
+            **kwargs
+        )
+        super(ImageConfig, self).__init__(**processed_kwargs)
 
 
 class VPCConfig(troposphere.awslambda.VPCConfig, Mixin):
@@ -134,40 +159,93 @@ class EventInvokeConfig(troposphere.awslambda.EventInvokeConfig, Mixin):
         super(EventInvokeConfig, self).__init__(**processed_kwargs)
 
 
+class Endpoints(troposphere.awslambda.Endpoints, Mixin):
+    def __init__(self,
+                 title=None,
+                 KafkaBootstrapServers=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            KafkaBootstrapServers=KafkaBootstrapServers,
+            **kwargs
+        )
+        super(Endpoints, self).__init__(**processed_kwargs)
+
+
+class SelfManagedEventSource(troposphere.awslambda.SelfManagedEventSource, Mixin):
+    def __init__(self,
+                 title=None,
+                 Endpoints=NOTHING, # type: _Endpoints
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Endpoints=Endpoints,
+            **kwargs
+        )
+        super(SelfManagedEventSource, self).__init__(**processed_kwargs)
+
+
+class SourceAccessConfiguration(troposphere.awslambda.SourceAccessConfiguration, Mixin):
+    def __init__(self,
+                 title=None,
+                 Type=NOTHING, # type: Union[str, AWSHelperFn]
+                 URI=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Type=Type,
+            URI=URI,
+            **kwargs
+        )
+        super(SourceAccessConfiguration, self).__init__(**processed_kwargs)
+
+
 class EventSourceMapping(troposphere.awslambda.EventSourceMapping, Mixin):
     def __init__(self,
                  title, # type: str
                  template=None, # type: Template
                  validation=True, # type: bool
-                 EventSourceArn=REQUIRED, # type: Union[str, AWSHelperFn]
                  FunctionName=REQUIRED, # type: Union[str, AWSHelperFn]
                  BatchSize=NOTHING, # type: int
                  BisectBatchOnFunctionError=NOTHING, # type: bool
                  DestinationConfig=NOTHING, # type: _DestinationConfig
                  Enabled=NOTHING, # type: bool
+                 EventSourceArn=NOTHING, # type: Union[str, AWSHelperFn]
+                 FunctionResponseTypes=NOTHING, # type: List[Union[str, AWSHelperFn]]
                  MaximumBatchingWindowInSeconds=NOTHING, # type: int
                  MaximumRecordAgeInSeconds=NOTHING, # type: int
                  MaximumRetryAttempts=NOTHING, # type: int
                  ParallelizationFactor=NOTHING, # type: int
+                 PartialBatchResponse=NOTHING, # type: bool
+                 Queues=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 SelfManagedEventSource=NOTHING, # type: _SelfManagedEventSource
+                 SourceAccessConfigurations=NOTHING, # type: List[_SourceAccessConfiguration]
                  StartingPosition=NOTHING, # type: Union[str, AWSHelperFn]
                  Topics=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 TumblingWindowInSeconds=NOTHING, # type: int
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             template=template,
             validation=validation,
-            EventSourceArn=EventSourceArn,
             FunctionName=FunctionName,
             BatchSize=BatchSize,
             BisectBatchOnFunctionError=BisectBatchOnFunctionError,
             DestinationConfig=DestinationConfig,
             Enabled=Enabled,
+            EventSourceArn=EventSourceArn,
+            FunctionResponseTypes=FunctionResponseTypes,
             MaximumBatchingWindowInSeconds=MaximumBatchingWindowInSeconds,
             MaximumRecordAgeInSeconds=MaximumRecordAgeInSeconds,
             MaximumRetryAttempts=MaximumRetryAttempts,
             ParallelizationFactor=ParallelizationFactor,
+            PartialBatchResponse=PartialBatchResponse,
+            Queues=Queues,
+            SelfManagedEventSource=SelfManagedEventSource,
+            SourceAccessConfigurations=SourceAccessConfigurations,
             StartingPosition=StartingPosition,
             Topics=Topics,
+            TumblingWindowInSeconds=TumblingWindowInSeconds,
             **kwargs
         )
         super(EventSourceMapping, self).__init__(**processed_kwargs)
@@ -233,18 +311,20 @@ class Function(troposphere.awslambda.Function, Mixin):
                  template=None, # type: Template
                  validation=True, # type: bool
                  Code=REQUIRED, # type: _Code
-                 Handler=REQUIRED, # type: Union[str, AWSHelperFn]
                  Role=REQUIRED, # type: Union[str, AWSHelperFn]
-                 Runtime=REQUIRED, # type: Union[str, AWSHelperFn]
                  Description=NOTHING, # type: Union[str, AWSHelperFn]
                  DeadLetterConfig=NOTHING, # type: _DeadLetterConfig
                  Environment=NOTHING, # type: _Environment
                  FileSystemConfigs=NOTHING, # type: List[_FileSystemConfig]
                  FunctionName=NOTHING, # type: Union[str, AWSHelperFn]
+                 Handler=NOTHING, # type: Union[str, AWSHelperFn]
+                 ImageConfig=NOTHING, # type: _ImageConfig
                  KmsKeyArn=NOTHING, # type: Union[str, AWSHelperFn]
                  MemorySize=NOTHING, # type: Any
                  Layers=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 PackageType=NOTHING, # type: Any
                  ReservedConcurrentExecutions=NOTHING, # type: int
+                 Runtime=NOTHING, # type: Union[str, AWSHelperFn]
                  Tags=NOTHING, # type: _Tags
                  Timeout=NOTHING, # type: int
                  TracingConfig=NOTHING, # type: _TracingConfig
@@ -255,18 +335,20 @@ class Function(troposphere.awslambda.Function, Mixin):
             template=template,
             validation=validation,
             Code=Code,
-            Handler=Handler,
             Role=Role,
-            Runtime=Runtime,
             Description=Description,
             DeadLetterConfig=DeadLetterConfig,
             Environment=Environment,
             FileSystemConfigs=FileSystemConfigs,
             FunctionName=FunctionName,
+            Handler=Handler,
+            ImageConfig=ImageConfig,
             KmsKeyArn=KmsKeyArn,
             MemorySize=MemorySize,
             Layers=Layers,
+            PackageType=PackageType,
             ReservedConcurrentExecutions=ReservedConcurrentExecutions,
+            Runtime=Runtime,
             Tags=Tags,
             Timeout=Timeout,
             TracingConfig=TracingConfig,
@@ -369,6 +451,53 @@ class Alias(troposphere.awslambda.Alias, Mixin):
             **kwargs
         )
         super(Alias, self).__init__(**processed_kwargs)
+
+
+class AllowedPublishers(troposphere.awslambda.AllowedPublishers, Mixin):
+    def __init__(self,
+                 title=None,
+                 SigningProfileVersionArns=REQUIRED, # type: List[Union[str, AWSHelperFn]]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            SigningProfileVersionArns=SigningProfileVersionArns,
+            **kwargs
+        )
+        super(AllowedPublishers, self).__init__(**processed_kwargs)
+
+
+class CodeSigningPolicies(troposphere.awslambda.CodeSigningPolicies, Mixin):
+    def __init__(self,
+                 title=None,
+                 UntrustedArtifactOnDeployment=REQUIRED, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            UntrustedArtifactOnDeployment=UntrustedArtifactOnDeployment,
+            **kwargs
+        )
+        super(CodeSigningPolicies, self).__init__(**processed_kwargs)
+
+
+class CodeSigningConfig(troposphere.awslambda.CodeSigningConfig, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 AllowedPublishers=REQUIRED, # type: _AllowedPublishers
+                 CodeSigningPolicies=NOTHING, # type: _CodeSigningPolicies
+                 Description=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            AllowedPublishers=AllowedPublishers,
+            CodeSigningPolicies=CodeSigningPolicies,
+            Description=Description,
+            **kwargs
+        )
+        super(CodeSigningConfig, self).__init__(**processed_kwargs)
 
 
 class Version(troposphere.awslambda.Version, Mixin):

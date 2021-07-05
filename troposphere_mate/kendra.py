@@ -16,6 +16,20 @@ from troposphere.kendra import (
     CapacityUnitsConfiguration as _CapacityUnitsConfiguration,
     ChangeDetectingColumns as _ChangeDetectingColumns,
     ColumnConfiguration as _ColumnConfiguration,
+    ConfluenceAttachmentConfiguration as _ConfluenceAttachmentConfiguration,
+    ConfluenceAttachmentFieldMappingsList as _ConfluenceAttachmentFieldMappingsList,
+    ConfluenceAttachmentToIndexFieldMapping as _ConfluenceAttachmentToIndexFieldMapping,
+    ConfluenceBlogConfiguration as _ConfluenceBlogConfiguration,
+    ConfluenceBlogFieldMappingsList as _ConfluenceBlogFieldMappingsList,
+    ConfluenceBlogToIndexFieldMapping as _ConfluenceBlogToIndexFieldMapping,
+    ConfluenceConfiguration as _ConfluenceConfiguration,
+    ConfluencePageConfiguration as _ConfluencePageConfiguration,
+    ConfluencePageFieldMappingsList as _ConfluencePageFieldMappingsList,
+    ConfluencePageToIndexFieldMapping as _ConfluencePageToIndexFieldMapping,
+    ConfluenceSpaceConfiguration as _ConfluenceSpaceConfiguration,
+    ConfluenceSpaceFieldMappingsList as _ConfluenceSpaceFieldMappingsList,
+    ConfluenceSpaceList as _ConfluenceSpaceList,
+    ConfluenceSpaceToIndexFieldMapping as _ConfluenceSpaceToIndexFieldMapping,
     ConnectionConfiguration as _ConnectionConfiguration,
     DataSourceConfiguration as _DataSourceConfiguration,
     DataSourceInclusionsExclusionsStrings as _DataSourceInclusionsExclusionsStrings,
@@ -24,8 +38,13 @@ from troposphere.kendra import (
     DataSourceVpcConfiguration as _DataSourceVpcConfiguration,
     DatabaseConfiguration as _DatabaseConfiguration,
     DocumentMetadataConfiguration as _DocumentMetadataConfiguration,
-    DocumentMetadataConfigurationList as _DocumentMetadataConfigurationList,
     DocumentsMetadataConfiguration as _DocumentsMetadataConfiguration,
+    ExcludeMimeTypesList as _ExcludeMimeTypesList,
+    ExcludeSharedDrivesList as _ExcludeSharedDrivesList,
+    ExcludeUserAccountsList as _ExcludeUserAccountsList,
+    GoogleDriveConfiguration as _GoogleDriveConfiguration,
+    JsonTokenTypeConfiguration as _JsonTokenTypeConfiguration,
+    JwtTokenTypeConfiguration as _JwtTokenTypeConfiguration,
     OneDriveConfiguration as _OneDriveConfiguration,
     OneDriveUserList as _OneDriveUserList,
     OneDriveUsers as _OneDriveUsers,
@@ -51,6 +70,7 @@ from troposphere.kendra import (
     SharePointConfiguration as _SharePointConfiguration,
     SqlConfiguration as _SqlConfiguration,
     Tags as _Tags,
+    UserTokenConfiguration as _UserTokenConfiguration,
     ValueImportanceItem as _ValueImportanceItem,
     ValueImportanceItems as _ValueImportanceItems,
 )
@@ -60,6 +80,260 @@ from troposphere import Template, AWSHelperFn
 from troposphere_mate.core.mate import preprocess_init_kwargs, Mixin
 from troposphere_mate.core.sentiel import REQUIRED, NOTHING
 
+
+
+class ConfluenceAttachmentToIndexFieldMapping(troposphere.kendra.ConfluenceAttachmentToIndexFieldMapping, Mixin):
+    def __init__(self,
+                 title=None,
+                 DataSourceFieldName=REQUIRED, # type: Union[str, AWSHelperFn]
+                 IndexFieldName=REQUIRED, # type: Union[str, AWSHelperFn]
+                 DateFieldFormat=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            DataSourceFieldName=DataSourceFieldName,
+            IndexFieldName=IndexFieldName,
+            DateFieldFormat=DateFieldFormat,
+            **kwargs
+        )
+        super(ConfluenceAttachmentToIndexFieldMapping, self).__init__(**processed_kwargs)
+
+
+class ConfluenceAttachmentFieldMappingsList(troposphere.kendra.ConfluenceAttachmentFieldMappingsList, Mixin):
+    def __init__(self,
+                 title=None,
+                 ConfluenceAttachmentFieldMappingsList=NOTHING, # type: List[_ConfluenceAttachmentToIndexFieldMapping]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            ConfluenceAttachmentFieldMappingsList=ConfluenceAttachmentFieldMappingsList,
+            **kwargs
+        )
+        super(ConfluenceAttachmentFieldMappingsList, self).__init__(**processed_kwargs)
+
+
+class ConfluenceAttachmentConfiguration(troposphere.kendra.ConfluenceAttachmentConfiguration, Mixin):
+    def __init__(self,
+                 title=None,
+                 AttachmentFieldMappings=NOTHING, # type: _ConfluenceAttachmentFieldMappingsList
+                 CrawlAttachments=NOTHING, # type: bool
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            AttachmentFieldMappings=AttachmentFieldMappings,
+            CrawlAttachments=CrawlAttachments,
+            **kwargs
+        )
+        super(ConfluenceAttachmentConfiguration, self).__init__(**processed_kwargs)
+
+
+class ConfluenceBlogToIndexFieldMapping(troposphere.kendra.ConfluenceBlogToIndexFieldMapping, Mixin):
+    def __init__(self,
+                 title=None,
+                 DataSourceFieldName=REQUIRED, # type: Union[str, AWSHelperFn]
+                 IndexFieldName=REQUIRED, # type: Union[str, AWSHelperFn]
+                 DateFieldFormat=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            DataSourceFieldName=DataSourceFieldName,
+            IndexFieldName=IndexFieldName,
+            DateFieldFormat=DateFieldFormat,
+            **kwargs
+        )
+        super(ConfluenceBlogToIndexFieldMapping, self).__init__(**processed_kwargs)
+
+
+class ConfluenceBlogFieldMappingsList(troposphere.kendra.ConfluenceBlogFieldMappingsList, Mixin):
+    def __init__(self,
+                 title=None,
+                 ConfluenceBlogFieldMappingsList=NOTHING, # type: List[_ConfluenceBlogToIndexFieldMapping]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            ConfluenceBlogFieldMappingsList=ConfluenceBlogFieldMappingsList,
+            **kwargs
+        )
+        super(ConfluenceBlogFieldMappingsList, self).__init__(**processed_kwargs)
+
+
+class ConfluenceBlogConfiguration(troposphere.kendra.ConfluenceBlogConfiguration, Mixin):
+    def __init__(self,
+                 title=None,
+                 BlogFieldMappings=NOTHING, # type: _ConfluenceBlogFieldMappingsList
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            BlogFieldMappings=BlogFieldMappings,
+            **kwargs
+        )
+        super(ConfluenceBlogConfiguration, self).__init__(**processed_kwargs)
+
+
+class ConfluencePageToIndexFieldMapping(troposphere.kendra.ConfluencePageToIndexFieldMapping, Mixin):
+    def __init__(self,
+                 title=None,
+                 DataSourceFieldName=REQUIRED, # type: Union[str, AWSHelperFn]
+                 IndexFieldName=REQUIRED, # type: Union[str, AWSHelperFn]
+                 DateFieldFormat=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            DataSourceFieldName=DataSourceFieldName,
+            IndexFieldName=IndexFieldName,
+            DateFieldFormat=DateFieldFormat,
+            **kwargs
+        )
+        super(ConfluencePageToIndexFieldMapping, self).__init__(**processed_kwargs)
+
+
+class ConfluencePageFieldMappingsList(troposphere.kendra.ConfluencePageFieldMappingsList, Mixin):
+    def __init__(self,
+                 title=None,
+                 ConfluencePageFieldMappingsList=NOTHING, # type: List[_ConfluencePageToIndexFieldMapping]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            ConfluencePageFieldMappingsList=ConfluencePageFieldMappingsList,
+            **kwargs
+        )
+        super(ConfluencePageFieldMappingsList, self).__init__(**processed_kwargs)
+
+
+class ConfluencePageConfiguration(troposphere.kendra.ConfluencePageConfiguration, Mixin):
+    def __init__(self,
+                 title=None,
+                 PageFieldMappings=NOTHING, # type: _ConfluencePageFieldMappingsList
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            PageFieldMappings=PageFieldMappings,
+            **kwargs
+        )
+        super(ConfluencePageConfiguration, self).__init__(**processed_kwargs)
+
+
+class ConfluenceSpaceToIndexFieldMapping(troposphere.kendra.ConfluenceSpaceToIndexFieldMapping, Mixin):
+    def __init__(self,
+                 title=None,
+                 DataSourceFieldName=REQUIRED, # type: Union[str, AWSHelperFn]
+                 IndexFieldName=REQUIRED, # type: Union[str, AWSHelperFn]
+                 DateFieldFormat=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            DataSourceFieldName=DataSourceFieldName,
+            IndexFieldName=IndexFieldName,
+            DateFieldFormat=DateFieldFormat,
+            **kwargs
+        )
+        super(ConfluenceSpaceToIndexFieldMapping, self).__init__(**processed_kwargs)
+
+
+class ConfluenceSpaceFieldMappingsList(troposphere.kendra.ConfluenceSpaceFieldMappingsList, Mixin):
+    def __init__(self,
+                 title=None,
+                 ConfluenceSpaceFieldMappingsList=NOTHING, # type: List[_ConfluenceSpaceToIndexFieldMapping]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            ConfluenceSpaceFieldMappingsList=ConfluenceSpaceFieldMappingsList,
+            **kwargs
+        )
+        super(ConfluenceSpaceFieldMappingsList, self).__init__(**processed_kwargs)
+
+
+class ConfluenceSpaceList(troposphere.kendra.ConfluenceSpaceList, Mixin):
+    def __init__(self,
+                 title=None,
+                 ConfluenceSpaceList=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            ConfluenceSpaceList=ConfluenceSpaceList,
+            **kwargs
+        )
+        super(ConfluenceSpaceList, self).__init__(**processed_kwargs)
+
+
+class ConfluenceSpaceConfiguration(troposphere.kendra.ConfluenceSpaceConfiguration, Mixin):
+    def __init__(self,
+                 title=None,
+                 CrawlArchivedSpaces=NOTHING, # type: bool
+                 CrawlPersonalSpaces=NOTHING, # type: bool
+                 ExcludeSpaces=NOTHING, # type: _ConfluenceSpaceList
+                 IncludeSpaces=NOTHING, # type: _ConfluenceSpaceList
+                 SpaceFieldMappings=NOTHING, # type: _ConfluenceSpaceFieldMappingsList
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            CrawlArchivedSpaces=CrawlArchivedSpaces,
+            CrawlPersonalSpaces=CrawlPersonalSpaces,
+            ExcludeSpaces=ExcludeSpaces,
+            IncludeSpaces=IncludeSpaces,
+            SpaceFieldMappings=SpaceFieldMappings,
+            **kwargs
+        )
+        super(ConfluenceSpaceConfiguration, self).__init__(**processed_kwargs)
+
+
+class DataSourceInclusionsExclusionsStrings(troposphere.kendra.DataSourceInclusionsExclusionsStrings, Mixin):
+    def __init__(self,
+                 title=None,
+                 DataSourceInclusionsExclusionsStrings=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            DataSourceInclusionsExclusionsStrings=DataSourceInclusionsExclusionsStrings,
+            **kwargs
+        )
+        super(DataSourceInclusionsExclusionsStrings, self).__init__(**processed_kwargs)
+
+
+class DataSourceVpcConfiguration(troposphere.kendra.DataSourceVpcConfiguration, Mixin):
+    def __init__(self,
+                 title=None,
+                 SecurityGroupIds=REQUIRED, # type: List[Union[str, AWSHelperFn]]
+                 SubnetIds=REQUIRED, # type: List[Union[str, AWSHelperFn]]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            SecurityGroupIds=SecurityGroupIds,
+            SubnetIds=SubnetIds,
+            **kwargs
+        )
+        super(DataSourceVpcConfiguration, self).__init__(**processed_kwargs)
+
+
+class ConfluenceConfiguration(troposphere.kendra.ConfluenceConfiguration, Mixin):
+    def __init__(self,
+                 title=None,
+                 SecretArn=REQUIRED, # type: Union[str, AWSHelperFn]
+                 ServerUrl=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Version=REQUIRED, # type: Union[str, AWSHelperFn]
+                 AttachmentConfiguration=NOTHING, # type: _ConfluenceAttachmentConfiguration
+                 BlogConfiguration=NOTHING, # type: _ConfluenceBlogConfiguration
+                 ExclusionPatterns=NOTHING, # type: _DataSourceInclusionsExclusionsStrings
+                 InclusionPatterns=NOTHING, # type: _DataSourceInclusionsExclusionsStrings
+                 PageConfiguration=NOTHING, # type: _ConfluencePageConfiguration
+                 SpaceConfiguration=NOTHING, # type: _ConfluenceSpaceConfiguration
+                 VpcConfiguration=NOTHING, # type: _DataSourceVpcConfiguration
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            SecretArn=SecretArn,
+            ServerUrl=ServerUrl,
+            Version=Version,
+            AttachmentConfiguration=AttachmentConfiguration,
+            BlogConfiguration=BlogConfiguration,
+            ExclusionPatterns=ExclusionPatterns,
+            InclusionPatterns=InclusionPatterns,
+            PageConfiguration=PageConfiguration,
+            SpaceConfiguration=SpaceConfiguration,
+            VpcConfiguration=VpcConfiguration,
+            **kwargs
+        )
+        super(ConfluenceConfiguration, self).__init__(**processed_kwargs)
 
 
 class AclConfiguration(troposphere.kendra.AclConfiguration, Mixin):
@@ -160,21 +434,6 @@ class ConnectionConfiguration(troposphere.kendra.ConnectionConfiguration, Mixin)
         super(ConnectionConfiguration, self).__init__(**processed_kwargs)
 
 
-class DataSourceVpcConfiguration(troposphere.kendra.DataSourceVpcConfiguration, Mixin):
-    def __init__(self,
-                 title=None,
-                 SecurityGroupIds=REQUIRED, # type: List[Union[str, AWSHelperFn]]
-                 SubnetIds=REQUIRED, # type: List[Union[str, AWSHelperFn]]
-                 **kwargs):
-        processed_kwargs = preprocess_init_kwargs(
-            title=title,
-            SecurityGroupIds=SecurityGroupIds,
-            SubnetIds=SubnetIds,
-            **kwargs
-        )
-        super(DataSourceVpcConfiguration, self).__init__(**processed_kwargs)
-
-
 class SqlConfiguration(troposphere.kendra.SqlConfiguration, Mixin):
     def __init__(self,
                  title=None,
@@ -211,17 +470,68 @@ class DatabaseConfiguration(troposphere.kendra.DatabaseConfiguration, Mixin):
         super(DatabaseConfiguration, self).__init__(**processed_kwargs)
 
 
-class DataSourceInclusionsExclusionsStrings(troposphere.kendra.DataSourceInclusionsExclusionsStrings, Mixin):
+class ExcludeMimeTypesList(troposphere.kendra.ExcludeMimeTypesList, Mixin):
     def __init__(self,
                  title=None,
-                 DataSourceInclusionsExclusionsStrings=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 ExcludeMimeTypesList=NOTHING, # type: List[Union[str, AWSHelperFn]]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
-            DataSourceInclusionsExclusionsStrings=DataSourceInclusionsExclusionsStrings,
+            ExcludeMimeTypesList=ExcludeMimeTypesList,
             **kwargs
         )
-        super(DataSourceInclusionsExclusionsStrings, self).__init__(**processed_kwargs)
+        super(ExcludeMimeTypesList, self).__init__(**processed_kwargs)
+
+
+class ExcludeSharedDrivesList(troposphere.kendra.ExcludeSharedDrivesList, Mixin):
+    def __init__(self,
+                 title=None,
+                 ExcludeSharedDrivesList=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            ExcludeSharedDrivesList=ExcludeSharedDrivesList,
+            **kwargs
+        )
+        super(ExcludeSharedDrivesList, self).__init__(**processed_kwargs)
+
+
+class ExcludeUserAccountsList(troposphere.kendra.ExcludeUserAccountsList, Mixin):
+    def __init__(self,
+                 title=None,
+                 ExcludeUserAccountsList=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            ExcludeUserAccountsList=ExcludeUserAccountsList,
+            **kwargs
+        )
+        super(ExcludeUserAccountsList, self).__init__(**processed_kwargs)
+
+
+class GoogleDriveConfiguration(troposphere.kendra.GoogleDriveConfiguration, Mixin):
+    def __init__(self,
+                 title=None,
+                 SecretArn=REQUIRED, # type: Union[str, AWSHelperFn]
+                 ExcludeMimeTypes=NOTHING, # type: _ExcludeMimeTypesList
+                 ExcludeSharedDrives=NOTHING, # type: _ExcludeSharedDrivesList
+                 ExcludeUserAccounts=NOTHING, # type: _ExcludeUserAccountsList
+                 ExclusionPatterns=NOTHING, # type: _DataSourceInclusionsExclusionsStrings
+                 FieldMappings=NOTHING, # type: _DataSourceToIndexFieldMappingList
+                 InclusionPatterns=NOTHING, # type: _DataSourceInclusionsExclusionsStrings
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            SecretArn=SecretArn,
+            ExcludeMimeTypes=ExcludeMimeTypes,
+            ExcludeSharedDrives=ExcludeSharedDrives,
+            ExcludeUserAccounts=ExcludeUserAccounts,
+            ExclusionPatterns=ExclusionPatterns,
+            FieldMappings=FieldMappings,
+            InclusionPatterns=InclusionPatterns,
+            **kwargs
+        )
+        super(GoogleDriveConfiguration, self).__init__(**processed_kwargs)
 
 
 class OneDriveUserList(troposphere.kendra.OneDriveUserList, Mixin):
@@ -273,6 +583,7 @@ class OneDriveConfiguration(troposphere.kendra.OneDriveConfiguration, Mixin):
                  OneDriveUsers=REQUIRED, # type: _OneDriveUsers
                  SecretArn=REQUIRED, # type: Union[str, AWSHelperFn]
                  TenantDomain=REQUIRED, # type: Union[str, AWSHelperFn]
+                 DisableLocalGroups=NOTHING, # type: bool
                  ExclusionPatterns=NOTHING, # type: _DataSourceInclusionsExclusionsStrings
                  FieldMappings=NOTHING, # type: _DataSourceToIndexFieldMappingList
                  InclusionPatterns=NOTHING, # type: _DataSourceInclusionsExclusionsStrings
@@ -282,6 +593,7 @@ class OneDriveConfiguration(troposphere.kendra.OneDriveConfiguration, Mixin):
             OneDriveUsers=OneDriveUsers,
             SecretArn=SecretArn,
             TenantDomain=TenantDomain,
+            DisableLocalGroups=DisableLocalGroups,
             ExclusionPatterns=ExclusionPatterns,
             FieldMappings=FieldMappings,
             InclusionPatterns=InclusionPatterns,
@@ -323,6 +635,7 @@ class S3DataSourceConfiguration(troposphere.kendra.S3DataSourceConfiguration, Mi
                  AccessControlListConfiguration=NOTHING, # type: _AccessControlListConfiguration
                  DocumentsMetadataConfiguration=NOTHING, # type: _DocumentsMetadataConfiguration
                  ExclusionPatterns=NOTHING, # type: _DataSourceInclusionsExclusionsStrings
+                 InclusionPatterns=NOTHING, # type: _DataSourceInclusionsExclusionsStrings
                  InclusionPrefixes=NOTHING, # type: _DataSourceInclusionsExclusionsStrings
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
@@ -331,6 +644,7 @@ class S3DataSourceConfiguration(troposphere.kendra.S3DataSourceConfiguration, Mi
             AccessControlListConfiguration=AccessControlListConfiguration,
             DocumentsMetadataConfiguration=DocumentsMetadataConfiguration,
             ExclusionPatterns=ExclusionPatterns,
+            InclusionPatterns=InclusionPatterns,
             InclusionPrefixes=InclusionPrefixes,
             **kwargs
         )
@@ -598,6 +912,7 @@ class SharePointConfiguration(troposphere.kendra.SharePointConfiguration, Mixin)
                  SharePointVersion=REQUIRED, # type: Union[str, AWSHelperFn]
                  Urls=REQUIRED, # type: List[Union[str, AWSHelperFn]]
                  CrawlAttachments=NOTHING, # type: bool
+                 DisableLocalGroups=NOTHING, # type: bool
                  DocumentTitleFieldName=NOTHING, # type: Union[str, AWSHelperFn]
                  ExclusionPatterns=NOTHING, # type: _DataSourceInclusionsExclusionsStrings
                  FieldMappings=NOTHING, # type: _DataSourceToIndexFieldMappingList
@@ -611,6 +926,7 @@ class SharePointConfiguration(troposphere.kendra.SharePointConfiguration, Mixin)
             SharePointVersion=SharePointVersion,
             Urls=Urls,
             CrawlAttachments=CrawlAttachments,
+            DisableLocalGroups=DisableLocalGroups,
             DocumentTitleFieldName=DocumentTitleFieldName,
             ExclusionPatterns=ExclusionPatterns,
             FieldMappings=FieldMappings,
@@ -625,7 +941,9 @@ class SharePointConfiguration(troposphere.kendra.SharePointConfiguration, Mixin)
 class DataSourceConfiguration(troposphere.kendra.DataSourceConfiguration, Mixin):
     def __init__(self,
                  title=None,
+                 ConfluenceConfiguration=NOTHING, # type: _ConfluenceConfiguration
                  DatabaseConfiguration=NOTHING, # type: _DatabaseConfiguration
+                 GoogleDriveConfiguration=NOTHING, # type: _GoogleDriveConfiguration
                  OneDriveConfiguration=NOTHING, # type: _OneDriveConfiguration
                  S3Configuration=NOTHING, # type: _S3DataSourceConfiguration
                  SalesforceConfiguration=NOTHING, # type: _SalesforceConfiguration
@@ -634,7 +952,9 @@ class DataSourceConfiguration(troposphere.kendra.DataSourceConfiguration, Mixin)
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
+            ConfluenceConfiguration=ConfluenceConfiguration,
             DatabaseConfiguration=DatabaseConfiguration,
+            GoogleDriveConfiguration=GoogleDriveConfiguration,
             OneDriveConfiguration=OneDriveConfiguration,
             S3Configuration=S3Configuration,
             SalesforceConfiguration=SalesforceConfiguration,
@@ -650,12 +970,12 @@ class DataSource(troposphere.kendra.DataSource, Mixin):
                  title, # type: str
                  template=None, # type: Template
                  validation=True, # type: bool
-                 DataSourceConfiguration=REQUIRED, # type: _DataSourceConfiguration
                  IndexId=REQUIRED, # type: Union[str, AWSHelperFn]
                  Name=REQUIRED, # type: Union[str, AWSHelperFn]
-                 RoleArn=REQUIRED, # type: Union[str, AWSHelperFn]
                  Type=REQUIRED, # type: Union[str, AWSHelperFn]
+                 DataSourceConfiguration=NOTHING, # type: _DataSourceConfiguration
                  Description=NOTHING, # type: Union[str, AWSHelperFn]
+                 RoleArn=NOTHING, # type: Union[str, AWSHelperFn]
                  Schedule=NOTHING, # type: Union[str, AWSHelperFn]
                  Tags=NOTHING, # type: _Tags
                  **kwargs):
@@ -663,12 +983,12 @@ class DataSource(troposphere.kendra.DataSource, Mixin):
             title=title,
             template=template,
             validation=validation,
-            DataSourceConfiguration=DataSourceConfiguration,
             IndexId=IndexId,
             Name=Name,
-            RoleArn=RoleArn,
             Type=Type,
+            DataSourceConfiguration=DataSourceConfiguration,
             Description=Description,
+            RoleArn=RoleArn,
             Schedule=Schedule,
             Tags=Tags,
             **kwargs
@@ -807,19 +1127,6 @@ class DocumentMetadataConfiguration(troposphere.kendra.DocumentMetadataConfigura
         super(DocumentMetadataConfiguration, self).__init__(**processed_kwargs)
 
 
-class DocumentMetadataConfigurationList(troposphere.kendra.DocumentMetadataConfigurationList, Mixin):
-    def __init__(self,
-                 title=None,
-                 DocumentMetadataConfigurationList=NOTHING, # type: List[_DocumentMetadataConfiguration]
-                 **kwargs):
-        processed_kwargs = preprocess_init_kwargs(
-            title=title,
-            DocumentMetadataConfigurationList=DocumentMetadataConfigurationList,
-            **kwargs
-        )
-        super(DocumentMetadataConfigurationList, self).__init__(**processed_kwargs)
-
-
 class ServerSideEncryptionConfiguration(troposphere.kendra.ServerSideEncryptionConfiguration, Mixin):
     def __init__(self,
                  title=None,
@@ -833,6 +1140,61 @@ class ServerSideEncryptionConfiguration(troposphere.kendra.ServerSideEncryptionC
         super(ServerSideEncryptionConfiguration, self).__init__(**processed_kwargs)
 
 
+class JsonTokenTypeConfiguration(troposphere.kendra.JsonTokenTypeConfiguration, Mixin):
+    def __init__(self,
+                 title=None,
+                 GroupAttributeField=REQUIRED, # type: Union[str, AWSHelperFn]
+                 UserNameAttributeField=REQUIRED, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            GroupAttributeField=GroupAttributeField,
+            UserNameAttributeField=UserNameAttributeField,
+            **kwargs
+        )
+        super(JsonTokenTypeConfiguration, self).__init__(**processed_kwargs)
+
+
+class JwtTokenTypeConfiguration(troposphere.kendra.JwtTokenTypeConfiguration, Mixin):
+    def __init__(self,
+                 title=None,
+                 KeyLocation=REQUIRED, # type: Union[str, AWSHelperFn]
+                 ClaimRegex=NOTHING, # type: Union[str, AWSHelperFn]
+                 GroupAttributeField=NOTHING, # type: Union[str, AWSHelperFn]
+                 Issuer=NOTHING, # type: Union[str, AWSHelperFn]
+                 SecretManagerArn=NOTHING, # type: Union[str, AWSHelperFn]
+                 URL=NOTHING, # type: Union[str, AWSHelperFn]
+                 UserNameAttributeField=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            KeyLocation=KeyLocation,
+            ClaimRegex=ClaimRegex,
+            GroupAttributeField=GroupAttributeField,
+            Issuer=Issuer,
+            SecretManagerArn=SecretManagerArn,
+            URL=URL,
+            UserNameAttributeField=UserNameAttributeField,
+            **kwargs
+        )
+        super(JwtTokenTypeConfiguration, self).__init__(**processed_kwargs)
+
+
+class UserTokenConfiguration(troposphere.kendra.UserTokenConfiguration, Mixin):
+    def __init__(self,
+                 title=None,
+                 JsonTokenTypeConfiguration=NOTHING, # type: _JsonTokenTypeConfiguration
+                 JwtTokenTypeConfiguration=NOTHING, # type: _JwtTokenTypeConfiguration
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            JsonTokenTypeConfiguration=JsonTokenTypeConfiguration,
+            JwtTokenTypeConfiguration=JwtTokenTypeConfiguration,
+            **kwargs
+        )
+        super(UserTokenConfiguration, self).__init__(**processed_kwargs)
+
+
 class Index(troposphere.kendra.Index, Mixin):
     def __init__(self,
                  title, # type: str
@@ -843,9 +1205,11 @@ class Index(troposphere.kendra.Index, Mixin):
                  RoleArn=REQUIRED, # type: Union[str, AWSHelperFn]
                  CapacityUnits=NOTHING, # type: _CapacityUnitsConfiguration
                  Description=NOTHING, # type: Union[str, AWSHelperFn]
-                 DocumentMetadataConfigurations=NOTHING, # type: _DocumentMetadataConfigurationList
+                 DocumentMetadataConfigurations=NOTHING, # type: List[_DocumentMetadataConfiguration]
                  ServerSideEncryptionConfiguration=NOTHING, # type: _ServerSideEncryptionConfiguration
                  Tags=NOTHING, # type: _Tags
+                 UserContextPolicy=NOTHING, # type: Union[str, AWSHelperFn]
+                 UserTokenConfigurations=NOTHING, # type: List[_UserTokenConfiguration]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
@@ -859,6 +1223,8 @@ class Index(troposphere.kendra.Index, Mixin):
             DocumentMetadataConfigurations=DocumentMetadataConfigurations,
             ServerSideEncryptionConfiguration=ServerSideEncryptionConfiguration,
             Tags=Tags,
+            UserContextPolicy=UserContextPolicy,
+            UserTokenConfigurations=UserTokenConfigurations,
             **kwargs
         )
         super(Index, self).__init__(**processed_kwargs)

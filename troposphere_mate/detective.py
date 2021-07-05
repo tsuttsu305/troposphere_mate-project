@@ -40,6 +40,7 @@ class MemberInvitation(troposphere.detective.MemberInvitation, Mixin):
                  GraphArn=REQUIRED, # type: Union[str, AWSHelperFn]
                  MemberEmailAddress=REQUIRED, # type: Union[str, AWSHelperFn]
                  MemberId=REQUIRED, # type: Union[str, AWSHelperFn]
+                 DisableEmailNotification=NOTHING, # type: bool
                  Message=NOTHING, # type: Union[str, AWSHelperFn]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
@@ -49,6 +50,7 @@ class MemberInvitation(troposphere.detective.MemberInvitation, Mixin):
             GraphArn=GraphArn,
             MemberEmailAddress=MemberEmailAddress,
             MemberId=MemberId,
+            DisableEmailNotification=DisableEmailNotification,
             Message=Message,
             **kwargs
         )

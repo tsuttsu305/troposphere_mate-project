@@ -39,14 +39,17 @@ from troposphere.glue import (
     PartitionInput as _PartitionInput,
     PhysicalConnectionRequirements as _PhysicalConnectionRequirements,
     Predicate as _Predicate,
+    Registry as _Registry,
     S3Encryption as _S3Encryption,
     S3Target as _S3Target,
     Schedule as _Schedule,
     SchemaChangePolicy as _SchemaChangePolicy,
+    SchemaVersion as _SchemaVersion,
     SerdeInfo as _SerdeInfo,
     SkewedInfo as _SkewedInfo,
     StorageDescriptor as _StorageDescriptor,
     TableInput as _TableInput,
+    Tags as _Tags,
     Targets as _Targets,
     TransformParameters as _TransformParameters,
     XMLClassifier as _XMLClassifier,
@@ -861,6 +864,94 @@ class Partition(troposphere.glue.Partition, Mixin):
             **kwargs
         )
         super(Partition, self).__init__(**processed_kwargs)
+
+
+class Registry(troposphere.glue.Registry, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 Name=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Description=NOTHING, # type: Union[str, AWSHelperFn]
+                 Tags=NOTHING, # type: _Tags
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            Name=Name,
+            Description=Description,
+            Tags=Tags,
+            **kwargs
+        )
+        super(Registry, self).__init__(**processed_kwargs)
+
+
+class SchemaVersion(troposphere.glue.SchemaVersion, Mixin):
+    def __init__(self,
+                 title=None,
+                 IsLatest=NOTHING, # type: bool
+                 VersionNumber=NOTHING, # type: int
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            IsLatest=IsLatest,
+            VersionNumber=VersionNumber,
+            **kwargs
+        )
+        super(SchemaVersion, self).__init__(**processed_kwargs)
+
+
+class Schema(troposphere.glue.Schema, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 Compatibility=REQUIRED, # type: Union[str, AWSHelperFn]
+                 DataFormat=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Name=REQUIRED, # type: Union[str, AWSHelperFn]
+                 SchemaDefinition=REQUIRED, # type: Union[str, AWSHelperFn]
+                 CheckpointVersion=NOTHING, # type: _SchemaVersion
+                 Description=NOTHING, # type: Union[str, AWSHelperFn]
+                 Registry=NOTHING, # type: _Registry
+                 Tags=NOTHING, # type: _Tags
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            Compatibility=Compatibility,
+            DataFormat=DataFormat,
+            Name=Name,
+            SchemaDefinition=SchemaDefinition,
+            CheckpointVersion=CheckpointVersion,
+            Description=Description,
+            Registry=Registry,
+            Tags=Tags,
+            **kwargs
+        )
+        super(Schema, self).__init__(**processed_kwargs)
+
+
+class SchemaVersionMetadata(troposphere.glue.SchemaVersionMetadata, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 Key=REQUIRED, # type: Union[str, AWSHelperFn]
+                 SchemaVersionId=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Value=REQUIRED, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            Key=Key,
+            SchemaVersionId=SchemaVersionId,
+            Value=Value,
+            **kwargs
+        )
+        super(SchemaVersionMetadata, self).__init__(**processed_kwargs)
 
 
 class CloudWatchEncryption(troposphere.glue.CloudWatchEncryption, Mixin):

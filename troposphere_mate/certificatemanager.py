@@ -12,6 +12,7 @@ import troposphere.certificatemanager
 
 from troposphere.certificatemanager import (
     DomainValidationOption as _DomainValidationOption,
+    ExpiryEventsConfiguration as _ExpiryEventsConfiguration,
     Tags as _Tags,
 )
 
@@ -20,6 +21,36 @@ from troposphere import Template, AWSHelperFn
 from troposphere_mate.core.mate import preprocess_init_kwargs, Mixin
 from troposphere_mate.core.sentiel import REQUIRED, NOTHING
 
+
+
+class ExpiryEventsConfiguration(troposphere.certificatemanager.ExpiryEventsConfiguration, Mixin):
+    def __init__(self,
+                 title=None,
+                 DaysBeforeExpiry=NOTHING, # type: int
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            DaysBeforeExpiry=DaysBeforeExpiry,
+            **kwargs
+        )
+        super(ExpiryEventsConfiguration, self).__init__(**processed_kwargs)
+
+
+class Account(troposphere.certificatemanager.Account, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 ExpiryEventsConfiguration=REQUIRED, # type: _ExpiryEventsConfiguration
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            ExpiryEventsConfiguration=ExpiryEventsConfiguration,
+            **kwargs
+        )
+        super(Account, self).__init__(**processed_kwargs)
 
 
 class DomainValidationOption(troposphere.certificatemanager.DomainValidationOption, Mixin):

@@ -121,11 +121,13 @@ class Fleet(troposphere.appstream.Fleet, Mixin):
                  DomainJoinInfo=NOTHING, # type: _DomainJoinInfo
                  EnableDefaultInternetAccess=NOTHING, # type: bool
                  FleetType=NOTHING, # type: Union[str, AWSHelperFn]
+                 IamRoleArn=NOTHING, # type: Union[str, AWSHelperFn]
                  IdleDisconnectTimeoutInSeconds=NOTHING, # type: int
                  ImageArn=NOTHING, # type: Union[str, AWSHelperFn]
                  ImageName=NOTHING, # type: Union[str, AWSHelperFn]
                  MaxUserDurationInSeconds=NOTHING, # type: int
                  Name=NOTHING, # type: Union[str, AWSHelperFn]
+                 StreamView=NOTHING, # type: Union[str, AWSHelperFn]
                  Tags=NOTHING, # type: Union[_Tags, list]
                  VpcConfig=NOTHING, # type: _VpcConfig
                  **kwargs):
@@ -141,11 +143,13 @@ class Fleet(troposphere.appstream.Fleet, Mixin):
             DomainJoinInfo=DomainJoinInfo,
             EnableDefaultInternetAccess=EnableDefaultInternetAccess,
             FleetType=FleetType,
+            IamRoleArn=IamRoleArn,
             IdleDisconnectTimeoutInSeconds=IdleDisconnectTimeoutInSeconds,
             ImageArn=ImageArn,
             ImageName=ImageName,
             MaxUserDurationInSeconds=MaxUserDurationInSeconds,
             Name=Name,
+            StreamView=StreamView,
             Tags=Tags,
             VpcConfig=VpcConfig,
             **kwargs
@@ -180,6 +184,7 @@ class ImageBuilder(troposphere.appstream.ImageBuilder, Mixin):
                  DisplayName=NOTHING, # type: Union[str, AWSHelperFn]
                  DomainJoinInfo=NOTHING, # type: _DomainJoinInfo
                  EnableDefaultInternetAccess=NOTHING, # type: bool
+                 IamRoleArn=NOTHING, # type: Union[str, AWSHelperFn]
                  ImageArn=NOTHING, # type: Union[str, AWSHelperFn]
                  ImageName=NOTHING, # type: Union[str, AWSHelperFn]
                  Name=NOTHING, # type: Union[str, AWSHelperFn]
@@ -197,6 +202,7 @@ class ImageBuilder(troposphere.appstream.ImageBuilder, Mixin):
             DisplayName=DisplayName,
             DomainJoinInfo=DomainJoinInfo,
             EnableDefaultInternetAccess=EnableDefaultInternetAccess,
+            IamRoleArn=IamRoleArn,
             ImageArn=ImageArn,
             ImageName=ImageName,
             Name=Name,

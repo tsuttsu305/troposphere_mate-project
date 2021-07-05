@@ -113,19 +113,71 @@ class InstanceProfile(troposphere.iam.InstanceProfile, Mixin):
                  template=None, # type: Template
                  validation=True, # type: bool
                  Roles=REQUIRED, # type: list
-                 Path=NOTHING, # type: str
                  InstanceProfileName=NOTHING, # type: Union[str, AWSHelperFn]
+                 Path=NOTHING, # type: str
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             template=template,
             validation=validation,
             Roles=Roles,
-            Path=Path,
             InstanceProfileName=InstanceProfileName,
+            Path=Path,
             **kwargs
         )
         super(InstanceProfile, self).__init__(**processed_kwargs)
+
+
+class ManagedPolicy(troposphere.iam.ManagedPolicy, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 PolicyDocument=REQUIRED, # type: Union[dict]
+                 Description=NOTHING, # type: Union[str, AWSHelperFn]
+                 Groups=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 ManagedPolicyName=NOTHING, # type: Union[str, AWSHelperFn]
+                 Path=NOTHING, # type: str
+                 Roles=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 Users=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            PolicyDocument=PolicyDocument,
+            Description=Description,
+            Groups=Groups,
+            ManagedPolicyName=ManagedPolicyName,
+            Path=Path,
+            Roles=Roles,
+            Users=Users,
+            **kwargs
+        )
+        super(ManagedPolicy, self).__init__(**processed_kwargs)
+
+
+class OIDCProvider(troposphere.iam.OIDCProvider, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 ThumbprintList=REQUIRED, # type: List[Union[str, AWSHelperFn]]
+                 ClientIdList=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 Tags=NOTHING, # type: _Tags
+                 Url=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            ThumbprintList=ThumbprintList,
+            ClientIdList=ClientIdList,
+            Tags=Tags,
+            Url=Url,
+            **kwargs
+        )
+        super(OIDCProvider, self).__init__(**processed_kwargs)
 
 
 class Role(troposphere.iam.Role, Mixin):
@@ -159,6 +211,54 @@ class Role(troposphere.iam.Role, Mixin):
             **kwargs
         )
         super(Role, self).__init__(**processed_kwargs)
+
+
+class SAMLProvider(troposphere.iam.SAMLProvider, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 SamlMetadataDocument=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Name=NOTHING, # type: Union[str, AWSHelperFn]
+                 Tags=NOTHING, # type: _Tags
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            SamlMetadataDocument=SamlMetadataDocument,
+            Name=Name,
+            Tags=Tags,
+            **kwargs
+        )
+        super(SAMLProvider, self).__init__(**processed_kwargs)
+
+
+class ServerCertificate(troposphere.iam.ServerCertificate, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 CertificateBody=NOTHING, # type: Union[str, AWSHelperFn]
+                 CertificateChain=NOTHING, # type: Union[str, AWSHelperFn]
+                 Path=NOTHING, # type: Union[str, AWSHelperFn]
+                 PrivateKey=NOTHING, # type: Union[str, AWSHelperFn]
+                 ServerCertificateName=NOTHING, # type: Union[str, AWSHelperFn]
+                 Tags=NOTHING, # type: _Tags
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            CertificateBody=CertificateBody,
+            CertificateChain=CertificateChain,
+            Path=Path,
+            PrivateKey=PrivateKey,
+            ServerCertificateName=ServerCertificateName,
+            Tags=Tags,
+            **kwargs
+        )
+        super(ServerCertificate, self).__init__(**processed_kwargs)
 
 
 class ServiceLinkedRole(troposphere.iam.ServiceLinkedRole, Mixin):
@@ -247,30 +347,24 @@ class UserToGroupAddition(troposphere.iam.UserToGroupAddition, Mixin):
         super(UserToGroupAddition, self).__init__(**processed_kwargs)
 
 
-class ManagedPolicy(troposphere.iam.ManagedPolicy, Mixin):
+class VirtualMFADevice(troposphere.iam.VirtualMFADevice, Mixin):
     def __init__(self,
                  title, # type: str
                  template=None, # type: Template
                  validation=True, # type: bool
-                 PolicyDocument=REQUIRED, # type: Union[dict]
-                 Description=NOTHING, # type: Union[str, AWSHelperFn]
-                 Groups=NOTHING, # type: List[Union[str, AWSHelperFn]]
-                 ManagedPolicyName=NOTHING, # type: Union[str, AWSHelperFn]
-                 Path=NOTHING, # type: str
-                 Roles=NOTHING, # type: List[Union[str, AWSHelperFn]]
-                 Users=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 Users=REQUIRED, # type: List[Union[str, AWSHelperFn]]
+                 Path=NOTHING, # type: Union[str, AWSHelperFn]
+                 Tags=NOTHING, # type: _Tags
+                 VirtualMfaDeviceName=NOTHING, # type: Union[str, AWSHelperFn]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             template=template,
             validation=validation,
-            PolicyDocument=PolicyDocument,
-            Description=Description,
-            Groups=Groups,
-            ManagedPolicyName=ManagedPolicyName,
-            Path=Path,
-            Roles=Roles,
             Users=Users,
+            Path=Path,
+            Tags=Tags,
+            VirtualMfaDeviceName=VirtualMfaDeviceName,
             **kwargs
         )
-        super(ManagedPolicy, self).__init__(**processed_kwargs)
+        super(VirtualMFADevice, self).__init__(**processed_kwargs)

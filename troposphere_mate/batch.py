@@ -15,11 +15,15 @@ from troposphere.batch import (
     ComputeResources as _ComputeResources,
     ContainerProperties as _ContainerProperties,
     Device as _Device,
+    Ec2ConfigurationObject as _Ec2ConfigurationObject,
     Environment as _Environment,
+    EvaluateOnExit as _EvaluateOnExit,
     LaunchTemplateSpecification as _LaunchTemplateSpecification,
     LinuxParameters as _LinuxParameters,
     LogConfiguration as _LogConfiguration,
     MountPoints as _MountPoints,
+    NodeProperties as _NodeProperties,
+    NodeRangeProperty as _NodeRangeProperty,
     ResourceRequirement as _ResourceRequirement,
     RetryStrategy as _RetryStrategy,
     Secret as _Secret,
@@ -35,6 +39,21 @@ from troposphere import Template, AWSHelperFn
 from troposphere_mate.core.mate import preprocess_init_kwargs, Mixin
 from troposphere_mate.core.sentiel import REQUIRED, NOTHING
 
+
+
+class Ec2ConfigurationObject(troposphere.batch.Ec2ConfigurationObject, Mixin):
+    def __init__(self,
+                 title=None,
+                 ImageType=REQUIRED, # type: Union[str, AWSHelperFn]
+                 ImageIdOverride=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            ImageType=ImageType,
+            ImageIdOverride=ImageIdOverride,
+            **kwargs
+        )
+        super(Ec2ConfigurationObject, self).__init__(**processed_kwargs)
 
 
 class LaunchTemplateSpecification(troposphere.batch.LaunchTemplateSpecification, Mixin):
@@ -58,40 +77,42 @@ class ComputeResources(troposphere.batch.ComputeResources, Mixin):
     def __init__(self,
                  title=None,
                  MaxvCpus=REQUIRED, # type: int
-                 SecurityGroupIds=REQUIRED, # type: List[Union[str, AWSHelperFn]]
-                 Type=REQUIRED, # type: Union[str, AWSHelperFn]
                  Subnets=REQUIRED, # type: List[Union[str, AWSHelperFn]]
-                 MinvCpus=REQUIRED, # type: int
-                 InstanceRole=REQUIRED, # type: Union[str, AWSHelperFn]
-                 InstanceTypes=REQUIRED, # type: List[Union[str, AWSHelperFn]]
+                 Type=REQUIRED, # type: Union[str, AWSHelperFn]
                  AllocationStrategy=NOTHING, # type: Any
-                 SpotIamFleetRole=NOTHING, # type: Union[str, AWSHelperFn]
                  BidPercentage=NOTHING, # type: int
-                 LaunchTemplate=NOTHING, # type: _LaunchTemplateSpecification
-                 ImageId=NOTHING, # type: Union[str, AWSHelperFn]
-                 Ec2KeyPair=NOTHING, # type: Union[str, AWSHelperFn]
-                 PlacementGroup=NOTHING, # type: Union[str, AWSHelperFn]
-                 Tags=NOTHING, # type: dict
                  DesiredvCpus=NOTHING, # type: int
+                 Ec2Configuration=NOTHING, # type: List[_Ec2ConfigurationObject]
+                 Ec2KeyPair=NOTHING, # type: Union[str, AWSHelperFn]
+                 ImageId=NOTHING, # type: Union[str, AWSHelperFn]
+                 InstanceRole=NOTHING, # type: Union[str, AWSHelperFn]
+                 InstanceTypes=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 LaunchTemplate=NOTHING, # type: _LaunchTemplateSpecification
+                 MinvCpus=NOTHING, # type: int
+                 PlacementGroup=NOTHING, # type: Union[str, AWSHelperFn]
+                 SecurityGroupIds=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 SpotIamFleetRole=NOTHING, # type: Union[str, AWSHelperFn]
+                 Tags=NOTHING, # type: dict
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             MaxvCpus=MaxvCpus,
-            SecurityGroupIds=SecurityGroupIds,
-            Type=Type,
             Subnets=Subnets,
-            MinvCpus=MinvCpus,
+            Type=Type,
+            AllocationStrategy=AllocationStrategy,
+            BidPercentage=BidPercentage,
+            DesiredvCpus=DesiredvCpus,
+            Ec2Configuration=Ec2Configuration,
+            Ec2KeyPair=Ec2KeyPair,
+            ImageId=ImageId,
             InstanceRole=InstanceRole,
             InstanceTypes=InstanceTypes,
-            AllocationStrategy=AllocationStrategy,
-            SpotIamFleetRole=SpotIamFleetRole,
-            BidPercentage=BidPercentage,
             LaunchTemplate=LaunchTemplate,
-            ImageId=ImageId,
-            Ec2KeyPair=Ec2KeyPair,
+            MinvCpus=MinvCpus,
             PlacementGroup=PlacementGroup,
+            SecurityGroupIds=SecurityGroupIds,
+            SpotIamFleetRole=SpotIamFleetRole,
             Tags=Tags,
-            DesiredvCpus=DesiredvCpus,
             **kwargs
         )
         super(ComputeResources, self).__init__(**processed_kwargs)
@@ -325,14 +346,67 @@ class ContainerProperties(troposphere.batch.ContainerProperties, Mixin):
         super(ContainerProperties, self).__init__(**processed_kwargs)
 
 
+class NodeRangeProperty(troposphere.batch.NodeRangeProperty, Mixin):
+    def __init__(self,
+                 title=None,
+                 TargetNodes=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Container=NOTHING, # type: _ContainerProperties
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            TargetNodes=TargetNodes,
+            Container=Container,
+            **kwargs
+        )
+        super(NodeRangeProperty, self).__init__(**processed_kwargs)
+
+
+class NodeProperties(troposphere.batch.NodeProperties, Mixin):
+    def __init__(self,
+                 title=None,
+                 MainNode=REQUIRED, # type: int
+                 NodeRangeProperties=REQUIRED, # type: List[_NodeRangeProperty]
+                 NumNodes=REQUIRED, # type: int
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            MainNode=MainNode,
+            NodeRangeProperties=NodeRangeProperties,
+            NumNodes=NumNodes,
+            **kwargs
+        )
+        super(NodeProperties, self).__init__(**processed_kwargs)
+
+
+class EvaluateOnExit(troposphere.batch.EvaluateOnExit, Mixin):
+    def __init__(self,
+                 title=None,
+                 Action=REQUIRED, # type: Union[str, AWSHelperFn]
+                 OnExitCode=NOTHING, # type: Union[str, AWSHelperFn]
+                 OnReason=NOTHING, # type: Union[str, AWSHelperFn]
+                 OnStatusReason=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Action=Action,
+            OnExitCode=OnExitCode,
+            OnReason=OnReason,
+            OnStatusReason=OnStatusReason,
+            **kwargs
+        )
+        super(EvaluateOnExit, self).__init__(**processed_kwargs)
+
+
 class RetryStrategy(troposphere.batch.RetryStrategy, Mixin):
     def __init__(self,
                  title=None,
                  Attempts=NOTHING, # type: int
+                 EvaluateOnExit=NOTHING, # type: List[_EvaluateOnExit]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             Attempts=Attempts,
+            EvaluateOnExit=EvaluateOnExit,
             **kwargs
         )
         super(RetryStrategy, self).__init__(**processed_kwargs)
@@ -356,22 +430,30 @@ class JobDefinition(troposphere.batch.JobDefinition, Mixin):
                  title, # type: str
                  template=None, # type: Template
                  validation=True, # type: bool
-                 ContainerProperties=REQUIRED, # type: _ContainerProperties
                  Type=REQUIRED, # type: Union[str, AWSHelperFn]
+                 ContainerProperties=NOTHING, # type: _ContainerProperties
                  JobDefinitionName=NOTHING, # type: Union[str, AWSHelperFn]
+                 NodeProperties=NOTHING, # type: _NodeProperties
                  Parameters=NOTHING, # type: dict
+                 PlatformCapabilities=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 PropagateTags=NOTHING, # type: bool
                  RetryStrategy=NOTHING, # type: _RetryStrategy
+                 Tags=NOTHING, # type: dict
                  Timeout=NOTHING, # type: _Timeout
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             template=template,
             validation=validation,
-            ContainerProperties=ContainerProperties,
             Type=Type,
+            ContainerProperties=ContainerProperties,
             JobDefinitionName=JobDefinitionName,
+            NodeProperties=NodeProperties,
             Parameters=Parameters,
+            PlatformCapabilities=PlatformCapabilities,
+            PropagateTags=PropagateTags,
             RetryStrategy=RetryStrategy,
+            Tags=Tags,
             Timeout=Timeout,
             **kwargs
         )
@@ -388,6 +470,7 @@ class ComputeEnvironment(troposphere.batch.ComputeEnvironment, Mixin):
                  ComputeResources=REQUIRED, # type: _ComputeResources
                  ComputeEnvironmentName=NOTHING, # type: Union[str, AWSHelperFn]
                  State=NOTHING, # type: Any
+                 Tags=NOTHING, # type: dict
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
@@ -398,6 +481,7 @@ class ComputeEnvironment(troposphere.batch.ComputeEnvironment, Mixin):
             ComputeResources=ComputeResources,
             ComputeEnvironmentName=ComputeEnvironmentName,
             State=State,
+            Tags=Tags,
             **kwargs
         )
         super(ComputeEnvironment, self).__init__(**processed_kwargs)
@@ -427,6 +511,7 @@ class JobQueue(troposphere.batch.JobQueue, Mixin):
                  Priority=REQUIRED, # type: int
                  State=NOTHING, # type: Any
                  JobQueueName=NOTHING, # type: Union[str, AWSHelperFn]
+                 Tags=NOTHING, # type: dict
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
@@ -436,6 +521,7 @@ class JobQueue(troposphere.batch.JobQueue, Mixin):
             Priority=Priority,
             State=State,
             JobQueueName=JobQueueName,
+            Tags=Tags,
             **kwargs
         )
         super(JobQueue, self).__init__(**processed_kwargs)

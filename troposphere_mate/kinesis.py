@@ -42,9 +42,9 @@ class Stream(troposphere.kinesis.Stream, Mixin):
                  title, # type: str
                  template=None, # type: Template
                  validation=True, # type: bool
+                 ShardCount=REQUIRED, # type: int
                  Name=NOTHING, # type: Union[str, AWSHelperFn]
                  RetentionPeriodHours=NOTHING, # type: int
-                 ShardCount=NOTHING, # type: int
                  StreamEncryption=NOTHING, # type: _StreamEncryption
                  Tags=NOTHING, # type: Union[_Tags, list]
                  **kwargs):
@@ -52,9 +52,9 @@ class Stream(troposphere.kinesis.Stream, Mixin):
             title=title,
             template=template,
             validation=validation,
+            ShardCount=ShardCount,
             Name=Name,
             RetentionPeriodHours=RetentionPeriodHours,
-            ShardCount=ShardCount,
             StreamEncryption=StreamEncryption,
             Tags=Tags,
             **kwargs

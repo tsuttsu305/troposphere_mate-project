@@ -19,6 +19,7 @@ from troposphere.autoscaling import (
     LaunchTemplateSpecification as _LaunchTemplateSpecification,
     LifecycleHookSpecification as _LifecycleHookSpecification,
     Metadata as _Metadata,
+    MetadataOptions as _MetadataOptions,
     MetricDimension as _MetricDimension,
     MetricsCollection as _MetricsCollection,
     MixedInstancesPolicy as _MixedInstancesPolicy,
@@ -34,6 +35,23 @@ from troposphere import Template, AWSHelperFn
 from troposphere_mate.core.mate import preprocess_init_kwargs, Mixin
 from troposphere_mate.core.sentiel import REQUIRED, NOTHING
 
+
+
+class MetadataOptions(troposphere.autoscaling.MetadataOptions, Mixin):
+    def __init__(self,
+                 title=None,
+                 HttpEndpoint=NOTHING, # type: Union[str, AWSHelperFn]
+                 HttpPutResponseHopLimit=NOTHING, # type: int
+                 HttpTokens=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            HttpEndpoint=HttpEndpoint,
+            HttpPutResponseHopLimit=HttpPutResponseHopLimit,
+            HttpTokens=HttpTokens,
+            **kwargs
+        )
+        super(MetadataOptions, self).__init__(**processed_kwargs)
 
 
 class LifecycleHookSpecification(troposphere.autoscaling.LifecycleHookSpecification, Mixin):
@@ -185,6 +203,7 @@ class AutoScalingGroup(troposphere.autoscaling.AutoScalingGroup, Mixin):
                  MinSize=REQUIRED, # type: int
                  AutoScalingGroupName=NOTHING, # type: Union[str, AWSHelperFn]
                  AvailabilityZones=NOTHING, # type: list
+                 CapacityRebalance=NOTHING, # type: bool
                  Cooldown=NOTHING, # type: int
                  DesiredCapacity=NOTHING, # type: int
                  HealthCheckGracePeriod=NOTHING, # type: int
@@ -214,6 +233,7 @@ class AutoScalingGroup(troposphere.autoscaling.AutoScalingGroup, Mixin):
             MinSize=MinSize,
             AutoScalingGroupName=AutoScalingGroupName,
             AvailabilityZones=AvailabilityZones,
+            CapacityRebalance=CapacityRebalance,
             Cooldown=Cooldown,
             DesiredCapacity=DesiredCapacity,
             HealthCheckGracePeriod=HealthCheckGracePeriod,
@@ -258,6 +278,7 @@ class LaunchConfiguration(troposphere.autoscaling.LaunchConfiguration, Mixin):
                  KeyName=NOTHING, # type: Union[str, AWSHelperFn]
                  LaunchConfigurationName=NOTHING, # type: Union[str, AWSHelperFn]
                  Metadata=NOTHING, # type: _Metadata
+                 MetadataOptions=NOTHING, # type: _MetadataOptions
                  PlacementTenancy=NOTHING, # type: Union[str, AWSHelperFn]
                  RamDiskId=NOTHING, # type: Union[str, AWSHelperFn]
                  SecurityGroups=NOTHING, # type: list
@@ -282,6 +303,7 @@ class LaunchConfiguration(troposphere.autoscaling.LaunchConfiguration, Mixin):
             KeyName=KeyName,
             LaunchConfigurationName=LaunchConfigurationName,
             Metadata=Metadata,
+            MetadataOptions=MetadataOptions,
             PlacementTenancy=PlacementTenancy,
             RamDiskId=RamDiskId,
             SecurityGroups=SecurityGroups,

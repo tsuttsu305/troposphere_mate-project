@@ -15,6 +15,7 @@ from troposphere.cassandra import (
     ClusteringKeyColumn as _ClusteringKeyColumn,
     Column as _Column,
     ProvisionedThroughput as _ProvisionedThroughput,
+    Tags as _Tags,
 )
 
 
@@ -30,12 +31,14 @@ class Keyspace(troposphere.cassandra.Keyspace, Mixin):
                  template=None, # type: Template
                  validation=True, # type: bool
                  KeyspaceName=NOTHING, # type: Union[str, AWSHelperFn]
+                 Tags=NOTHING, # type: _Tags
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             template=template,
             validation=validation,
             KeyspaceName=KeyspaceName,
+            Tags=Tags,
             **kwargs
         )
         super(Keyspace, self).__init__(**processed_kwargs)
@@ -110,8 +113,10 @@ class Table(troposphere.cassandra.Table, Mixin):
                  PartitionKeyColumns=REQUIRED, # type: List[_Column]
                  BillingMode=NOTHING, # type: _BillingMode
                  ClusteringKeyColumns=NOTHING, # type: List[_ClusteringKeyColumn]
+                 PointInTimeRecoveryEnabled=NOTHING, # type: bool
                  RegularColumns=NOTHING, # type: List[_Column]
                  TableName=NOTHING, # type: Union[str, AWSHelperFn]
+                 Tags=NOTHING, # type: _Tags
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
@@ -121,8 +126,10 @@ class Table(troposphere.cassandra.Table, Mixin):
             PartitionKeyColumns=PartitionKeyColumns,
             BillingMode=BillingMode,
             ClusteringKeyColumns=ClusteringKeyColumns,
+            PointInTimeRecoveryEnabled=PointInTimeRecoveryEnabled,
             RegularColumns=RegularColumns,
             TableName=TableName,
+            Tags=Tags,
             **kwargs
         )
         super(Table, self).__init__(**processed_kwargs)

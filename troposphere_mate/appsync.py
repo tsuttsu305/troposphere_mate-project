@@ -72,6 +72,7 @@ class ApiKey(troposphere.appsync.ApiKey, Mixin):
                  template=None, # type: Template
                  validation=True, # type: bool
                  ApiId=REQUIRED, # type: Union[str, AWSHelperFn]
+                 ApiKeyId=NOTHING, # type: Union[str, AWSHelperFn]
                  Description=NOTHING, # type: Union[str, AWSHelperFn]
                  Expires=NOTHING, # type: float
                  **kwargs):
@@ -80,6 +81,7 @@ class ApiKey(troposphere.appsync.ApiKey, Mixin):
             template=template,
             validation=validation,
             ApiId=ApiId,
+            ApiKeyId=ApiKeyId,
             Description=Description,
             Expires=Expires,
             **kwargs

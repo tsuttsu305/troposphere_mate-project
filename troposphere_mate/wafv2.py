@@ -673,7 +673,6 @@ class RuleAction(troposphere.wafv2.RuleAction, Mixin):
         super(RuleAction, self).__init__(**processed_kwargs)
 
 
-# FIXME: Key name `None` Error
 # class OverrideAction(troposphere.wafv2.OverrideAction, Mixin):
 #     def __init__(self,
 #                  title=None,

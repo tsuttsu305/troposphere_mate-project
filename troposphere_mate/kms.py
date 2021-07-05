@@ -47,8 +47,9 @@ class Key(troposphere.kms.Key, Mixin):
                  validation=True, # type: bool
                  KeyPolicy=REQUIRED, # type: Union[dict]
                  Description=NOTHING, # type: Union[str, AWSHelperFn]
-                 Enabled=NOTHING, # type: bool
                  EnableKeyRotation=NOTHING, # type: bool
+                 Enabled=NOTHING, # type: bool
+                 KeySpec=NOTHING, # type: Union[str, AWSHelperFn]
                  KeyUsage=NOTHING, # type: str
                  PendingWindowInDays=NOTHING, # type: Any
                  Tags=NOTHING, # type: Union[_Tags, list]
@@ -59,8 +60,9 @@ class Key(troposphere.kms.Key, Mixin):
             validation=validation,
             KeyPolicy=KeyPolicy,
             Description=Description,
-            Enabled=Enabled,
             EnableKeyRotation=EnableKeyRotation,
+            Enabled=Enabled,
+            KeySpec=KeySpec,
             KeyUsage=KeyUsage,
             PendingWindowInDays=PendingWindowInDays,
             Tags=Tags,

@@ -259,6 +259,33 @@ class DBProxy(troposphere.rds.DBProxy, Mixin):
         super(DBProxy, self).__init__(**processed_kwargs)
 
 
+class DBProxyEndpoint(troposphere.rds.DBProxyEndpoint, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 DBProxyEndpointName=REQUIRED, # type: Union[str, AWSHelperFn]
+                 DBProxyName=REQUIRED, # type: Union[str, AWSHelperFn]
+                 VpcSubnetIds=REQUIRED, # type: List[Union[str, AWSHelperFn]]
+                 Tags=NOTHING, # type: _Tags
+                 TargetRole=NOTHING, # type: Union[str, AWSHelperFn]
+                 VpcSecurityGroupIds=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            DBProxyEndpointName=DBProxyEndpointName,
+            DBProxyName=DBProxyName,
+            VpcSubnetIds=VpcSubnetIds,
+            Tags=Tags,
+            TargetRole=TargetRole,
+            VpcSecurityGroupIds=VpcSecurityGroupIds,
+            **kwargs
+        )
+        super(DBProxyEndpoint, self).__init__(**processed_kwargs)
+
+
 class ConnectionPoolConfigurationInfoFormat(troposphere.rds.ConnectionPoolConfigurationInfoFormat, Mixin):
     def __init__(self,
                  title=None,
@@ -418,6 +445,33 @@ class EventSubscription(troposphere.rds.EventSubscription, Mixin):
             **kwargs
         )
         super(EventSubscription, self).__init__(**processed_kwargs)
+
+
+class GlobalCluster(troposphere.rds.GlobalCluster, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 DeletionProtection=NOTHING, # type: bool
+                 Engine=NOTHING, # type: Union[str, AWSHelperFn]
+                 EngineVersion=NOTHING, # type: Union[str, AWSHelperFn]
+                 GlobalClusterIdentifier=NOTHING, # type: Union[str, AWSHelperFn]
+                 SourceDBClusterIdentifier=NOTHING, # type: Union[str, AWSHelperFn]
+                 StorageEncrypted=NOTHING, # type: bool
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            DeletionProtection=DeletionProtection,
+            Engine=Engine,
+            EngineVersion=EngineVersion,
+            GlobalClusterIdentifier=GlobalClusterIdentifier,
+            SourceDBClusterIdentifier=SourceDBClusterIdentifier,
+            StorageEncrypted=StorageEncrypted,
+            **kwargs
+        )
+        super(GlobalCluster, self).__init__(**processed_kwargs)
 
 
 class OptionSetting(troposphere.rds.OptionSetting, Mixin):

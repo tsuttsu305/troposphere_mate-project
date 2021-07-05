@@ -341,14 +341,20 @@ class CampaignSmsMessage(troposphere.pinpoint.CampaignSmsMessage, Mixin):
     def __init__(self,
                  title=None,
                  Body=NOTHING, # type: Union[str, AWSHelperFn]
+                 EntityId=NOTHING, # type: Union[str, AWSHelperFn]
                  MessageType=NOTHING, # type: Union[str, AWSHelperFn]
+                 OriginationNumber=NOTHING, # type: Union[str, AWSHelperFn]
                  SenderId=NOTHING, # type: Union[str, AWSHelperFn]
+                 TemplateId=NOTHING, # type: Union[str, AWSHelperFn]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             Body=Body,
+            EntityId=EntityId,
             MessageType=MessageType,
+            OriginationNumber=OriginationNumber,
             SenderId=SenderId,
+            TemplateId=TemplateId,
             **kwargs
         )
         super(CampaignSmsMessage, self).__init__(**processed_kwargs)

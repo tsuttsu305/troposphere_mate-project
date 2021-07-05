@@ -11,13 +11,21 @@ if sys.version_info.major >= 3 and sys.version_info.minor >= 5:  # pragma: no co
 import troposphere.dms
 
 from troposphere.dms import (
+    DocDbSettings as _DocDbSettings,
     DynamoDbSettings as _DynamoDbSettings,
     ElasticsearchSettings as _ElasticsearchSettings,
+    IbmDb2Settings as _IbmDb2Settings,
     KafkaSettings as _KafkaSettings,
     KinesisSettings as _KinesisSettings,
+    MicrosoftSqlServerSettings as _MicrosoftSqlServerSettings,
     MongoDbSettings as _MongoDbSettings,
+    MySqlSettings as _MySqlSettings,
     NeptuneSettings as _NeptuneSettings,
+    OracleSettings as _OracleSettings,
+    PostgreSqlSettings as _PostgreSqlSettings,
+    RedshiftSettings as _RedshiftSettings,
     S3Settings as _S3Settings,
+    SybaseSettings as _SybaseSettings,
     Tags as _Tags,
 )
 
@@ -47,6 +55,21 @@ class Certificate(troposphere.dms.Certificate, Mixin):
             **kwargs
         )
         super(Certificate, self).__init__(**processed_kwargs)
+
+
+class DocDbSettings(troposphere.dms.DocDbSettings, Mixin):
+    def __init__(self,
+                 title=None,
+                 SecretsManagerAccessRoleArn=NOTHING, # type: Union[str, AWSHelperFn]
+                 SecretsManagerSecretId=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            SecretsManagerAccessRoleArn=SecretsManagerAccessRoleArn,
+            SecretsManagerSecretId=SecretsManagerSecretId,
+            **kwargs
+        )
+        super(DocDbSettings, self).__init__(**processed_kwargs)
 
 
 class DynamoDbSettings(troposphere.dms.DynamoDbSettings, Mixin):
@@ -81,6 +104,36 @@ class ElasticsearchSettings(troposphere.dms.ElasticsearchSettings, Mixin):
         super(ElasticsearchSettings, self).__init__(**processed_kwargs)
 
 
+class IbmDb2Settings(troposphere.dms.IbmDb2Settings, Mixin):
+    def __init__(self,
+                 title=None,
+                 SecretsManagerAccessRoleArn=NOTHING, # type: Union[str, AWSHelperFn]
+                 SecretsManagerSecretId=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            SecretsManagerAccessRoleArn=SecretsManagerAccessRoleArn,
+            SecretsManagerSecretId=SecretsManagerSecretId,
+            **kwargs
+        )
+        super(IbmDb2Settings, self).__init__(**processed_kwargs)
+
+
+class KafkaSettings(troposphere.dms.KafkaSettings, Mixin):
+    def __init__(self,
+                 title=None,
+                 Broker=NOTHING, # type: Union[str, AWSHelperFn]
+                 Topic=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Broker=Broker,
+            Topic=Topic,
+            **kwargs
+        )
+        super(KafkaSettings, self).__init__(**processed_kwargs)
+
+
 class KinesisSettings(troposphere.dms.KinesisSettings, Mixin):
     def __init__(self,
                  title=None,
@@ -98,6 +151,21 @@ class KinesisSettings(troposphere.dms.KinesisSettings, Mixin):
         super(KinesisSettings, self).__init__(**processed_kwargs)
 
 
+class MicrosoftSqlServerSettings(troposphere.dms.MicrosoftSqlServerSettings, Mixin):
+    def __init__(self,
+                 title=None,
+                 SecretsManagerAccessRoleArn=NOTHING, # type: Union[str, AWSHelperFn]
+                 SecretsManagerSecretId=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            SecretsManagerAccessRoleArn=SecretsManagerAccessRoleArn,
+            SecretsManagerSecretId=SecretsManagerSecretId,
+            **kwargs
+        )
+        super(MicrosoftSqlServerSettings, self).__init__(**processed_kwargs)
+
+
 class MongoDbSettings(troposphere.dms.MongoDbSettings, Mixin):
     def __init__(self,
                  title=None,
@@ -110,6 +178,8 @@ class MongoDbSettings(troposphere.dms.MongoDbSettings, Mixin):
                  NestingLevel=NOTHING, # type: Union[str, AWSHelperFn]
                  Password=NOTHING, # type: Union[str, AWSHelperFn]
                  Port=NOTHING, # type: int
+                 SecretsManagerAccessRoleArn=NOTHING, # type: Union[str, AWSHelperFn]
+                 SecretsManagerSecretId=NOTHING, # type: Union[str, AWSHelperFn]
                  ServerName=NOTHING, # type: Union[str, AWSHelperFn]
                  Username=NOTHING, # type: Union[str, AWSHelperFn]
                  **kwargs):
@@ -124,6 +194,8 @@ class MongoDbSettings(troposphere.dms.MongoDbSettings, Mixin):
             NestingLevel=NestingLevel,
             Password=Password,
             Port=Port,
+            SecretsManagerAccessRoleArn=SecretsManagerAccessRoleArn,
+            SecretsManagerSecretId=SecretsManagerSecretId,
             ServerName=ServerName,
             Username=Username,
             **kwargs
@@ -131,44 +203,19 @@ class MongoDbSettings(troposphere.dms.MongoDbSettings, Mixin):
         super(MongoDbSettings, self).__init__(**processed_kwargs)
 
 
-class S3Settings(troposphere.dms.S3Settings, Mixin):
+class MySqlSettings(troposphere.dms.MySqlSettings, Mixin):
     def __init__(self,
                  title=None,
-                 BucketFolder=NOTHING, # type: Union[str, AWSHelperFn]
-                 BucketName=NOTHING, # type: Union[str, AWSHelperFn]
-                 CompressionType=NOTHING, # type: Union[str, AWSHelperFn]
-                 CsvDelimiter=NOTHING, # type: Union[str, AWSHelperFn]
-                 CsvRowDelimiter=NOTHING, # type: Union[str, AWSHelperFn]
-                 ExternalTableDefinition=NOTHING, # type: Union[str, AWSHelperFn]
-                 ServiceAccessRoleArn=NOTHING, # type: Union[str, AWSHelperFn]
+                 SecretsManagerAccessRoleArn=NOTHING, # type: Union[str, AWSHelperFn]
+                 SecretsManagerSecretId=NOTHING, # type: Union[str, AWSHelperFn]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
-            BucketFolder=BucketFolder,
-            BucketName=BucketName,
-            CompressionType=CompressionType,
-            CsvDelimiter=CsvDelimiter,
-            CsvRowDelimiter=CsvRowDelimiter,
-            ExternalTableDefinition=ExternalTableDefinition,
-            ServiceAccessRoleArn=ServiceAccessRoleArn,
+            SecretsManagerAccessRoleArn=SecretsManagerAccessRoleArn,
+            SecretsManagerSecretId=SecretsManagerSecretId,
             **kwargs
         )
-        super(S3Settings, self).__init__(**processed_kwargs)
-
-
-class KafkaSettings(troposphere.dms.KafkaSettings, Mixin):
-    def __init__(self,
-                 title=None,
-                 Broker=NOTHING, # type: Union[str, AWSHelperFn]
-                 Topic=NOTHING, # type: Union[str, AWSHelperFn]
-                 **kwargs):
-        processed_kwargs = preprocess_init_kwargs(
-            title=title,
-            Broker=Broker,
-            Topic=Topic,
-            **kwargs
-        )
-        super(KafkaSettings, self).__init__(**processed_kwargs)
+        super(MySqlSettings, self).__init__(**processed_kwargs)
 
 
 class NeptuneSettings(troposphere.dms.NeptuneSettings, Mixin):
@@ -196,6 +243,95 @@ class NeptuneSettings(troposphere.dms.NeptuneSettings, Mixin):
         super(NeptuneSettings, self).__init__(**processed_kwargs)
 
 
+class OracleSettings(troposphere.dms.OracleSettings, Mixin):
+    def __init__(self,
+                 title=None,
+                 SecretsManagerAccessRoleArn=NOTHING, # type: Union[str, AWSHelperFn]
+                 SecretsManagerOracleAsmAccessRoleArn=NOTHING, # type: Union[str, AWSHelperFn]
+                 SecretsManagerOracleAsmSecretId=NOTHING, # type: Union[str, AWSHelperFn]
+                 SecretsManagerSecretId=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            SecretsManagerAccessRoleArn=SecretsManagerAccessRoleArn,
+            SecretsManagerOracleAsmAccessRoleArn=SecretsManagerOracleAsmAccessRoleArn,
+            SecretsManagerOracleAsmSecretId=SecretsManagerOracleAsmSecretId,
+            SecretsManagerSecretId=SecretsManagerSecretId,
+            **kwargs
+        )
+        super(OracleSettings, self).__init__(**processed_kwargs)
+
+
+class PostgreSqlSettings(troposphere.dms.PostgreSqlSettings, Mixin):
+    def __init__(self,
+                 title=None,
+                 SecretsManagerAccessRoleArn=NOTHING, # type: Union[str, AWSHelperFn]
+                 SecretsManagerSecretId=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            SecretsManagerAccessRoleArn=SecretsManagerAccessRoleArn,
+            SecretsManagerSecretId=SecretsManagerSecretId,
+            **kwargs
+        )
+        super(PostgreSqlSettings, self).__init__(**processed_kwargs)
+
+
+class RedshiftSettings(troposphere.dms.RedshiftSettings, Mixin):
+    def __init__(self,
+                 title=None,
+                 SecretsManagerAccessRoleArn=NOTHING, # type: Union[str, AWSHelperFn]
+                 SecretsManagerSecretId=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            SecretsManagerAccessRoleArn=SecretsManagerAccessRoleArn,
+            SecretsManagerSecretId=SecretsManagerSecretId,
+            **kwargs
+        )
+        super(RedshiftSettings, self).__init__(**processed_kwargs)
+
+
+class S3Settings(troposphere.dms.S3Settings, Mixin):
+    def __init__(self,
+                 title=None,
+                 BucketFolder=NOTHING, # type: Union[str, AWSHelperFn]
+                 BucketName=NOTHING, # type: Union[str, AWSHelperFn]
+                 CompressionType=NOTHING, # type: Union[str, AWSHelperFn]
+                 CsvDelimiter=NOTHING, # type: Union[str, AWSHelperFn]
+                 CsvRowDelimiter=NOTHING, # type: Union[str, AWSHelperFn]
+                 ExternalTableDefinition=NOTHING, # type: Union[str, AWSHelperFn]
+                 ServiceAccessRoleArn=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            BucketFolder=BucketFolder,
+            BucketName=BucketName,
+            CompressionType=CompressionType,
+            CsvDelimiter=CsvDelimiter,
+            CsvRowDelimiter=CsvRowDelimiter,
+            ExternalTableDefinition=ExternalTableDefinition,
+            ServiceAccessRoleArn=ServiceAccessRoleArn,
+            **kwargs
+        )
+        super(S3Settings, self).__init__(**processed_kwargs)
+
+
+class SybaseSettings(troposphere.dms.SybaseSettings, Mixin):
+    def __init__(self,
+                 title=None,
+                 SecretsManagerAccessRoleArn=NOTHING, # type: Union[str, AWSHelperFn]
+                 SecretsManagerSecretId=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            SecretsManagerAccessRoleArn=SecretsManagerAccessRoleArn,
+            SecretsManagerSecretId=SecretsManagerSecretId,
+            **kwargs
+        )
+        super(SybaseSettings, self).__init__(**processed_kwargs)
+
+
 class Endpoint(troposphere.dms.Endpoint, Mixin):
     def __init__(self,
                  title, # type: str
@@ -205,20 +341,28 @@ class Endpoint(troposphere.dms.Endpoint, Mixin):
                  EngineName=REQUIRED, # type: Union[str, AWSHelperFn]
                  CertificateArn=NOTHING, # type: Union[str, AWSHelperFn]
                  DatabaseName=NOTHING, # type: Union[str, AWSHelperFn]
+                 DocDbSettings=NOTHING, # type: _DocDbSettings
                  DynamoDbSettings=NOTHING, # type: _DynamoDbSettings
                  ElasticsearchSettings=NOTHING, # type: _ElasticsearchSettings
                  EndpointIdentifier=NOTHING, # type: Union[str, AWSHelperFn]
                  ExtraConnectionAttributes=NOTHING, # type: Union[str, AWSHelperFn]
+                 IbmDb2Settings=NOTHING, # type: _IbmDb2Settings
                  KafkaSettings=NOTHING, # type: _KafkaSettings
                  KinesisSettings=NOTHING, # type: _KinesisSettings
                  KmsKeyId=NOTHING, # type: Union[str, AWSHelperFn]
+                 MicrosoftSqlServerSettings=NOTHING, # type: _MicrosoftSqlServerSettings
                  MongoDbSettings=NOTHING, # type: _MongoDbSettings
+                 MySqlSettings=NOTHING, # type: _MySqlSettings
                  NeptuneSettings=NOTHING, # type: _NeptuneSettings
+                 OracleSettings=NOTHING, # type: _OracleSettings
                  Password=NOTHING, # type: Union[str, AWSHelperFn]
                  Port=NOTHING, # type: int
+                 PostgreSqlSettings=NOTHING, # type: _PostgreSqlSettings
+                 RedshiftSettings=NOTHING, # type: _RedshiftSettings
                  S3Settings=NOTHING, # type: _S3Settings
                  ServerName=NOTHING, # type: Union[str, AWSHelperFn]
                  SslMode=NOTHING, # type: Union[str, AWSHelperFn]
+                 SybaseSettings=NOTHING, # type: _SybaseSettings
                  Tags=NOTHING, # type: _Tags
                  Username=NOTHING, # type: Union[str, AWSHelperFn]
                  **kwargs):
@@ -230,20 +374,28 @@ class Endpoint(troposphere.dms.Endpoint, Mixin):
             EngineName=EngineName,
             CertificateArn=CertificateArn,
             DatabaseName=DatabaseName,
+            DocDbSettings=DocDbSettings,
             DynamoDbSettings=DynamoDbSettings,
             ElasticsearchSettings=ElasticsearchSettings,
             EndpointIdentifier=EndpointIdentifier,
             ExtraConnectionAttributes=ExtraConnectionAttributes,
+            IbmDb2Settings=IbmDb2Settings,
             KafkaSettings=KafkaSettings,
             KinesisSettings=KinesisSettings,
             KmsKeyId=KmsKeyId,
+            MicrosoftSqlServerSettings=MicrosoftSqlServerSettings,
             MongoDbSettings=MongoDbSettings,
+            MySqlSettings=MySqlSettings,
             NeptuneSettings=NeptuneSettings,
+            OracleSettings=OracleSettings,
             Password=Password,
             Port=Port,
+            PostgreSqlSettings=PostgreSqlSettings,
+            RedshiftSettings=RedshiftSettings,
             S3Settings=S3Settings,
             ServerName=ServerName,
             SslMode=SslMode,
+            SybaseSettings=SybaseSettings,
             Tags=Tags,
             Username=Username,
             **kwargs

@@ -296,6 +296,7 @@ class Integration(troposphere.apigatewayv2.Integration, Mixin):
                  CredentialsArn=NOTHING, # type: Union[str, AWSHelperFn]
                  Description=NOTHING, # type: Union[str, AWSHelperFn]
                  IntegrationMethod=NOTHING, # type: Union[str, AWSHelperFn]
+                 IntegrationSubType=NOTHING, # type: Union[str, AWSHelperFn]
                  IntegrationUri=NOTHING, # type: Union[str, AWSHelperFn]
                  PassthroughBehavior=NOTHING, # type: Any
                  PayloadFormatVersion=NOTHING, # type: Union[str, AWSHelperFn]
@@ -317,6 +318,7 @@ class Integration(troposphere.apigatewayv2.Integration, Mixin):
             CredentialsArn=CredentialsArn,
             Description=Description,
             IntegrationMethod=IntegrationMethod,
+            IntegrationSubType=IntegrationSubType,
             IntegrationUri=IntegrationUri,
             PassthroughBehavior=PassthroughBehavior,
             PayloadFormatVersion=PayloadFormatVersion,

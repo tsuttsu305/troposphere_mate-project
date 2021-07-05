@@ -11,6 +11,7 @@ if sys.version_info.major >= 3 and sys.version_info.minor >= 5:  # pragma: no co
 import troposphere.servicecatalog
 
 from troposphere.servicecatalog import (
+    DefinitionParameter as _DefinitionParameter,
     ProvisioningArtifactProperties as _ProvisioningArtifactProperties,
     ProvisioningParameter as _ProvisioningParameter,
     ProvisioningPreferences as _ProvisioningPreferences,
@@ -102,8 +103,8 @@ class CloudFormationProduct(troposphere.servicecatalog.CloudFormationProduct, Mi
 class ProvisioningParameter(troposphere.servicecatalog.ProvisioningParameter, Mixin):
     def __init__(self,
                  title=None,
-                 Key=NOTHING, # type: Union[str, AWSHelperFn]
-                 Value=NOTHING, # type: Union[str, AWSHelperFn]
+                 Key=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Value=REQUIRED, # type: Union[str, AWSHelperFn]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
@@ -334,6 +335,7 @@ class PortfolioShare(troposphere.servicecatalog.PortfolioShare, Mixin):
                  AccountId=REQUIRED, # type: Union[str, AWSHelperFn]
                  PortfolioId=REQUIRED, # type: Union[str, AWSHelperFn]
                  AcceptLanguage=NOTHING, # type: Union[str, AWSHelperFn]
+                 ShareTagOptions=NOTHING, # type: bool
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
@@ -342,6 +344,7 @@ class PortfolioShare(troposphere.servicecatalog.PortfolioShare, Mixin):
             AccountId=AccountId,
             PortfolioId=PortfolioId,
             AcceptLanguage=AcceptLanguage,
+            ShareTagOptions=ShareTagOptions,
             **kwargs
         )
         super(PortfolioShare, self).__init__(**processed_kwargs)
@@ -370,6 +373,67 @@ class ResourceUpdateConstraint(troposphere.servicecatalog.ResourceUpdateConstrai
             **kwargs
         )
         super(ResourceUpdateConstraint, self).__init__(**processed_kwargs)
+
+
+class DefinitionParameter(troposphere.servicecatalog.DefinitionParameter, Mixin):
+    def __init__(self,
+                 title=None,
+                 Key=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Value=REQUIRED, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Key=Key,
+            Value=Value,
+            **kwargs
+        )
+        super(DefinitionParameter, self).__init__(**processed_kwargs)
+
+
+class ServiceAction(troposphere.servicecatalog.ServiceAction, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 Definition=REQUIRED, # type: List[_DefinitionParameter]
+                 DefinitionType=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Name=REQUIRED, # type: Union[str, AWSHelperFn]
+                 AcceptLanguage=NOTHING, # type: Union[str, AWSHelperFn]
+                 Description=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            Definition=Definition,
+            DefinitionType=DefinitionType,
+            Name=Name,
+            AcceptLanguage=AcceptLanguage,
+            Description=Description,
+            **kwargs
+        )
+        super(ServiceAction, self).__init__(**processed_kwargs)
+
+
+class ServiceActionAssociation(troposphere.servicecatalog.ServiceActionAssociation, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 ProductId=REQUIRED, # type: Union[str, AWSHelperFn]
+                 ProvisioningArtifactId=REQUIRED, # type: Union[str, AWSHelperFn]
+                 ServiceActionId=REQUIRED, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            ProductId=ProductId,
+            ProvisioningArtifactId=ProvisioningArtifactId,
+            ServiceActionId=ServiceActionId,
+            **kwargs
+        )
+        super(ServiceActionAssociation, self).__init__(**processed_kwargs)
 
 
 class StackSetConstraint(troposphere.servicecatalog.StackSetConstraint, Mixin):

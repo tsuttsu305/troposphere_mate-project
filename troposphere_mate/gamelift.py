@@ -16,7 +16,6 @@ from troposphere.gamelift import (
     Destination as _Destination,
     GameProperty as _GameProperty,
     InstanceDefinition as _InstanceDefinition,
-    InstanceDefinitions as _InstanceDefinitions,
     IpPermission as _IpPermission,
     LaunchTemplate as _LaunchTemplate,
     PlayerLatencyPolicy as _PlayerLatencyPolicy,
@@ -27,7 +26,6 @@ from troposphere.gamelift import (
     ServerProcess as _ServerProcess,
     Tags as _Tags,
     TargetTrackingConfiguration as _TargetTrackingConfiguration,
-    VpcSubnets as _VpcSubnets,
 )
 
 
@@ -298,19 +296,6 @@ class InstanceDefinition(troposphere.gamelift.InstanceDefinition, Mixin):
         super(InstanceDefinition, self).__init__(**processed_kwargs)
 
 
-class InstanceDefinitions(troposphere.gamelift.InstanceDefinitions, Mixin):
-    def __init__(self,
-                 title=None,
-                 InstanceDefinitions=NOTHING, # type: List[_InstanceDefinition]
-                 **kwargs):
-        processed_kwargs = preprocess_init_kwargs(
-            title=title,
-            InstanceDefinitions=InstanceDefinitions,
-            **kwargs
-        )
-        super(InstanceDefinitions, self).__init__(**processed_kwargs)
-
-
 class LaunchTemplate(troposphere.gamelift.LaunchTemplate, Mixin):
     def __init__(self,
                  title=None,
@@ -328,26 +313,13 @@ class LaunchTemplate(troposphere.gamelift.LaunchTemplate, Mixin):
         super(LaunchTemplate, self).__init__(**processed_kwargs)
 
 
-class VpcSubnets(troposphere.gamelift.VpcSubnets, Mixin):
-    def __init__(self,
-                 title=None,
-                 VpcSubnets=NOTHING, # type: List[Union[str, AWSHelperFn]]
-                 **kwargs):
-        processed_kwargs = preprocess_init_kwargs(
-            title=title,
-            VpcSubnets=VpcSubnets,
-            **kwargs
-        )
-        super(VpcSubnets, self).__init__(**processed_kwargs)
-
-
 class GameServerGroup(troposphere.gamelift.GameServerGroup, Mixin):
     def __init__(self,
                  title, # type: str
                  template=None, # type: Template
                  validation=True, # type: bool
                  GameServerGroupName=REQUIRED, # type: Union[str, AWSHelperFn]
-                 InstanceDefinitions=REQUIRED, # type: _InstanceDefinitions
+                 InstanceDefinitions=REQUIRED, # type: List[_InstanceDefinition]
                  LaunchTemplate=REQUIRED, # type: _LaunchTemplate
                  RoleArn=REQUIRED, # type: Union[str, AWSHelperFn]
                  AutoScalingPolicy=NOTHING, # type: _AutoScalingPolicy
@@ -357,7 +329,7 @@ class GameServerGroup(troposphere.gamelift.GameServerGroup, Mixin):
                  MaxSize=NOTHING, # type: float
                  MinSize=NOTHING, # type: float
                  Tags=NOTHING, # type: _Tags
-                 VpcSubnets=NOTHING, # type: _VpcSubnets
+                 VpcSubnets=NOTHING, # type: List[Union[str, AWSHelperFn]]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
@@ -452,7 +424,6 @@ class MatchmakingConfiguration(troposphere.gamelift.MatchmakingConfiguration, Mi
                  template=None, # type: Template
                  validation=True, # type: bool
                  AcceptanceRequired=REQUIRED, # type: bool
-                 GameSessionQueueArns=REQUIRED, # type: List[Union[str, AWSHelperFn]]
                  Name=REQUIRED, # type: Union[str, AWSHelperFn]
                  RequestTimeoutSeconds=REQUIRED, # type: int
                  RuleSetName=REQUIRED, # type: Union[str, AWSHelperFn]
@@ -461,8 +432,10 @@ class MatchmakingConfiguration(troposphere.gamelift.MatchmakingConfiguration, Mi
                  BackfillMode=NOTHING, # type: Union[str, AWSHelperFn]
                  CustomEventData=NOTHING, # type: Union[str, AWSHelperFn]
                  Description=NOTHING, # type: Union[str, AWSHelperFn]
+                 FlexMatchMode=NOTHING, # type: Union[str, AWSHelperFn]
                  GameProperties=NOTHING, # type: List[_GameProperty]
                  GameSessionData=NOTHING, # type: Union[str, AWSHelperFn]
+                 GameSessionQueueArns=NOTHING, # type: List[Union[str, AWSHelperFn]]
                  NotificationTarget=NOTHING, # type: Union[str, AWSHelperFn]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
@@ -470,7 +443,6 @@ class MatchmakingConfiguration(troposphere.gamelift.MatchmakingConfiguration, Mi
             template=template,
             validation=validation,
             AcceptanceRequired=AcceptanceRequired,
-            GameSessionQueueArns=GameSessionQueueArns,
             Name=Name,
             RequestTimeoutSeconds=RequestTimeoutSeconds,
             RuleSetName=RuleSetName,
@@ -479,8 +451,10 @@ class MatchmakingConfiguration(troposphere.gamelift.MatchmakingConfiguration, Mi
             BackfillMode=BackfillMode,
             CustomEventData=CustomEventData,
             Description=Description,
+            FlexMatchMode=FlexMatchMode,
             GameProperties=GameProperties,
             GameSessionData=GameSessionData,
+            GameSessionQueueArns=GameSessionQueueArns,
             NotificationTarget=NotificationTarget,
             **kwargs
         )

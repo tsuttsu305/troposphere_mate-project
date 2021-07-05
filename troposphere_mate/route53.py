@@ -28,6 +28,46 @@ from troposphere_mate.core.sentiel import REQUIRED, NOTHING
 
 
 
+class DNSSEC(troposphere.route53.DNSSEC, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 HostedZoneId=REQUIRED, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            HostedZoneId=HostedZoneId,
+            **kwargs
+        )
+        super(DNSSEC, self).__init__(**processed_kwargs)
+
+
+class KeySigningKey(troposphere.route53.KeySigningKey, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 HostedZoneId=REQUIRED, # type: Union[str, AWSHelperFn]
+                 KeyManagementServiceArn=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Name=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Status=REQUIRED, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            HostedZoneId=HostedZoneId,
+            KeyManagementServiceArn=KeyManagementServiceArn,
+            Name=Name,
+            Status=Status,
+            **kwargs
+        )
+        super(KeySigningKey, self).__init__(**processed_kwargs)
+
+
 class AliasTarget(troposphere.route53.AliasTarget, Mixin):
     def __init__(self,
                  title=None,
@@ -226,6 +266,23 @@ class HostedZone(troposphere.route53.HostedZone, Mixin):
             **kwargs
         )
         super(HostedZone, self).__init__(**processed_kwargs)
+
+
+class ResolverDNSSECConfig(troposphere.route53.ResolverDNSSECConfig, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 ResourceId=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            ResourceId=ResourceId,
+            **kwargs
+        )
+        super(ResolverDNSSECConfig, self).__init__(**processed_kwargs)
 
 
 class IpAddressRequest(troposphere.route53.IpAddressRequest, Mixin):

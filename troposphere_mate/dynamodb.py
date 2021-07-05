@@ -12,6 +12,7 @@ import troposphere.dynamodb
 
 from troposphere.dynamodb import (
     AttributeDefinition as _AttributeDefinition,
+    ContributorInsightsSpecification as _ContributorInsightsSpecification,
     GlobalSecondaryIndex as _GlobalSecondaryIndex,
     KeySchema as _KeySchema,
     LocalSecondaryIndex as _LocalSecondaryIndex,
@@ -44,6 +45,19 @@ class AttributeDefinition(troposphere.dynamodb.AttributeDefinition, Mixin):
             **kwargs
         )
         super(AttributeDefinition, self).__init__(**processed_kwargs)
+
+
+class ContributorInsightsSpecification(troposphere.dynamodb.ContributorInsightsSpecification, Mixin):
+    def __init__(self,
+                 title=None,
+                 Enabled=REQUIRED, # type: bool
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Enabled=Enabled,
+            **kwargs
+        )
+        super(ContributorInsightsSpecification, self).__init__(**processed_kwargs)
 
 
 class KeySchema(troposphere.dynamodb.KeySchema, Mixin):
@@ -193,6 +207,7 @@ class Table(troposphere.dynamodb.Table, Mixin):
                  AttributeDefinitions=REQUIRED, # type: List[_AttributeDefinition]
                  KeySchema=REQUIRED, # type: List[_KeySchema]
                  BillingMode=NOTHING, # type: Any
+                 ContributorInsightsSpecification=NOTHING, # type: _ContributorInsightsSpecification
                  GlobalSecondaryIndexes=NOTHING, # type: List[_GlobalSecondaryIndex]
                  LocalSecondaryIndexes=NOTHING, # type: List[_LocalSecondaryIndex]
                  PointInTimeRecoverySpecification=NOTHING, # type: _PointInTimeRecoverySpecification
@@ -210,6 +225,7 @@ class Table(troposphere.dynamodb.Table, Mixin):
             AttributeDefinitions=AttributeDefinitions,
             KeySchema=KeySchema,
             BillingMode=BillingMode,
+            ContributorInsightsSpecification=ContributorInsightsSpecification,
             GlobalSecondaryIndexes=GlobalSecondaryIndexes,
             LocalSecondaryIndexes=LocalSecondaryIndexes,
             PointInTimeRecoverySpecification=PointInTimeRecoverySpecification,

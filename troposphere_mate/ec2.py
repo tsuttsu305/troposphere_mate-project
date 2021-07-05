@@ -13,10 +13,13 @@ import troposphere.ec2
 from troposphere.ec2 import (
     AssociationParameters as _AssociationParameters,
     BlockDeviceMapping as _BlockDeviceMapping,
+    CapacityReservationSpecification as _CapacityReservationSpecification,
+    CapacityReservationTarget as _CapacityReservationTarget,
     CertificateAuthenticationRequest as _CertificateAuthenticationRequest,
     ClassicLoadBalancer as _ClassicLoadBalancer,
     ClassicLoadBalancersConfig as _ClassicLoadBalancersConfig,
     ClientAuthenticationRequest as _ClientAuthenticationRequest,
+    ClientConnectOptions as _ClientConnectOptions,
     ConnectionLogOptions as _ConnectionLogOptions,
     CpuOptions as _CpuOptions,
     CreditSpecification as _CreditSpecification,
@@ -24,6 +27,7 @@ from troposphere.ec2 import (
     EBSBlockDevice as _EBSBlockDevice,
     ElasticGpuSpecification as _ElasticGpuSpecification,
     ElasticInferenceAccelerator as _ElasticInferenceAccelerator,
+    EnclaveOptions as _EnclaveOptions,
     Entry as _Entry,
     FederatedAuthenticationRequest as _FederatedAuthenticationRequest,
     FleetLaunchTemplateConfigRequest as _FleetLaunchTemplateConfigRequest,
@@ -53,8 +57,10 @@ from troposphere.ec2 import (
     PortRange as _PortRange,
     PrivateIpAddressSpecification as _PrivateIpAddressSpecification,
     SecurityGroups as _SecurityGroups,
+    SpotCapacityRebalance as _SpotCapacityRebalance,
     SpotFleetRequestConfigData as _SpotFleetRequestConfigData,
     SpotFleetTagSpecification as _SpotFleetTagSpecification,
+    SpotMaintenanceStrategies as _SpotMaintenanceStrategies,
     SpotOptions as _SpotOptions,
     SpotOptionsRequest as _SpotOptionsRequest,
     SsmAssociations as _SsmAssociations,
@@ -64,6 +70,7 @@ from troposphere.ec2 import (
     TargetGroup as _TargetGroup,
     TargetGroupConfig as _TargetGroupConfig,
     TrafficMirrorPortRange as _TrafficMirrorPortRange,
+    TransitGatewayConnectOptions as _TransitGatewayConnectOptions,
     VpnTunnelOptionsSpecification as _VpnTunnelOptionsSpecification,
 )
 
@@ -286,6 +293,7 @@ class EBSBlockDevice(troposphere.ec2.EBSBlockDevice, Mixin):
                  Encrypted=NOTHING, # type: bool
                  KmsKeyId=NOTHING, # type: Union[str, AWSHelperFn]
                  Iops=NOTHING, # type: int
+                 Throughput=NOTHING, # type: int
                  SnapshotId=NOTHING, # type: Union[str, AWSHelperFn]
                  VolumeSize=NOTHING, # type: int
                  VolumeType=NOTHING, # type: Union[str, AWSHelperFn]
@@ -296,6 +304,7 @@ class EBSBlockDevice(troposphere.ec2.EBSBlockDevice, Mixin):
             Encrypted=Encrypted,
             KmsKeyId=KmsKeyId,
             Iops=Iops,
+            Throughput=Throughput,
             SnapshotId=SnapshotId,
             VolumeSize=VolumeSize,
             VolumeType=VolumeType,
@@ -440,6 +449,56 @@ class LaunchTemplateSpecification(troposphere.ec2.LaunchTemplateSpecification, M
         super(LaunchTemplateSpecification, self).__init__(**processed_kwargs)
 
 
+class NetworkInsightsAnalysis(troposphere.ec2.NetworkInsightsAnalysis, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 NetworkInsightsPathId=REQUIRED, # type: Union[str, AWSHelperFn]
+                 FilterInArns=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 Tags=NOTHING, # type: _Tags
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            NetworkInsightsPathId=NetworkInsightsPathId,
+            FilterInArns=FilterInArns,
+            Tags=Tags,
+            **kwargs
+        )
+        super(NetworkInsightsAnalysis, self).__init__(**processed_kwargs)
+
+
+class NetworkInsightsPath(troposphere.ec2.NetworkInsightsPath, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 Destination=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Protocol=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Source=REQUIRED, # type: Union[str, AWSHelperFn]
+                 DestinationIp=NOTHING, # type: Union[str, AWSHelperFn]
+                 DestinationPort=NOTHING, # type: int
+                 SourceIp=NOTHING, # type: Union[str, AWSHelperFn]
+                 Tags=NOTHING, # type: _Tags
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            Destination=Destination,
+            Protocol=Protocol,
+            Source=Source,
+            DestinationIp=DestinationIp,
+            DestinationPort=DestinationPort,
+            SourceIp=SourceIp,
+            Tags=Tags,
+            **kwargs
+        )
+        super(NetworkInsightsPath, self).__init__(**processed_kwargs)
+
+
 class PrivateIpAddressSpecification(troposphere.ec2.PrivateIpAddressSpecification, Mixin):
     def __init__(self,
                  title=None,
@@ -459,13 +518,15 @@ class NetworkInterfaceProperty(troposphere.ec2.NetworkInterfaceProperty, Mixin):
     def __init__(self,
                  title=None,
                  DeviceIndex=REQUIRED, # type: int
+                 AssociateCarrierIpAddress=NOTHING, # type: bool
                  AssociatePublicIpAddress=NOTHING, # type: bool
                  DeleteOnTermination=NOTHING, # type: bool
                  Description=NOTHING, # type: Union[str, AWSHelperFn]
                  GroupSet=NOTHING, # type: List[Union[str, AWSHelperFn]]
-                 NetworkInterfaceId=NOTHING, # type: Union[str, AWSHelperFn]
                  Ipv6AddressCount=NOTHING, # type: int
                  Ipv6Addresses=NOTHING, # type: List[_Ipv6Addresses]
+                 NetworkCardIndex=NOTHING, # type: int
+                 NetworkInterfaceId=NOTHING, # type: Union[str, AWSHelperFn]
                  PrivateIpAddress=NOTHING, # type: Union[str, AWSHelperFn]
                  PrivateIpAddresses=NOTHING, # type: List[_PrivateIpAddressSpecification]
                  SecondaryPrivateIpAddressCount=NOTHING, # type: int
@@ -474,13 +535,15 @@ class NetworkInterfaceProperty(troposphere.ec2.NetworkInterfaceProperty, Mixin):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             DeviceIndex=DeviceIndex,
+            AssociateCarrierIpAddress=AssociateCarrierIpAddress,
             AssociatePublicIpAddress=AssociatePublicIpAddress,
             DeleteOnTermination=DeleteOnTermination,
             Description=Description,
             GroupSet=GroupSet,
-            NetworkInterfaceId=NetworkInterfaceId,
             Ipv6AddressCount=Ipv6AddressCount,
             Ipv6Addresses=Ipv6Addresses,
+            NetworkCardIndex=NetworkCardIndex,
+            NetworkInterfaceId=NetworkInterfaceId,
             PrivateIpAddress=PrivateIpAddress,
             PrivateIpAddresses=PrivateIpAddresses,
             SecondaryPrivateIpAddressCount=SecondaryPrivateIpAddressCount,
@@ -590,6 +653,19 @@ class LicenseSpecification(troposphere.ec2.LicenseSpecification, Mixin):
         super(LicenseSpecification, self).__init__(**processed_kwargs)
 
 
+class EnclaveOptions(troposphere.ec2.EnclaveOptions, Mixin):
+    def __init__(self,
+                 title=None,
+                 Enabled=NOTHING, # type: bool
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Enabled=Enabled,
+            **kwargs
+        )
+        super(EnclaveOptions, self).__init__(**processed_kwargs)
+
+
 class HibernationOptions(troposphere.ec2.HibernationOptions, Mixin):
     def __init__(self,
                  title=None,
@@ -617,6 +693,7 @@ class Instance(troposphere.ec2.Instance, Mixin):
                  EbsOptimized=NOTHING, # type: bool
                  ElasticGpuSpecifications=NOTHING, # type: List[_ElasticGpuSpecification]
                  ElasticInferenceAccelerators=NOTHING, # type: List[_ElasticInferenceAccelerator]
+                 EnclaveOptions=NOTHING, # type: _EnclaveOptions
                  HibernationOptions=NOTHING, # type: _HibernationOptions
                  HostId=NOTHING, # type: Union[str, AWSHelperFn]
                  HostResourceGroupArn=NOTHING, # type: Union[str, AWSHelperFn]
@@ -658,6 +735,7 @@ class Instance(troposphere.ec2.Instance, Mixin):
             EbsOptimized=EbsOptimized,
             ElasticGpuSpecifications=ElasticGpuSpecifications,
             ElasticInferenceAccelerators=ElasticInferenceAccelerators,
+            EnclaveOptions=EnclaveOptions,
             HibernationOptions=HibernationOptions,
             HostId=HostId,
             HostResourceGroupArn=HostResourceGroupArn,
@@ -914,14 +992,17 @@ class Route(troposphere.ec2.Route, Mixin):
                  template=None, # type: Template
                  validation=True, # type: bool
                  RouteTableId=REQUIRED, # type: Union[str, AWSHelperFn]
+                 CarrierGatewayId=NOTHING, # type: Union[str, AWSHelperFn]
                  DestinationCidrBlock=NOTHING, # type: Union[str, AWSHelperFn]
                  DestinationIpv6CidrBlock=NOTHING, # type: Union[str, AWSHelperFn]
                  EgressOnlyInternetGatewayId=NOTHING, # type: Union[str, AWSHelperFn]
                  GatewayId=NOTHING, # type: Union[str, AWSHelperFn]
                  InstanceId=NOTHING, # type: Union[str, AWSHelperFn]
+                 LocalGatewayId=NOTHING, # type: Union[str, AWSHelperFn]
                  NatGatewayId=NOTHING, # type: Union[str, AWSHelperFn]
                  NetworkInterfaceId=NOTHING, # type: Union[str, AWSHelperFn]
                  TransitGatewayId=NOTHING, # type: Union[str, AWSHelperFn]
+                 VpcEndpointId=NOTHING, # type: Union[str, AWSHelperFn]
                  VpcPeeringConnectionId=NOTHING, # type: Union[str, AWSHelperFn]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
@@ -929,14 +1010,17 @@ class Route(troposphere.ec2.Route, Mixin):
             template=template,
             validation=validation,
             RouteTableId=RouteTableId,
+            CarrierGatewayId=CarrierGatewayId,
             DestinationCidrBlock=DestinationCidrBlock,
             DestinationIpv6CidrBlock=DestinationIpv6CidrBlock,
             EgressOnlyInternetGatewayId=EgressOnlyInternetGatewayId,
             GatewayId=GatewayId,
             InstanceId=InstanceId,
+            LocalGatewayId=LocalGatewayId,
             NatGatewayId=NatGatewayId,
             NetworkInterfaceId=NetworkInterfaceId,
             TransitGatewayId=TransitGatewayId,
+            VpcEndpointId=VpcEndpointId,
             VpcPeeringConnectionId=VpcPeeringConnectionId,
             **kwargs
         )
@@ -1109,6 +1193,7 @@ class Subnet(troposphere.ec2.Subnet, Mixin):
                  AvailabilityZone=NOTHING, # type: Union[str, AWSHelperFn]
                  Ipv6CidrBlock=NOTHING, # type: Union[str, AWSHelperFn]
                  MapPublicIpOnLaunch=NOTHING, # type: bool
+                 OutpostArn=NOTHING, # type: Union[str, AWSHelperFn]
                  Tags=NOTHING, # type: Union[_Tags, list]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
@@ -1121,6 +1206,7 @@ class Subnet(troposphere.ec2.Subnet, Mixin):
             AvailabilityZone=AvailabilityZone,
             Ipv6CidrBlock=Ipv6CidrBlock,
             MapPublicIpOnLaunch=MapPublicIpOnLaunch,
+            OutpostArn=OutpostArn,
             Tags=Tags,
             **kwargs
         )
@@ -1326,15 +1412,17 @@ class VPCEndpointService(troposphere.ec2.VPCEndpointService, Mixin):
                  title, # type: str
                  template=None, # type: Template
                  validation=True, # type: bool
-                 NetworkLoadBalancerArns=REQUIRED, # type: List[Union[str, AWSHelperFn]]
                  AcceptanceRequired=NOTHING, # type: bool
+                 GatewayLoadBalancerArns=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 NetworkLoadBalancerArns=NOTHING, # type: List[Union[str, AWSHelperFn]]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             template=template,
             validation=validation,
-            NetworkLoadBalancerArns=NetworkLoadBalancerArns,
             AcceptanceRequired=AcceptanceRequired,
+            GatewayLoadBalancerArns=GatewayLoadBalancerArns,
+            NetworkLoadBalancerArns=NetworkLoadBalancerArns,
             **kwargs
         )
         super(VPCEndpointService, self).__init__(**processed_kwargs)
@@ -1747,6 +1835,32 @@ class LoadBalancersConfig(troposphere.ec2.LoadBalancersConfig, Mixin):
         super(LoadBalancersConfig, self).__init__(**processed_kwargs)
 
 
+class SpotCapacityRebalance(troposphere.ec2.SpotCapacityRebalance, Mixin):
+    def __init__(self,
+                 title=None,
+                 ReplacementStrategy=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            ReplacementStrategy=ReplacementStrategy,
+            **kwargs
+        )
+        super(SpotCapacityRebalance, self).__init__(**processed_kwargs)
+
+
+class SpotMaintenanceStrategies(troposphere.ec2.SpotMaintenanceStrategies, Mixin):
+    def __init__(self,
+                 title=None,
+                 CapacityRebalance=NOTHING, # type: _SpotCapacityRebalance
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            CapacityRebalance=CapacityRebalance,
+            **kwargs
+        )
+        super(SpotMaintenanceStrategies, self).__init__(**processed_kwargs)
+
+
 class SpotFleetRequestConfigData(troposphere.ec2.SpotFleetRequestConfigData, Mixin):
     def __init__(self,
                  title=None,
@@ -1755,10 +1869,16 @@ class SpotFleetRequestConfigData(troposphere.ec2.SpotFleetRequestConfigData, Mix
                  AllocationStrategy=NOTHING, # type: Union[str, AWSHelperFn]
                  ExcessCapacityTerminationPolicy=NOTHING, # type: Union[str, AWSHelperFn]
                  InstanceInterruptionBehavior=NOTHING, # type: Union[str, AWSHelperFn]
+                 InstancePoolsToUseCount=NOTHING, # type: int
                  LaunchSpecifications=NOTHING, # type: List[_LaunchSpecifications]
                  LaunchTemplateConfigs=NOTHING, # type: List[_LaunchTemplateConfigs]
                  LoadBalancersConfig=NOTHING, # type: _LoadBalancersConfig
+                 OnDemandAllocationStrategy=NOTHING, # type: Union[str, AWSHelperFn]
+                 OnDemandMaxTotalPrice=NOTHING, # type: Union[str, AWSHelperFn]
+                 OnDemandTargetCapacity=NOTHING, # type: int
                  ReplaceUnhealthyInstances=NOTHING, # type: bool
+                 SpotMaintenanceStrategies=NOTHING, # type: _SpotMaintenanceStrategies
+                 SpotMaxTotalPrice=NOTHING, # type: Union[str, AWSHelperFn]
                  SpotPrice=NOTHING, # type: Union[str, AWSHelperFn]
                  TerminateInstancesWithExpiration=NOTHING, # type: bool
                  Type=NOTHING, # type: Union[str, AWSHelperFn]
@@ -1772,10 +1892,16 @@ class SpotFleetRequestConfigData(troposphere.ec2.SpotFleetRequestConfigData, Mix
             AllocationStrategy=AllocationStrategy,
             ExcessCapacityTerminationPolicy=ExcessCapacityTerminationPolicy,
             InstanceInterruptionBehavior=InstanceInterruptionBehavior,
+            InstancePoolsToUseCount=InstancePoolsToUseCount,
             LaunchSpecifications=LaunchSpecifications,
             LaunchTemplateConfigs=LaunchTemplateConfigs,
             LoadBalancersConfig=LoadBalancersConfig,
+            OnDemandAllocationStrategy=OnDemandAllocationStrategy,
+            OnDemandMaxTotalPrice=OnDemandMaxTotalPrice,
+            OnDemandTargetCapacity=OnDemandTargetCapacity,
             ReplaceUnhealthyInstances=ReplaceUnhealthyInstances,
+            SpotMaintenanceStrategies=SpotMaintenanceStrategies,
+            SpotMaxTotalPrice=SpotMaxTotalPrice,
             SpotPrice=SpotPrice,
             TerminateInstancesWithExpiration=TerminateInstancesWithExpiration,
             Type=Type,
@@ -1875,6 +2001,34 @@ class TagSpecifications(troposphere.ec2.TagSpecifications, Mixin):
         super(TagSpecifications, self).__init__(**processed_kwargs)
 
 
+class CapacityReservationTarget(troposphere.ec2.CapacityReservationTarget, Mixin):
+    def __init__(self,
+                 title=None,
+                 CapacityReservationId=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            CapacityReservationId=CapacityReservationId,
+            **kwargs
+        )
+        super(CapacityReservationTarget, self).__init__(**processed_kwargs)
+
+
+class CapacityReservationSpecification(troposphere.ec2.CapacityReservationSpecification, Mixin):
+    def __init__(self,
+                 title=None,
+                 CapacityReservationPreference=NOTHING, # type: Union[str, AWSHelperFn]
+                 CapacityReservationTarget=NOTHING, # type: _CapacityReservationTarget
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            CapacityReservationPreference=CapacityReservationPreference,
+            CapacityReservationTarget=CapacityReservationTarget,
+            **kwargs
+        )
+        super(CapacityReservationSpecification, self).__init__(**processed_kwargs)
+
+
 class SpotOptions(troposphere.ec2.SpotOptions, Mixin):
     def __init__(self,
                  title=None,
@@ -1960,12 +2114,14 @@ class LaunchTemplateData(troposphere.ec2.LaunchTemplateData, Mixin):
     def __init__(self,
                  title=None,
                  BlockDeviceMappings=NOTHING, # type: List[_LaunchTemplateBlockDeviceMapping]
+                 CapacityReservationSpecification=NOTHING, # type: _CapacityReservationSpecification
                  CpuOptions=NOTHING, # type: _CpuOptions
                  CreditSpecification=NOTHING, # type: _LaunchTemplateCreditSpecification
                  DisableApiTermination=NOTHING, # type: bool
                  EbsOptimized=NOTHING, # type: bool
                  ElasticGpuSpecifications=NOTHING, # type: List[_ElasticGpuSpecification]
                  ElasticInferenceAccelerators=NOTHING, # type: List[_LaunchTemplateElasticInferenceAccelerator]
+                 EnclaveOptions=NOTHING, # type: _EnclaveOptions
                  HibernationOptions=NOTHING, # type: _HibernationOptions
                  IamInstanceProfile=NOTHING, # type: _IamInstanceProfile
                  ImageId=NOTHING, # type: Union[str, AWSHelperFn]
@@ -1988,12 +2144,14 @@ class LaunchTemplateData(troposphere.ec2.LaunchTemplateData, Mixin):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             BlockDeviceMappings=BlockDeviceMappings,
+            CapacityReservationSpecification=CapacityReservationSpecification,
             CpuOptions=CpuOptions,
             CreditSpecification=CreditSpecification,
             DisableApiTermination=DisableApiTermination,
             EbsOptimized=EbsOptimized,
             ElasticGpuSpecifications=ElasticGpuSpecifications,
             ElasticInferenceAccelerators=ElasticInferenceAccelerators,
+            EnclaveOptions=EnclaveOptions,
             HibernationOptions=HibernationOptions,
             IamInstanceProfile=IamInstanceProfile,
             ImageId=ImageId,
@@ -2024,6 +2182,7 @@ class LaunchTemplate(troposphere.ec2.LaunchTemplate, Mixin):
                  validation=True, # type: bool
                  LaunchTemplateData=NOTHING, # type: _LaunchTemplateData
                  LaunchTemplateName=NOTHING, # type: Union[str, AWSHelperFn]
+                 TagSpecifications=NOTHING, # type: List[_TagSpecifications]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
@@ -2031,6 +2190,7 @@ class LaunchTemplate(troposphere.ec2.LaunchTemplate, Mixin):
             validation=validation,
             LaunchTemplateData=LaunchTemplateData,
             LaunchTemplateName=LaunchTemplateName,
+            TagSpecifications=TagSpecifications,
             **kwargs
         )
         super(LaunchTemplate, self).__init__(**processed_kwargs)
@@ -2213,6 +2373,124 @@ class TransitGatewayAttachment(troposphere.ec2.TransitGatewayAttachment, Mixin):
             **kwargs
         )
         super(TransitGatewayAttachment, self).__init__(**processed_kwargs)
+
+
+class TransitGatewayConnectOptions(troposphere.ec2.TransitGatewayConnectOptions, Mixin):
+    def __init__(self,
+                 title=None,
+                 Protocol=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Protocol=Protocol,
+            **kwargs
+        )
+        super(TransitGatewayConnectOptions, self).__init__(**processed_kwargs)
+
+
+class TransitGatewayConnect(troposphere.ec2.TransitGatewayConnect, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 Options=REQUIRED, # type: _TransitGatewayConnectOptions
+                 TransportTransitGatewayAttachmentId=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Tags=NOTHING, # type: _Tags
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            Options=Options,
+            TransportTransitGatewayAttachmentId=TransportTransitGatewayAttachmentId,
+            Tags=Tags,
+            **kwargs
+        )
+        super(TransitGatewayConnect, self).__init__(**processed_kwargs)
+
+
+class TransitGatewayMulticastDomain(troposphere.ec2.TransitGatewayMulticastDomain, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 TransitGatewayId=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Options=NOTHING, # type: dict
+                 Tags=NOTHING, # type: _Tags
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            TransitGatewayId=TransitGatewayId,
+            Options=Options,
+            Tags=Tags,
+            **kwargs
+        )
+        super(TransitGatewayMulticastDomain, self).__init__(**processed_kwargs)
+
+
+class TransitGatewayMulticastDomainAssociation(troposphere.ec2.TransitGatewayMulticastDomainAssociation, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 SubnetId=REQUIRED, # type: Union[str, AWSHelperFn]
+                 TransitGatewayAttachmentId=REQUIRED, # type: Union[str, AWSHelperFn]
+                 TransitGatewayMulticastDomainId=REQUIRED, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            SubnetId=SubnetId,
+            TransitGatewayAttachmentId=TransitGatewayAttachmentId,
+            TransitGatewayMulticastDomainId=TransitGatewayMulticastDomainId,
+            **kwargs
+        )
+        super(TransitGatewayMulticastDomainAssociation, self).__init__(**processed_kwargs)
+
+
+class TransitGatewayMulticastGroupMember(troposphere.ec2.TransitGatewayMulticastGroupMember, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 GroupIpAddress=REQUIRED, # type: Union[str, AWSHelperFn]
+                 NetworkInterfaceId=REQUIRED, # type: Union[str, AWSHelperFn]
+                 TransitGatewayMulticastDomainId=REQUIRED, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            GroupIpAddress=GroupIpAddress,
+            NetworkInterfaceId=NetworkInterfaceId,
+            TransitGatewayMulticastDomainId=TransitGatewayMulticastDomainId,
+            **kwargs
+        )
+        super(TransitGatewayMulticastGroupMember, self).__init__(**processed_kwargs)
+
+
+class TransitGatewayMulticastGroupSource(troposphere.ec2.TransitGatewayMulticastGroupSource, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 GroupIpAddress=REQUIRED, # type: Union[str, AWSHelperFn]
+                 NetworkInterfaceId=REQUIRED, # type: Union[str, AWSHelperFn]
+                 TransitGatewayMulticastDomainId=REQUIRED, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            GroupIpAddress=GroupIpAddress,
+            NetworkInterfaceId=NetworkInterfaceId,
+            TransitGatewayMulticastDomainId=TransitGatewayMulticastDomainId,
+            **kwargs
+        )
+        super(TransitGatewayMulticastGroupSource, self).__init__(**processed_kwargs)
 
 
 class TransitGatewayRoute(troposphere.ec2.TransitGatewayRoute, Mixin):
@@ -2528,10 +2806,12 @@ class FederatedAuthenticationRequest(troposphere.ec2.FederatedAuthenticationRequ
     def __init__(self,
                  title=None,
                  SAMLProviderArn=REQUIRED, # type: Union[str, AWSHelperFn]
+                 SelfServiceSAMLProviderArn=NOTHING, # type: Union[str, AWSHelperFn]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             SAMLProviderArn=SAMLProviderArn,
+            SelfServiceSAMLProviderArn=SelfServiceSAMLProviderArn,
             **kwargs
         )
         super(FederatedAuthenticationRequest, self).__init__(**processed_kwargs)
@@ -2554,6 +2834,21 @@ class ClientAuthenticationRequest(troposphere.ec2.ClientAuthenticationRequest, M
             **kwargs
         )
         super(ClientAuthenticationRequest, self).__init__(**processed_kwargs)
+
+
+class ClientConnectOptions(troposphere.ec2.ClientConnectOptions, Mixin):
+    def __init__(self,
+                 title=None,
+                 Enabled=REQUIRED, # type: bool
+                 LambdaFunctionArn=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Enabled=Enabled,
+            LambdaFunctionArn=LambdaFunctionArn,
+            **kwargs
+        )
+        super(ClientConnectOptions, self).__init__(**processed_kwargs)
 
 
 class ConnectionLogOptions(troposphere.ec2.ConnectionLogOptions, Mixin):
@@ -2582,9 +2877,11 @@ class ClientVpnEndpoint(troposphere.ec2.ClientVpnEndpoint, Mixin):
                  ClientCidrBlock=REQUIRED, # type: Union[str, AWSHelperFn]
                  ConnectionLogOptions=REQUIRED, # type: _ConnectionLogOptions
                  ServerCertificateArn=REQUIRED, # type: Union[str, AWSHelperFn]
+                 ClientConnectOptions=NOTHING, # type: _ClientConnectOptions
                  Description=NOTHING, # type: Union[str, AWSHelperFn]
                  DnsServers=NOTHING, # type: List[Union[str, AWSHelperFn]]
                  SecurityGroupIds=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 SelfServicePortal=NOTHING, # type: Any
                  SplitTunnel=NOTHING, # type: bool
                  TagSpecifications=NOTHING, # type: List[_TagSpecifications]
                  TransportProtocol=NOTHING, # type: Union[str, AWSHelperFn]
@@ -2599,9 +2896,11 @@ class ClientVpnEndpoint(troposphere.ec2.ClientVpnEndpoint, Mixin):
             ClientCidrBlock=ClientCidrBlock,
             ConnectionLogOptions=ConnectionLogOptions,
             ServerCertificateArn=ServerCertificateArn,
+            ClientConnectOptions=ClientConnectOptions,
             Description=Description,
             DnsServers=DnsServers,
             SecurityGroupIds=SecurityGroupIds,
+            SelfServicePortal=SelfServicePortal,
             SplitTunnel=SplitTunnel,
             TagSpecifications=TagSpecifications,
             TransportProtocol=TransportProtocol,

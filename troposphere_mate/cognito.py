@@ -41,6 +41,7 @@ from troposphere.cognito import (
     SchemaAttribute as _SchemaAttribute,
     SmsConfiguration as _SmsConfiguration,
     StringAttributeConstraints as _StringAttributeConstraints,
+    TokenValidityUnits as _TokenValidityUnits,
     UserPoolAddOns as _UserPoolAddOns,
     UsernameConfiguration as _UsernameConfiguration,
     VerificationMessageTemplate as _VerificationMessageTemplate,
@@ -569,12 +570,30 @@ class AnalyticsConfiguration(troposphere.cognito.AnalyticsConfiguration, Mixin):
         super(AnalyticsConfiguration, self).__init__(**processed_kwargs)
 
 
+class TokenValidityUnits(troposphere.cognito.TokenValidityUnits, Mixin):
+    def __init__(self,
+                 title=None,
+                 AccessToken=NOTHING, # type: Union[str, AWSHelperFn]
+                 IdToken=NOTHING, # type: Union[str, AWSHelperFn]
+                 RefreshToken=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            AccessToken=AccessToken,
+            IdToken=IdToken,
+            RefreshToken=RefreshToken,
+            **kwargs
+        )
+        super(TokenValidityUnits, self).__init__(**processed_kwargs)
+
+
 class UserPoolClient(troposphere.cognito.UserPoolClient, Mixin):
     def __init__(self,
                  title, # type: str
                  template=None, # type: Template
                  validation=True, # type: bool
                  UserPoolId=REQUIRED, # type: Union[str, AWSHelperFn]
+                 AccessTokenValidity=NOTHING, # type: int
                  AllowedOAuthFlows=NOTHING, # type: List[Union[str, AWSHelperFn]]
                  AllowedOAuthFlowsUserPoolClient=NOTHING, # type: bool
                  AllowedOAuthScopes=NOTHING, # type: List[Union[str, AWSHelperFn]]
@@ -584,11 +603,13 @@ class UserPoolClient(troposphere.cognito.UserPoolClient, Mixin):
                  DefaultRedirectURI=NOTHING, # type: Union[str, AWSHelperFn]
                  ExplicitAuthFlows=NOTHING, # type: List[Union[str, AWSHelperFn]]
                  GenerateSecret=NOTHING, # type: bool
+                 IdTokenValidity=NOTHING, # type: int
                  LogoutURLs=NOTHING, # type: List[Union[str, AWSHelperFn]]
                  PreventUserExistenceErrors=NOTHING, # type: Union[str, AWSHelperFn]
                  ReadAttributes=NOTHING, # type: List[Union[str, AWSHelperFn]]
                  RefreshTokenValidity=NOTHING, # type: int
                  SupportedIdentityProviders=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 TokenValidityUnits=NOTHING, # type: _TokenValidityUnits
                  WriteAttributes=NOTHING, # type: List[Union[str, AWSHelperFn]]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
@@ -596,6 +617,7 @@ class UserPoolClient(troposphere.cognito.UserPoolClient, Mixin):
             template=template,
             validation=validation,
             UserPoolId=UserPoolId,
+            AccessTokenValidity=AccessTokenValidity,
             AllowedOAuthFlows=AllowedOAuthFlows,
             AllowedOAuthFlowsUserPoolClient=AllowedOAuthFlowsUserPoolClient,
             AllowedOAuthScopes=AllowedOAuthScopes,
@@ -605,11 +627,13 @@ class UserPoolClient(troposphere.cognito.UserPoolClient, Mixin):
             DefaultRedirectURI=DefaultRedirectURI,
             ExplicitAuthFlows=ExplicitAuthFlows,
             GenerateSecret=GenerateSecret,
+            IdTokenValidity=IdTokenValidity,
             LogoutURLs=LogoutURLs,
             PreventUserExistenceErrors=PreventUserExistenceErrors,
             ReadAttributes=ReadAttributes,
             RefreshTokenValidity=RefreshTokenValidity,
             SupportedIdentityProviders=SupportedIdentityProviders,
+            TokenValidityUnits=TokenValidityUnits,
             WriteAttributes=WriteAttributes,
             **kwargs
         )

@@ -85,6 +85,7 @@ class MetricDataQuery(troposphere.cloudwatch.MetricDataQuery, Mixin):
                  Expression=NOTHING, # type: Union[str, AWSHelperFn]
                  Label=NOTHING, # type: Union[str, AWSHelperFn]
                  MetricStat=NOTHING, # type: _MetricStat
+                 Period=NOTHING, # type: int
                  ReturnData=NOTHING, # type: bool
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
@@ -93,6 +94,7 @@ class MetricDataQuery(troposphere.cloudwatch.MetricDataQuery, Mixin):
             Expression=Expression,
             Label=Label,
             MetricStat=MetricStat,
+            Period=Period,
             ReturnData=ReturnData,
             **kwargs
         )

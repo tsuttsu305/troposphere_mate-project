@@ -14,6 +14,7 @@ from troposphere.cloudformation import (
     AutoDeployment as _AutoDeployment,
     DeploymentTargets as _DeploymentTargets,
     InitFileContext as _InitFileContext,
+    LoggingConfig as _LoggingConfig,
     OperationPreferences as _OperationPreferences,
     Parameter as _Parameter,
     StackInstances as _StackInstances,
@@ -25,6 +26,105 @@ from troposphere import Template, AWSHelperFn
 from troposphere_mate.core.mate import preprocess_init_kwargs, Mixin
 from troposphere_mate.core.sentiel import REQUIRED, NOTHING
 
+
+
+class ModuleDefaultVersion(troposphere.cloudformation.ModuleDefaultVersion, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 Arn=NOTHING, # type: Union[str, AWSHelperFn]
+                 ModuleName=NOTHING, # type: Union[str, AWSHelperFn]
+                 VersionId=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            Arn=Arn,
+            ModuleName=ModuleName,
+            VersionId=VersionId,
+            **kwargs
+        )
+        super(ModuleDefaultVersion, self).__init__(**processed_kwargs)
+
+
+class ModuleVersion(troposphere.cloudformation.ModuleVersion, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 ModuleName=REQUIRED, # type: Union[str, AWSHelperFn]
+                 ModulePackage=REQUIRED, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            ModuleName=ModuleName,
+            ModulePackage=ModulePackage,
+            **kwargs
+        )
+        super(ModuleVersion, self).__init__(**processed_kwargs)
+
+
+class ResourceDefaultVersion(troposphere.cloudformation.ResourceDefaultVersion, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 TypeName=NOTHING, # type: Union[str, AWSHelperFn]
+                 TypeVersionArn=NOTHING, # type: Union[str, AWSHelperFn]
+                 VersionId=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            TypeName=TypeName,
+            TypeVersionArn=TypeVersionArn,
+            VersionId=VersionId,
+            **kwargs
+        )
+        super(ResourceDefaultVersion, self).__init__(**processed_kwargs)
+
+
+class LoggingConfig(troposphere.cloudformation.LoggingConfig, Mixin):
+    def __init__(self,
+                 title=None,
+                 LogGroupName=NOTHING, # type: Union[str, AWSHelperFn]
+                 LogRoleArn=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            LogGroupName=LogGroupName,
+            LogRoleArn=LogRoleArn,
+            **kwargs
+        )
+        super(LoggingConfig, self).__init__(**processed_kwargs)
+
+
+class ResourceVersion(troposphere.cloudformation.ResourceVersion, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 SchemaHandlerPackage=REQUIRED, # type: Union[str, AWSHelperFn]
+                 TypeName=REQUIRED, # type: Union[str, AWSHelperFn]
+                 ExecutionRoleArn=NOTHING, # type: Union[str, AWSHelperFn]
+                 LoggingConfig=NOTHING, # type: _LoggingConfig
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            SchemaHandlerPackage=SchemaHandlerPackage,
+            TypeName=TypeName,
+            ExecutionRoleArn=ExecutionRoleArn,
+            LoggingConfig=LoggingConfig,
+            **kwargs
+        )
+        super(ResourceVersion, self).__init__(**processed_kwargs)
 
 
 class Stack(troposphere.cloudformation.Stack, Mixin):

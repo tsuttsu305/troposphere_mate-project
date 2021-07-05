@@ -13,6 +13,7 @@ import troposphere.secretsmanager
 from troposphere.secretsmanager import (
     GenerateSecretString as _GenerateSecretString,
     HostedRotationLambda as _HostedRotationLambda,
+    ReplicaRegion as _ReplicaRegion,
     RotationRules as _RotationRules,
     Tags as _Tags,
 )
@@ -31,6 +32,7 @@ class ResourcePolicy(troposphere.secretsmanager.ResourcePolicy, Mixin):
                  validation=True, # type: bool
                  SecretId=REQUIRED, # type: Union[str, AWSHelperFn]
                  ResourcePolicy=REQUIRED, # type: Union[dict]
+                 BlockPublicPolicy=NOTHING, # type: bool
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
@@ -38,6 +40,7 @@ class ResourcePolicy(troposphere.secretsmanager.ResourcePolicy, Mixin):
             validation=validation,
             SecretId=SecretId,
             ResourcePolicy=ResourcePolicy,
+            BlockPublicPolicy=BlockPublicPolicy,
             **kwargs
         )
         super(ResourcePolicy, self).__init__(**processed_kwargs)
@@ -135,6 +138,21 @@ class GenerateSecretString(troposphere.secretsmanager.GenerateSecretString, Mixi
         super(GenerateSecretString, self).__init__(**processed_kwargs)
 
 
+class ReplicaRegion(troposphere.secretsmanager.ReplicaRegion, Mixin):
+    def __init__(self,
+                 title=None,
+                 Region=REQUIRED, # type: Union[str, AWSHelperFn]
+                 KmsKeyId=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Region=Region,
+            KmsKeyId=KmsKeyId,
+            **kwargs
+        )
+        super(ReplicaRegion, self).__init__(**processed_kwargs)
+
+
 class Secret(troposphere.secretsmanager.Secret, Mixin):
     def __init__(self,
                  title, # type: str
@@ -144,6 +162,7 @@ class Secret(troposphere.secretsmanager.Secret, Mixin):
                  GenerateSecretString=NOTHING, # type: _GenerateSecretString
                  KmsKeyId=NOTHING, # type: Union[str, AWSHelperFn]
                  Name=NOTHING, # type: Union[str, AWSHelperFn]
+                 ReplicaRegions=NOTHING, # type: List[_ReplicaRegion]
                  SecretString=NOTHING, # type: Union[str, AWSHelperFn]
                  Tags=NOTHING, # type: Union[_Tags, list]
                  **kwargs):
@@ -155,6 +174,7 @@ class Secret(troposphere.secretsmanager.Secret, Mixin):
             GenerateSecretString=GenerateSecretString,
             KmsKeyId=KmsKeyId,
             Name=Name,
+            ReplicaRegions=ReplicaRegions,
             SecretString=SecretString,
             Tags=Tags,
             **kwargs

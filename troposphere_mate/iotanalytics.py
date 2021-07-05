@@ -17,6 +17,7 @@ from troposphere.iotanalytics import (
     ActivityDatastore as _ActivityDatastore,
     AddAttributes as _AddAttributes,
     ChannelStorage as _ChannelStorage,
+    Column as _Column,
     ContainerAction as _ContainerAction,
     CustomerManagedS3 as _CustomerManagedS3,
     DatasetContentDeliveryRule as _DatasetContentDeliveryRule,
@@ -24,14 +25,19 @@ from troposphere.iotanalytics import (
     DatasetContentVersionValue as _DatasetContentVersionValue,
     DatastoreStorage as _DatastoreStorage,
     DeltaTime as _DeltaTime,
+    DeltaTimeSessionWindowConfiguration as _DeltaTimeSessionWindowConfiguration,
     DeviceRegistryEnrich as _DeviceRegistryEnrich,
     DeviceShadowEnrich as _DeviceShadowEnrich,
+    FileFormatConfiguration as _FileFormatConfiguration,
     Filter as _Filter,
     GlueConfiguration as _GlueConfiguration,
     IotEventsDestinationConfiguration as _IotEventsDestinationConfiguration,
     Lambda as _Lambda,
+    LateDataRule as _LateDataRule,
+    LateDataRuleConfiguration as _LateDataRuleConfiguration,
     Math as _Math,
     OutputFileUriValue as _OutputFileUriValue,
+    ParquetConfiguration as _ParquetConfiguration,
     QueryAction as _QueryAction,
     QueryActionFilter as _QueryActionFilter,
     RemoveAttributes as _RemoveAttributes,
@@ -39,6 +45,7 @@ from troposphere.iotanalytics import (
     RetentionPeriod as _RetentionPeriod,
     S3DestinationConfiguration as _S3DestinationConfiguration,
     Schedule as _Schedule,
+    SchemaDefinition as _SchemaDefinition,
     SelectAttributes as _SelectAttributes,
     ServiceManagedS3 as _ServiceManagedS3,
     Tags as _Tags,
@@ -588,6 +595,47 @@ class DatasetContentDeliveryRule(troposphere.iotanalytics.DatasetContentDelivery
         super(DatasetContentDeliveryRule, self).__init__(**processed_kwargs)
 
 
+class DeltaTimeSessionWindowConfiguration(troposphere.iotanalytics.DeltaTimeSessionWindowConfiguration, Mixin):
+    def __init__(self,
+                 title=None,
+                 TimeoutInMinutes=REQUIRED, # type: int
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            TimeoutInMinutes=TimeoutInMinutes,
+            **kwargs
+        )
+        super(DeltaTimeSessionWindowConfiguration, self).__init__(**processed_kwargs)
+
+
+class LateDataRuleConfiguration(troposphere.iotanalytics.LateDataRuleConfiguration, Mixin):
+    def __init__(self,
+                 title=None,
+                 DeltaTimeSessionWindowConfiguration=NOTHING, # type: _DeltaTimeSessionWindowConfiguration
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            DeltaTimeSessionWindowConfiguration=DeltaTimeSessionWindowConfiguration,
+            **kwargs
+        )
+        super(LateDataRuleConfiguration, self).__init__(**processed_kwargs)
+
+
+class LateDataRule(troposphere.iotanalytics.LateDataRule, Mixin):
+    def __init__(self,
+                 title=None,
+                 RuleConfiguration=REQUIRED, # type: _LateDataRuleConfiguration
+                 RuleName=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            RuleConfiguration=RuleConfiguration,
+            RuleName=RuleName,
+            **kwargs
+        )
+        super(LateDataRule, self).__init__(**processed_kwargs)
+
+
 class Schedule(troposphere.iotanalytics.Schedule, Mixin):
     def __init__(self,
                  title=None,
@@ -652,6 +700,7 @@ class Dataset(troposphere.iotanalytics.Dataset, Mixin):
                  Actions=REQUIRED, # type: List[_Action]
                  ContentDeliveryRules=NOTHING, # type: List[_DatasetContentDeliveryRule]
                  DatasetName=NOTHING, # type: Union[str, AWSHelperFn]
+                 LateDataRules=NOTHING, # type: List[_LateDataRule]
                  RetentionPeriod=NOTHING, # type: _RetentionPeriod
                  Tags=NOTHING, # type: _Tags
                  Triggers=NOTHING, # type: List[_Trigger]
@@ -664,6 +713,7 @@ class Dataset(troposphere.iotanalytics.Dataset, Mixin):
             Actions=Actions,
             ContentDeliveryRules=ContentDeliveryRules,
             DatasetName=DatasetName,
+            LateDataRules=LateDataRules,
             RetentionPeriod=RetentionPeriod,
             Tags=Tags,
             Triggers=Triggers,
@@ -688,6 +738,62 @@ class DatastoreStorage(troposphere.iotanalytics.DatastoreStorage, Mixin):
         super(DatastoreStorage, self).__init__(**processed_kwargs)
 
 
+class Column(troposphere.iotanalytics.Column, Mixin):
+    def __init__(self,
+                 title=None,
+                 Name=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Type=REQUIRED, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Name=Name,
+            Type=Type,
+            **kwargs
+        )
+        super(Column, self).__init__(**processed_kwargs)
+
+
+class SchemaDefinition(troposphere.iotanalytics.SchemaDefinition, Mixin):
+    def __init__(self,
+                 title=None,
+                 Columns=NOTHING, # type: List[_Column]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Columns=Columns,
+            **kwargs
+        )
+        super(SchemaDefinition, self).__init__(**processed_kwargs)
+
+
+class ParquetConfiguration(troposphere.iotanalytics.ParquetConfiguration, Mixin):
+    def __init__(self,
+                 title=None,
+                 SchemaDefinition=NOTHING, # type: _SchemaDefinition
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            SchemaDefinition=SchemaDefinition,
+            **kwargs
+        )
+        super(ParquetConfiguration, self).__init__(**processed_kwargs)
+
+
+class FileFormatConfiguration(troposphere.iotanalytics.FileFormatConfiguration, Mixin):
+    def __init__(self,
+                 title=None,
+                 JsonConfiguration=NOTHING, # type: dict
+                 ParquetConfiguration=NOTHING, # type: _ParquetConfiguration
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            JsonConfiguration=JsonConfiguration,
+            ParquetConfiguration=ParquetConfiguration,
+            **kwargs
+        )
+        super(FileFormatConfiguration, self).__init__(**processed_kwargs)
+
+
 class Datastore(troposphere.iotanalytics.Datastore, Mixin):
     def __init__(self,
                  title, # type: str
@@ -695,6 +801,7 @@ class Datastore(troposphere.iotanalytics.Datastore, Mixin):
                  validation=True, # type: bool
                  DatastoreName=NOTHING, # type: Union[str, AWSHelperFn]
                  DatastoreStorage=NOTHING, # type: _DatastoreStorage
+                 FileFormatConfiguration=NOTHING, # type: _FileFormatConfiguration
                  RetentionPeriod=NOTHING, # type: _RetentionPeriod
                  Tags=NOTHING, # type: Union[_Tags, list]
                  **kwargs):
@@ -704,6 +811,7 @@ class Datastore(troposphere.iotanalytics.Datastore, Mixin):
             validation=validation,
             DatastoreName=DatastoreName,
             DatastoreStorage=DatastoreStorage,
+            FileFormatConfiguration=FileFormatConfiguration,
             RetentionPeriod=RetentionPeriod,
             Tags=Tags,
             **kwargs

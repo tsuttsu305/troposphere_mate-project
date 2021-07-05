@@ -12,6 +12,9 @@ import troposphere.ecr
 
 from troposphere.ecr import (
     LifecyclePolicy as _LifecyclePolicy,
+    ReplicationConfigurationProperty as _ReplicationConfigurationProperty,
+    ReplicationDestination as _ReplicationDestination,
+    ReplicationRule as _ReplicationRule,
     Tags as _Tags,
 )
 
@@ -20,6 +23,104 @@ from troposphere import Template, AWSHelperFn
 from troposphere_mate.core.mate import preprocess_init_kwargs, Mixin
 from troposphere_mate.core.sentiel import REQUIRED, NOTHING
 
+
+
+class PublicRepository(troposphere.ecr.PublicRepository, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 RepositoryCatalogData=NOTHING, # type: dict
+                 RepositoryName=NOTHING, # type: Union[str, AWSHelperFn]
+                 RepositoryPolicyText=NOTHING, # type: Union[dict]
+                 Tags=NOTHING, # type: _Tags
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            RepositoryCatalogData=RepositoryCatalogData,
+            RepositoryName=RepositoryName,
+            RepositoryPolicyText=RepositoryPolicyText,
+            Tags=Tags,
+            **kwargs
+        )
+        super(PublicRepository, self).__init__(**processed_kwargs)
+
+
+class RegistryPolicy(troposphere.ecr.RegistryPolicy, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 PolicyText=REQUIRED, # type: Union[dict]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            PolicyText=PolicyText,
+            **kwargs
+        )
+        super(RegistryPolicy, self).__init__(**processed_kwargs)
+
+
+class ReplicationDestination(troposphere.ecr.ReplicationDestination, Mixin):
+    def __init__(self,
+                 title=None,
+                 Region=REQUIRED, # type: Union[str, AWSHelperFn]
+                 RegistryId=REQUIRED, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Region=Region,
+            RegistryId=RegistryId,
+            **kwargs
+        )
+        super(ReplicationDestination, self).__init__(**processed_kwargs)
+
+
+class ReplicationRule(troposphere.ecr.ReplicationRule, Mixin):
+    def __init__(self,
+                 title=None,
+                 Destinations=REQUIRED, # type: List[_ReplicationDestination]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Destinations=Destinations,
+            **kwargs
+        )
+        super(ReplicationRule, self).__init__(**processed_kwargs)
+
+
+class ReplicationConfigurationProperty(troposphere.ecr.ReplicationConfigurationProperty, Mixin):
+    def __init__(self,
+                 title=None,
+                 Rules=REQUIRED, # type: List[_ReplicationRule]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Rules=Rules,
+            **kwargs
+        )
+        super(ReplicationConfigurationProperty, self).__init__(**processed_kwargs)
+
+
+class ReplicationConfiguration(troposphere.ecr.ReplicationConfiguration, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 ReplicationConfigurationProperty=REQUIRED, # type: _ReplicationConfigurationProperty
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            ReplicationConfigurationProperty=ReplicationConfigurationProperty,
+            **kwargs
+        )
+        super(ReplicationConfiguration, self).__init__(**processed_kwargs)
 
 
 class LifecyclePolicy(troposphere.ecr.LifecyclePolicy, Mixin):

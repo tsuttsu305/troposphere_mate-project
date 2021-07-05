@@ -16,11 +16,14 @@ from troposphere.events import (
     BatchParameters as _BatchParameters,
     BatchRetryStrategy as _BatchRetryStrategy,
     Condition as _Condition,
+    DeadLetterConfig as _DeadLetterConfig,
     EcsParameters as _EcsParameters,
     HttpParameters as _HttpParameters,
     InputTransformer as _InputTransformer,
     KinesisParameters as _KinesisParameters,
     NetworkConfiguration as _NetworkConfiguration,
+    RedshiftDataParameters as _RedshiftDataParameters,
+    RetryPolicy as _RetryPolicy,
     RunCommandParameters as _RunCommandParameters,
     RunCommandTarget as _RunCommandTarget,
     SqsParameters as _SqsParameters,
@@ -32,6 +35,81 @@ from troposphere import Template, AWSHelperFn
 from troposphere_mate.core.mate import preprocess_init_kwargs, Mixin
 from troposphere_mate.core.sentiel import REQUIRED, NOTHING
 
+
+
+class ApiDestination(troposphere.events.ApiDestination, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 ConnectionArn=REQUIRED, # type: Union[str, AWSHelperFn]
+                 HttpMethod=REQUIRED, # type: Union[str, AWSHelperFn]
+                 InvocationEndpoint=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Description=NOTHING, # type: Union[str, AWSHelperFn]
+                 InvocationRateLimitPerSecond=NOTHING, # type: int
+                 Name=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            ConnectionArn=ConnectionArn,
+            HttpMethod=HttpMethod,
+            InvocationEndpoint=InvocationEndpoint,
+            Description=Description,
+            InvocationRateLimitPerSecond=InvocationRateLimitPerSecond,
+            Name=Name,
+            **kwargs
+        )
+        super(ApiDestination, self).__init__(**processed_kwargs)
+
+
+class Archive(troposphere.events.Archive, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 SourceArn=REQUIRED, # type: Union[str, AWSHelperFn]
+                 ArchiveName=NOTHING, # type: Union[str, AWSHelperFn]
+                 Description=NOTHING, # type: Union[str, AWSHelperFn]
+                 EventPattern=NOTHING, # type: dict
+                 RetentionDays=NOTHING, # type: int
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            SourceArn=SourceArn,
+            ArchiveName=ArchiveName,
+            Description=Description,
+            EventPattern=EventPattern,
+            RetentionDays=RetentionDays,
+            **kwargs
+        )
+        super(Archive, self).__init__(**processed_kwargs)
+
+
+class Connection(troposphere.events.Connection, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 AuthParameters=REQUIRED, # type: dict
+                 AuthorizationType=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Description=NOTHING, # type: Union[str, AWSHelperFn]
+                 Name=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            AuthParameters=AuthParameters,
+            AuthorizationType=AuthorizationType,
+            Description=Description,
+            Name=Name,
+            **kwargs
+        )
+        super(Connection, self).__init__(**processed_kwargs)
 
 
 class EventBus(troposphere.events.EventBus, Mixin):
@@ -75,21 +153,23 @@ class EventBusPolicy(troposphere.events.EventBusPolicy, Mixin):
                  title, # type: str
                  template=None, # type: Template
                  validation=True, # type: bool
-                 Action=REQUIRED, # type: Union[str, AWSHelperFn]
-                 Principal=REQUIRED, # type: Union[str, AWSHelperFn]
                  StatementId=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Action=NOTHING, # type: Union[str, AWSHelperFn]
                  Condition=NOTHING, # type: _Condition
                  EventBusName=NOTHING, # type: Union[str, AWSHelperFn]
+                 Principal=NOTHING, # type: Union[str, AWSHelperFn]
+                 Statement=NOTHING, # type: dict
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             template=template,
             validation=validation,
-            Action=Action,
-            Principal=Principal,
             StatementId=StatementId,
+            Action=Action,
             Condition=Condition,
             EventBusName=EventBusName,
+            Principal=Principal,
+            Statement=Statement,
             **kwargs
         )
         super(EventBusPolicy, self).__init__(**processed_kwargs)
@@ -138,6 +218,19 @@ class BatchParameters(troposphere.events.BatchParameters, Mixin):
             **kwargs
         )
         super(BatchParameters, self).__init__(**processed_kwargs)
+
+
+class DeadLetterConfig(troposphere.events.DeadLetterConfig, Mixin):
+    def __init__(self,
+                 title=None,
+                 Arn=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Arn=Arn,
+            **kwargs
+        )
+        super(DeadLetterConfig, self).__init__(**processed_kwargs)
 
 
 class AwsVpcConfiguration(troposphere.events.AwsVpcConfiguration, Mixin):
@@ -238,6 +331,44 @@ class KinesisParameters(troposphere.events.KinesisParameters, Mixin):
         super(KinesisParameters, self).__init__(**processed_kwargs)
 
 
+class RedshiftDataParameters(troposphere.events.RedshiftDataParameters, Mixin):
+    def __init__(self,
+                 title=None,
+                 Database=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Sql=REQUIRED, # type: Union[str, AWSHelperFn]
+                 DbUser=NOTHING, # type: Union[str, AWSHelperFn]
+                 SecretManagerArn=NOTHING, # type: Union[str, AWSHelperFn]
+                 StatementName=NOTHING, # type: Union[str, AWSHelperFn]
+                 WithEvent=NOTHING, # type: bool
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Database=Database,
+            Sql=Sql,
+            DbUser=DbUser,
+            SecretManagerArn=SecretManagerArn,
+            StatementName=StatementName,
+            WithEvent=WithEvent,
+            **kwargs
+        )
+        super(RedshiftDataParameters, self).__init__(**processed_kwargs)
+
+
+class RetryPolicy(troposphere.events.RetryPolicy, Mixin):
+    def __init__(self,
+                 title=None,
+                 MaximumEventAgeInSeconds=NOTHING, # type: int
+                 MaximumRetryAttempts=NOTHING, # type: int
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            MaximumEventAgeInSeconds=MaximumEventAgeInSeconds,
+            MaximumRetryAttempts=MaximumRetryAttempts,
+            **kwargs
+        )
+        super(RetryPolicy, self).__init__(**processed_kwargs)
+
+
 class RunCommandTarget(troposphere.events.RunCommandTarget, Mixin):
     def __init__(self,
                  title=None,
@@ -285,12 +416,15 @@ class Target(troposphere.events.Target, Mixin):
                  Arn=REQUIRED, # type: Union[str, AWSHelperFn]
                  Id=REQUIRED, # type: Union[str, AWSHelperFn]
                  BatchParameters=NOTHING, # type: _BatchParameters
+                 DeadLetterConfig=NOTHING, # type: _DeadLetterConfig
                  EcsParameters=NOTHING, # type: _EcsParameters
                  HttpParameters=NOTHING, # type: _HttpParameters
                  Input=NOTHING, # type: Union[str, AWSHelperFn]
                  InputPath=NOTHING, # type: Union[str, AWSHelperFn]
                  InputTransformer=NOTHING, # type: _InputTransformer
                  KinesisParameters=NOTHING, # type: _KinesisParameters
+                 RedshiftDataParameters=NOTHING, # type: _RedshiftDataParameters
+                 RetryPolicy=NOTHING, # type: _RetryPolicy
                  RoleArn=NOTHING, # type: Union[str, AWSHelperFn]
                  RunCommandParameters=NOTHING, # type: _RunCommandParameters
                  SqsParameters=NOTHING, # type: _SqsParameters
@@ -300,12 +434,15 @@ class Target(troposphere.events.Target, Mixin):
             Arn=Arn,
             Id=Id,
             BatchParameters=BatchParameters,
+            DeadLetterConfig=DeadLetterConfig,
             EcsParameters=EcsParameters,
             HttpParameters=HttpParameters,
             Input=Input,
             InputPath=InputPath,
             InputTransformer=InputTransformer,
             KinesisParameters=KinesisParameters,
+            RedshiftDataParameters=RedshiftDataParameters,
+            RetryPolicy=RetryPolicy,
             RoleArn=RoleArn,
             RunCommandParameters=RunCommandParameters,
             SqsParameters=SqsParameters,

@@ -167,6 +167,33 @@ class ConfigurationProfile(troposphere.appconfig.ConfigurationProfile, Mixin):
         super(ConfigurationProfile, self).__init__(**processed_kwargs)
 
 
+class HostedConfigurationVersion(troposphere.appconfig.HostedConfigurationVersion, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 ApplicationId=REQUIRED, # type: Union[str, AWSHelperFn]
+                 ConfigurationProfileId=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Content=REQUIRED, # type: Union[str, AWSHelperFn]
+                 ContentType=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Description=NOTHING, # type: Union[str, AWSHelperFn]
+                 LatestVersionNumber=NOTHING, # type: float
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            ApplicationId=ApplicationId,
+            ConfigurationProfileId=ConfigurationProfileId,
+            Content=Content,
+            ContentType=ContentType,
+            Description=Description,
+            LatestVersionNumber=LatestVersionNumber,
+            **kwargs
+        )
+        super(HostedConfigurationVersion, self).__init__(**processed_kwargs)
+
+
 class Application(troposphere.appconfig.Application, Mixin):
     def __init__(self,
                  title, # type: str

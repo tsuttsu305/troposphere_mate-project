@@ -83,26 +83,28 @@ class SelfManagedActiveDirectoryConfiguration(troposphere.fsx.SelfManagedActiveD
 class WindowsConfiguration(troposphere.fsx.WindowsConfiguration, Mixin):
     def __init__(self,
                  title=None,
+                 ThroughputCapacity=REQUIRED, # type: int
                  ActiveDirectoryId=NOTHING, # type: Union[str, AWSHelperFn]
+                 Aliases=NOTHING, # type: List[Union[str, AWSHelperFn]]
                  AutomaticBackupRetentionDays=NOTHING, # type: int
                  CopyTagsToBackups=NOTHING, # type: bool
                  DailyAutomaticBackupStartTime=NOTHING, # type: Union[str, AWSHelperFn]
                  DeploymentType=NOTHING, # type: Union[str, AWSHelperFn]
                  PreferredSubnetId=NOTHING, # type: Union[str, AWSHelperFn]
                  SelfManagedActiveDirectoryConfiguration=NOTHING, # type: _SelfManagedActiveDirectoryConfiguration
-                 ThroughputCapacity=NOTHING, # type: int
                  WeeklyMaintenanceStartTime=NOTHING, # type: Union[str, AWSHelperFn]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
+            ThroughputCapacity=ThroughputCapacity,
             ActiveDirectoryId=ActiveDirectoryId,
+            Aliases=Aliases,
             AutomaticBackupRetentionDays=AutomaticBackupRetentionDays,
             CopyTagsToBackups=CopyTagsToBackups,
             DailyAutomaticBackupStartTime=DailyAutomaticBackupStartTime,
             DeploymentType=DeploymentType,
             PreferredSubnetId=PreferredSubnetId,
             SelfManagedActiveDirectoryConfiguration=SelfManagedActiveDirectoryConfiguration,
-            ThroughputCapacity=ThroughputCapacity,
             WeeklyMaintenanceStartTime=WeeklyMaintenanceStartTime,
             **kwargs
         )

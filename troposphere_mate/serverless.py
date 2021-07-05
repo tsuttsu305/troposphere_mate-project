@@ -35,6 +35,7 @@ from troposphere.serverless import (
     PrimaryKey as _PrimaryKey,
     ProvisionedConcurrencyConfiguration as _ProvisionedConcurrencyConfiguration,
     ProvisionedThroughput as _ProvisionedThroughput,
+    RequestModel as _RequestModel,
     ResourcePolicyStatement as _ResourcePolicyStatement,
     Route53 as _Route53,
     S3Location as _S3Location,
@@ -637,6 +638,21 @@ class DynamoDBEvent(troposphere.serverless.DynamoDBEvent, Mixin):
         super(DynamoDBEvent, self).__init__(**processed_kwargs)
 
 
+class RequestModel(troposphere.serverless.RequestModel, Mixin):
+    def __init__(self,
+                 title=None,
+                 Model=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Required=NOTHING, # type: bool
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            Model=Model,
+            Required=Required,
+            **kwargs
+        )
+        super(RequestModel, self).__init__(**processed_kwargs)
+
+
 class ApiEvent(troposphere.serverless.ApiEvent, Mixin):
     def __init__(self,
                  title, # type: str
@@ -644,6 +660,9 @@ class ApiEvent(troposphere.serverless.ApiEvent, Mixin):
                  validation=True, # type: bool
                  Path=REQUIRED, # type: Union[str, AWSHelperFn]
                  Method=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Auth=NOTHING, # type: _Auth
+                 RequestModel=NOTHING, # type: _RequestModel
+                 RequestParameters=NOTHING, # type: Union[str, AWSHelperFn]
                  RestApiId=NOTHING, # type: Union[str, AWSHelperFn]
                  **kwargs):
         processed_kwargs = preprocess_init_kwargs(
@@ -652,6 +671,9 @@ class ApiEvent(troposphere.serverless.ApiEvent, Mixin):
             validation=validation,
             Path=Path,
             Method=Method,
+            Auth=Auth,
+            RequestModel=RequestModel,
+            RequestParameters=RequestParameters,
             RestApiId=RestApiId,
             **kwargs
         )

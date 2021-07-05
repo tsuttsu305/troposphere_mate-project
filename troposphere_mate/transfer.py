@@ -28,6 +28,7 @@ class EndpointDetails(troposphere.transfer.EndpointDetails, Mixin):
     def __init__(self,
                  title=None,
                  AddressAllocationIds=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 SecurityGroupIds=NOTHING, # type: List[Union[str, AWSHelperFn]]
                  SubnetIds=NOTHING, # type: List[Union[str, AWSHelperFn]]
                  VpcEndpointId=NOTHING, # type: Union[str, AWSHelperFn]
                  VpcId=NOTHING, # type: Union[str, AWSHelperFn]
@@ -35,6 +36,7 @@ class EndpointDetails(troposphere.transfer.EndpointDetails, Mixin):
         processed_kwargs = preprocess_init_kwargs(
             title=title,
             AddressAllocationIds=AddressAllocationIds,
+            SecurityGroupIds=SecurityGroupIds,
             SubnetIds=SubnetIds,
             VpcEndpointId=VpcEndpointId,
             VpcId=VpcId,

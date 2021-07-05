@@ -19,6 +19,8 @@ from troposphere.imagebuilder import (
     Logging as _Logging,
     S3Logs as _S3Logs,
     Schedule as _Schedule,
+    Tags as _Tags,
+    TargetContainerRepository as _TargetContainerRepository,
 )
 
 
@@ -26,6 +28,190 @@ from troposphere import Template, AWSHelperFn
 from troposphere_mate.core.mate import preprocess_init_kwargs, Mixin
 from troposphere_mate.core.sentiel import REQUIRED, NOTHING
 
+
+
+class Component(troposphere.imagebuilder.Component, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 Name=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Platform=REQUIRED, # type: Any
+                 Version=REQUIRED, # type: Union[str, AWSHelperFn]
+                 ChangeDescription=NOTHING, # type: Union[str, AWSHelperFn]
+                 Data=NOTHING, # type: Union[str, AWSHelperFn]
+                 Description=NOTHING, # type: Union[str, AWSHelperFn]
+                 KmsKeyId=NOTHING, # type: Union[str, AWSHelperFn]
+                 Tags=NOTHING, # type: dict
+                 Uri=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            Name=Name,
+            Platform=Platform,
+            Version=Version,
+            ChangeDescription=ChangeDescription,
+            Data=Data,
+            Description=Description,
+            KmsKeyId=KmsKeyId,
+            Tags=Tags,
+            Uri=Uri,
+            **kwargs
+        )
+        super(Component, self).__init__(**processed_kwargs)
+
+
+class ComponentConfiguration(troposphere.imagebuilder.ComponentConfiguration, Mixin):
+    def __init__(self,
+                 title=None,
+                 ComponentArn=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            ComponentArn=ComponentArn,
+            **kwargs
+        )
+        super(ComponentConfiguration, self).__init__(**processed_kwargs)
+
+
+class TargetContainerRepository(troposphere.imagebuilder.TargetContainerRepository, Mixin):
+    def __init__(self,
+                 title=None,
+                 RepositoryName=NOTHING, # type: Union[str, AWSHelperFn]
+                 Service=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            RepositoryName=RepositoryName,
+            Service=Service,
+            **kwargs
+        )
+        super(TargetContainerRepository, self).__init__(**processed_kwargs)
+
+
+class ContainerRecipe(troposphere.imagebuilder.ContainerRecipe, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 Components=REQUIRED, # type: List[_ComponentConfiguration]
+                 ContainerType=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Name=REQUIRED, # type: Union[str, AWSHelperFn]
+                 ParentImage=REQUIRED, # type: Union[str, AWSHelperFn]
+                 TargetRepository=REQUIRED, # type: _TargetContainerRepository
+                 Version=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Description=NOTHING, # type: Union[str, AWSHelperFn]
+                 DockerfileTemplateData=NOTHING, # type: Union[str, AWSHelperFn]
+                 DockerfileTemplateUri=NOTHING, # type: Union[str, AWSHelperFn]
+                 ImageOsVersionOverride=NOTHING, # type: Union[str, AWSHelperFn]
+                 KmsKeyId=NOTHING, # type: Union[str, AWSHelperFn]
+                 PlatformOverride=NOTHING, # type: Union[str, AWSHelperFn]
+                 Tags=NOTHING, # type: _Tags
+                 WorkingDirectory=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            Components=Components,
+            ContainerType=ContainerType,
+            Name=Name,
+            ParentImage=ParentImage,
+            TargetRepository=TargetRepository,
+            Version=Version,
+            Description=Description,
+            DockerfileTemplateData=DockerfileTemplateData,
+            DockerfileTemplateUri=DockerfileTemplateUri,
+            ImageOsVersionOverride=ImageOsVersionOverride,
+            KmsKeyId=KmsKeyId,
+            PlatformOverride=PlatformOverride,
+            Tags=Tags,
+            WorkingDirectory=WorkingDirectory,
+            **kwargs
+        )
+        super(ContainerRecipe, self).__init__(**processed_kwargs)
+
+
+class Distribution(troposphere.imagebuilder.Distribution, Mixin):
+    def __init__(self,
+                 title=None,
+                 AmiDistributionConfiguration=NOTHING, # type: dict
+                 LicenseConfigurationArns=NOTHING, # type: List[Union[str, AWSHelperFn]]
+                 Region=NOTHING, # type: Union[str, AWSHelperFn]
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            AmiDistributionConfiguration=AmiDistributionConfiguration,
+            LicenseConfigurationArns=LicenseConfigurationArns,
+            Region=Region,
+            **kwargs
+        )
+        super(Distribution, self).__init__(**processed_kwargs)
+
+
+class DistributionConfiguration(troposphere.imagebuilder.DistributionConfiguration, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 Distributions=REQUIRED, # type: List[_Distribution]
+                 Name=REQUIRED, # type: Union[str, AWSHelperFn]
+                 Description=NOTHING, # type: Union[str, AWSHelperFn]
+                 Tags=NOTHING, # type: dict
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            Distributions=Distributions,
+            Name=Name,
+            Description=Description,
+            Tags=Tags,
+            **kwargs
+        )
+        super(DistributionConfiguration, self).__init__(**processed_kwargs)
+
+
+class ImageTestsConfiguration(troposphere.imagebuilder.ImageTestsConfiguration, Mixin):
+    def __init__(self,
+                 title=None,
+                 ImageTestsEnabled=NOTHING, # type: bool
+                 TimeoutMinutes=NOTHING, # type: int
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            ImageTestsEnabled=ImageTestsEnabled,
+            TimeoutMinutes=TimeoutMinutes,
+            **kwargs
+        )
+        super(ImageTestsConfiguration, self).__init__(**processed_kwargs)
+
+
+class Image(troposphere.imagebuilder.Image, Mixin):
+    def __init__(self,
+                 title, # type: str
+                 template=None, # type: Template
+                 validation=True, # type: bool
+                 ImageRecipeArn=REQUIRED, # type: Union[str, AWSHelperFn]
+                 ImageTestsConfiguration=REQUIRED, # type: _ImageTestsConfiguration
+                 InfrastructureConfigurationArn=REQUIRED, # type: Union[str, AWSHelperFn]
+                 DistributionConfigurationArn=NOTHING, # type: Union[str, AWSHelperFn]
+                 Tags=NOTHING, # type: dict
+                 **kwargs):
+        processed_kwargs = preprocess_init_kwargs(
+            title=title,
+            template=template,
+            validation=validation,
+            ImageRecipeArn=ImageRecipeArn,
+            ImageTestsConfiguration=ImageTestsConfiguration,
+            InfrastructureConfigurationArn=InfrastructureConfigurationArn,
+            DistributionConfigurationArn=DistributionConfigurationArn,
+            Tags=Tags,
+            **kwargs
+        )
+        super(Image, self).__init__(**processed_kwargs)
 
 
 class S3Logs(troposphere.imagebuilder.S3Logs, Mixin):
@@ -179,21 +365,6 @@ class ImageRecipe(troposphere.imagebuilder.ImageRecipe, Mixin):
         super(ImageRecipe, self).__init__(**processed_kwargs)
 
 
-class ImageTestsConfiguration(troposphere.imagebuilder.ImageTestsConfiguration, Mixin):
-    def __init__(self,
-                 title=None,
-                 ImageTestsEnabled=NOTHING, # type: bool
-                 TimeoutMinutes=NOTHING, # type: int
-                 **kwargs):
-        processed_kwargs = preprocess_init_kwargs(
-            title=title,
-            ImageTestsEnabled=ImageTestsEnabled,
-            TimeoutMinutes=TimeoutMinutes,
-            **kwargs
-        )
-        super(ImageTestsConfiguration, self).__init__(**processed_kwargs)
-
-
 class Schedule(troposphere.imagebuilder.Schedule, Mixin):
     def __init__(self,
                  title=None,
@@ -240,101 +411,3 @@ class ImagePipeline(troposphere.imagebuilder.ImagePipeline, Mixin):
             **kwargs
         )
         super(ImagePipeline, self).__init__(**processed_kwargs)
-
-
-class Distribution(troposphere.imagebuilder.Distribution, Mixin):
-    def __init__(self,
-                 title=None,
-                 AmiDistributionConfiguration=NOTHING, # type: dict
-                 LicenseConfigurationArns=NOTHING, # type: List[Union[str, AWSHelperFn]]
-                 Region=NOTHING, # type: Union[str, AWSHelperFn]
-                 **kwargs):
-        processed_kwargs = preprocess_init_kwargs(
-            title=title,
-            AmiDistributionConfiguration=AmiDistributionConfiguration,
-            LicenseConfigurationArns=LicenseConfigurationArns,
-            Region=Region,
-            **kwargs
-        )
-        super(Distribution, self).__init__(**processed_kwargs)
-
-
-class DistributionConfiguration(troposphere.imagebuilder.DistributionConfiguration, Mixin):
-    def __init__(self,
-                 title, # type: str
-                 template=None, # type: Template
-                 validation=True, # type: bool
-                 Distributions=REQUIRED, # type: List[_Distribution]
-                 Name=REQUIRED, # type: Union[str, AWSHelperFn]
-                 Description=NOTHING, # type: Union[str, AWSHelperFn]
-                 Tags=NOTHING, # type: dict
-                 **kwargs):
-        processed_kwargs = preprocess_init_kwargs(
-            title=title,
-            template=template,
-            validation=validation,
-            Distributions=Distributions,
-            Name=Name,
-            Description=Description,
-            Tags=Tags,
-            **kwargs
-        )
-        super(DistributionConfiguration, self).__init__(**processed_kwargs)
-
-
-class Component(troposphere.imagebuilder.Component, Mixin):
-    def __init__(self,
-                 title, # type: str
-                 template=None, # type: Template
-                 validation=True, # type: bool
-                 Name=REQUIRED, # type: Union[str, AWSHelperFn]
-                 Platform=REQUIRED, # type: Any
-                 Version=REQUIRED, # type: Union[str, AWSHelperFn]
-                 ChangeDescription=NOTHING, # type: Union[str, AWSHelperFn]
-                 Data=NOTHING, # type: Union[str, AWSHelperFn]
-                 Description=NOTHING, # type: Union[str, AWSHelperFn]
-                 KmsKeyId=NOTHING, # type: Union[str, AWSHelperFn]
-                 Tags=NOTHING, # type: dict
-                 Uri=NOTHING, # type: Union[str, AWSHelperFn]
-                 **kwargs):
-        processed_kwargs = preprocess_init_kwargs(
-            title=title,
-            template=template,
-            validation=validation,
-            Name=Name,
-            Platform=Platform,
-            Version=Version,
-            ChangeDescription=ChangeDescription,
-            Data=Data,
-            Description=Description,
-            KmsKeyId=KmsKeyId,
-            Tags=Tags,
-            Uri=Uri,
-            **kwargs
-        )
-        super(Component, self).__init__(**processed_kwargs)
-
-
-class Image(troposphere.imagebuilder.Image, Mixin):
-    def __init__(self,
-                 title, # type: str
-                 template=None, # type: Template
-                 validation=True, # type: bool
-                 ImageRecipeArn=REQUIRED, # type: Union[str, AWSHelperFn]
-                 ImageTestsConfiguration=REQUIRED, # type: _ImageTestsConfiguration
-                 InfrastructureConfigurationArn=REQUIRED, # type: Union[str, AWSHelperFn]
-                 DistributionConfigurationArn=NOTHING, # type: Union[str, AWSHelperFn]
-                 Tags=NOTHING, # type: dict
-                 **kwargs):
-        processed_kwargs = preprocess_init_kwargs(
-            title=title,
-            template=template,
-            validation=validation,
-            ImageRecipeArn=ImageRecipeArn,
-            ImageTestsConfiguration=ImageTestsConfiguration,
-            InfrastructureConfigurationArn=InfrastructureConfigurationArn,
-            DistributionConfigurationArn=DistributionConfigurationArn,
-            Tags=Tags,
-            **kwargs
-        )
-        super(Image, self).__init__(**processed_kwargs)
